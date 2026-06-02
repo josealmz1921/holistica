@@ -7,7 +7,7 @@ const WHATSAPP_NUMBER = "527711814454";
 const Services = () => {
     return (
         <div className={classes.root}>
-            <h1>Nuestros masajes</h1>
+            <h1 className={classes.title}>Nuestros masajes</h1>
             <div className={classes.servicesContainer}>
               {services.map((service) => (
                 <div key={service.id} className={classes.service}>

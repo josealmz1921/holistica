@@ -31,7 +31,7 @@ const Header = () => {
 
     return (
         <header className={classes.root}>
-            <h1 className={classes.title}>Holistica</h1>
+            <h1 className={classes.title}>Templo sahkti</h1>
             <nav className={classes.nav}>
                 {
                     ((isMobile && isMenuOpen) || !isMobile) && (
@@ -40,7 +40,7 @@ const Header = () => {
                             <li><a href="#" className={classes.link}>Nosotros</a></li>
                             <li><a href="#" className={classes.link}>Experiencia</a></li>
                             <li className={classes.whatsappContainer}>
-                                <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className={classes.whatsapp}>
+                                <a href="https://wa.me/527711814454" target="_blank" rel="noopener noreferrer" className={classes.whatsapp}>
                                     Reserva por WhatsApp
                                 </a>
                             </li>

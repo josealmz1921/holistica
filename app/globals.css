@@ -4,7 +4,7 @@
   /* Colors */
   --color-primary: #7b8d85;
   --color-secondary: #F5F2ED;
-  --color-tertiary: #2D3A30;
+  --color-tertiary: #445247;
   --color-neutral: #706D67;
 
   /* Typography */
@@ -25,5 +25,5 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #706D67;
+  background-color: var(--color-secondary);
 }

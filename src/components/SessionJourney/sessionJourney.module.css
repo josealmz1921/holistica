@@ -1,0 +1,83 @@
+.container {
+  max-width: 500px;
+}
+
+.title {
+  margin-bottom: 2.5rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: #2f2a24;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 2rem;
+}
+
+.circle {
+  position: relative;
+  z-index: 2;
+
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9999px;
+  border: 1px solid #d6d0c8;
+  background: #fff;
+
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #567089;
+
+  flex-shrink: 0;
+}
+
+.active {
+  background: #9fb4a3;
+  border-color: #9fb4a3;
+  color: #fff;
+}
+
+.line {
+  position: absolute;
+  left: 17px;
+  top: 36px;
+
+  width: 1px;
+  height: calc(100% - 4px);
+
+  background: #d6d0c8;
+}
+
+.content {
+  padding-top: 0.15rem;
+}
+
+.content h3 {
+  margin: 0 0 0.35rem;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #2f2a24;
+}
+
+.content p {
+  margin: 0;
+
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #706a63;
+}

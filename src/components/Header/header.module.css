@@ -78,6 +78,11 @@
 }
 
 @media only screen and (max-width: 768px) {
+
+    .root {
+        grid-template-columns: 2fr 1fr;
+    }
+
     .menuButton {
         display: block;
     }

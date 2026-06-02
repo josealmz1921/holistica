@@ -4,6 +4,8 @@
     gap: 2rem;
     max-width: 1200px;
     margin: 4rem auto 0 auto;
+            padding: 0 2rem;
+
 }
 
 .imageContainer {
@@ -41,4 +43,15 @@
 .itemTitle {
     font-weight: 500;
     margin-bottom: 0.25rem;
+}
+
+@media (max-width: 768px) {
+    .root {
+        grid-template-columns: 1fr;
+        padding: 0 2rem;
+    }
+
+    .imageContainer {
+        height: 300px;
+    }
 }

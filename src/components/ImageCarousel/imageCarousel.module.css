@@ -1,0 +1,38 @@
+.carousel {
+    width: 100%;
+    height: 100%;
+}
+
+.imageWrapper {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+}
+
+.image {
+    object-fit: cover;
+}
+
+.carousel :global(.slick-dots) {
+    bottom: 20px;
+}
+
+.carousel :global(.slick-dots li button:before) {
+    font-size: 10px;
+}
+
+.carousel :global(.slick-prev) {
+    left: 20px;
+    z-index: 10;
+}
+
+.carousel :global(.slick-next) {
+    right: 20px;
+    z-index: 10;
+}
+
+.carousel :global(.slick-prev:before),
+.carousel :global(.slick-next:before) {
+    font-size: 30px;
+}

@@ -1,6 +1,11 @@
 .root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     max-width: 1200px;
     margin: 4rem auto 0 auto;
+    padding: 0 2rem;
 }
 
 .servicesContainer {
@@ -46,4 +51,30 @@
 .serviceTitle {
     font-size: 1.25rem;
     margin-bottom: 1rem;
+}
+
+.title {
+    font-family: var(--font-heading);
+    color: var(--color-tertiary);
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+
+.title::after {
+    content: "";
+    position: absolute;
+    left: calc(50% - 20px);
+    bottom: -4px;
+    width: 40px;
+    height: 2px;
+    background: currentColor;
+}
+
+@media (max-width: 768px) {
+    .servicesContainer {
+        grid-template-columns: 1fr;
+    }
 }
