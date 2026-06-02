@@ -1,0 +1,44 @@
+.root {
+    display:grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 4rem auto 0 auto;
+}
+
+.imageContainer {
+    position: relative;
+    width: 100%;
+    height: 400px;
+}
+
+.image {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.title {
+    font-family: var(--font-heading);
+    color: var(--color-tertiary);
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+}
+
+.item {
+    font-family: var(--font-body);
+    color: var(--color-tertiary);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.itemTitle {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}

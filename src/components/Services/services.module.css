@@ -1,0 +1,49 @@
+.root {
+    max-width: 1200px;
+    margin: 4rem auto 0 auto;
+}
+
+.servicesContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.service {
+    background: white;
+}
+
+.imageContainer {
+    position: relative;
+    width: 100%;
+    height: 250px;
+}
+
+.imageContainer img {
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+.description {
+    padding: 1rem;
+}
+
+.agendar {
+    display: inline-block;
+    margin-top: 1rem;
+    background-color: var(--color-primary);
+    color: var(--color-secondary) !important;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+}
+
+.serviceTitle {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}

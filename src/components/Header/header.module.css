@@ -1,0 +1,104 @@
+.root {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    padding: 1rem;
+    background-color: var(--color-secondary);
+}
+
+.title {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(3, auto) 1fr;
+    align-items: center;
+    gap: 1rem;
+}
+
+.list li {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.list li a {
+    position: relative;
+    color: var(--color-tertiary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.list li a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+}
+
+.list li a:hover::after {
+    width: 100%;
+}
+
+.whatsappContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.whatsapp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: var(--color-secondary) !important;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    width: 15rem;
+}
+
+.menuButton {
+    display: none;
+    width: 2rem;
+    cursor: pointer;
+}
+
+.icon {
+    width: 1.5rem;
+}
+
+@media only screen and (max-width: 768px) {
+    .menuButton {
+        display: block;
+    }
+
+    .nav {
+        display: flex;
+        justify-content: flex-end;
+        position: relative;
+    }
+
+    .list {
+        display: flex;
+        position: absolute;
+        flex-direction: column;
+        top: 100%;
+        right: 0;
+        background-color: white;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 12px 13px 16px -7px rgba(194, 194, 194, 0.75);
+        -webkit-box-shadow: 12px 13px 16px -7px rgba(194, 194, 194, 0.75);
+        -moz-box-shadow: 12px 13px 16px -7px rgba(194, 194, 194, 0.75);
+    }
+}

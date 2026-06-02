@@ -1,0 +1,37 @@
+[
+  {
+    "id": "relajante",
+    "title": "Masaje Relajante",
+    "image": "/img/relajante.jpg",
+    "description": "Una experiencia diseñada para reducir el estrés, relajar la musculatura y promover una profunda sensación de bienestar físico y mental mediante movimientos suaves y armoniosos.",
+    "whatsappMessage": "Hola, me gustaría obtener información y agendar un Masaje Relajante."
+  },
+  {
+    "id": "descontracturante",
+    "title": "Masaje Descontracturante",
+    "image": "/img/descontracturante.jpg",
+    "description": "Ideal para aliviar contracturas, tensiones musculares y molestias ocasionadas por el estrés, el ejercicio o las actividades diarias, ayudando a recuperar la movilidad y el confort corporal.",
+    "whatsappMessage": "Hola, me gustaría obtener información y agendar un Masaje Descontracturante."
+  },
+  {
+    "id": "holistico",
+    "title": "Masaje Holístico",
+    "image": "/img/holistico.jpg",
+    "description": "Un tratamiento integral que busca equilibrar cuerpo, mente y emociones, favoreciendo la relajación profunda y la armonía energética para un bienestar completo.",
+    "whatsappMessage": "Hola, me gustaría obtener información y agendar un Masaje Holístico."
+  },
+  {
+    "id": "nuru",
+    "title": "Masaje Nuru",
+    "image": "/img/nuru.webp",
+    "description": "Una experiencia sensorial enfocada en la relajación y la conexión corporal, realizada con movimientos fluidos y técnicas que favorecen una sensación única de bienestar y desconexión.",
+    "whatsappMessage": "Hola, me gustaría obtener información y agendar un Masaje Nuru."
+  },
+  {
+    "id": "tantrico",
+    "title": "Masaje Tántrico",
+    "image": "/img/tantrico.jpg",
+    "description": "Una práctica orientada a fomentar la conciencia corporal, la relajación profunda y la conexión con la energía vital a través de una experiencia de atención plena y bienestar.",
+    "whatsappMessage": "Hola, me gustaría obtener información y agendar un Masaje Tántrico."
+  }
+]

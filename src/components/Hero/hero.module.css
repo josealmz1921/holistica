@@ -1,0 +1,66 @@
+.root {
+    position: relative;
+    height: 91dvh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: 0 4rem;
+}
+
+.root::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+   background:
+    linear-gradient(
+        90deg,
+        rgba(185, 178, 168, 0.95) 0%,
+        rgba(195, 188, 178, 0.75) 40%,
+        rgba(195, 188, 178, 0.25) 70%,
+        rgba(195, 188, 178, 0) 100%
+    ),
+    url("/img/heroImage.jpg") center/cover no-repeat;
+
+    transform: scale(1.02);
+    z-index: -1;
+}
+
+.title {
+    font-family: var(--font-body);
+    color: var(--color-tertiary);
+    font-size: 1.2rem;
+    font-weight: 500;
+    max-width: 600px;
+}
+
+.heading {
+    font-family: var(--font-heading);
+    color: var(--color-tertiary);
+    font-size: 2.5rem;
+    font-weight: 400;
+    margin-top: 1rem;
+}
+
+.description {
+    font-family: var(--font-body);
+    color: var(--color-tertiary);
+    font-size: 1rem;
+    font-weight: normal;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.whatsappLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: var(--color-secondary) !important;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    width: 16rem;
+}
