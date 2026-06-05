@@ -1,0 +1,249 @@
+.root {
+    padding: 0 2rem;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 1rem;
+    margin-top: 2rem;
+    background: var(--color-secondary);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 2rem 1rem;
+
+}
+
+.title {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+.newServiceButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: var(--color-secondary) !important;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.information {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 1rem;
+}
+
+.itemInfo {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+    font-family: var(--font-heading);
+    height: 5rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.table {
+    display: flex;
+    flex-direction: column;
+    padding: 0 1rem;
+    margin-top: 2rem;
+}
+
+.tableTitle {
+    font-family: var(--font-body);
+    color: var(--color-primary);
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+
+.tableHeader {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+    padding: 0.5rem;
+    border-radius: 8px 8px 0 0;
+}
+
+.tableRow {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr;
+    align-items: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--color-primary);
+    background-color: var(--color-secondary);
+
+}
+
+.category {
+    font-weight: 100;
+}
+
+.actionContainer {
+    display: flex;
+    gap: 20px;
+}
+
+.mainContainer {
+    display: grid;
+    grid-template-columns: 5rem 100%;
+    gap: 10px;
+    align-items: center;
+}
+
+.imageContainer {
+    width: 100%;
+    height: 2rem;
+    position: relative;
+}
+
+.imageContainer img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    object-fit: contain;
+}
+
+.editButton span,
+.deleteButton span {
+    display: none;
+}
+
+@media only screen and (max-width: 768px) {
+
+    .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+
+    .title {
+        grid-column: 1 / 4;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+
+    .actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 2rem;
+    }
+
+
+    .title {
+        grid-column: 1 / 4;
+    }
+
+    .searchBar {
+        grid-column: 1 / 4;
+    }
+
+    .newServiceButton {
+        grid-column: 1 / 4;
+    }
+
+    .information {
+        display: none;
+    }
+
+    .tableHeader {
+        display: none;
+    }
+
+    .editButton span,
+    .deleteButton span {
+        display: block;
+    }
+
+    .tableRow {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+        border: none;
+        border-radius: 8px;
+        position: relative;
+    }
+
+    .mainContainer {
+        grid-template-columns: 1fr;
+        grid-template-rows: 180px auto;
+        width: 100%;
+        align-items: unset;
+    }
+
+    .imageContainer {
+        height: auto;
+        background-color: #fff;
+        border-radius: 8px;
+    }
+
+    .mainContainer img {
+        /* object-fit: cover; */
+    }
+
+    .names {
+        margin: 1rem 0;
+    }
+
+    .name {
+        font-family: var(--font-body);
+        font-weight: 500;
+    }
+
+    .toggle {
+        position: absolute;
+        right: 10;
+        top: 15;
+    }
+
+    .actionContainer {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+    }
+
+    .editButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--color-primary);
+        color: var(--color-secondary) !important;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        gap: 20px;
+    }
+
+    .deleteButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(198, 15, 15);
+        color: var(--color-secondary) !important;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        gap: 20px;
+    }
+
+}

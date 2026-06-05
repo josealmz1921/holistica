@@ -1,0 +1,108 @@
+.desktop {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--color-tertiary);
+}
+
+.logout {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem;
+    text-decoration: none;
+    color: #fff;
+}
+
+.logout:hover {
+    cursor: pointer;
+}
+
+.logoContainer {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.logo {
+    width: 180px;
+    height: auto;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem;
+    color: #fff;
+    text-decoration: none;
+}
+
+.link:hover {
+    cursor: pointer;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* MOBILE */
+
+.mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .desktop {
+        display: none;
+    }
+
+    .mobile {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        align-items: center;
+        height: 70px;
+        background: var(--color-tertiary);
+        padding: 0 1rem;
+    }
+
+    .mobileLogout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        color: #fff;
+        font-size: 12px;
+    }
+
+    .mobileLink {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+
+        color: white;
+        text-decoration: none;
+        font-size: 12px;
+    }
+
+    .mobileIcon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .mobileLogo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .mobileLogoSvg {
+        width: 30px;
+        height: auto;
+        display: block;
+    }
+}

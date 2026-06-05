@@ -27,20 +27,22 @@ const steps = [
   },
 ];
 
-export default function SessionJourney() {
+export default function SessionJourney(props: any) {
+
+  const { route } = props;
+
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>El Viaje de La Sesión</h2>
 
       <div className={styles.timeline}>
-        {steps.map((step, index) => (
-          <div key={step.number} className={styles.item}>
+        {route.map((step: any, index: any) => (
+          <div key={index} className={styles.item}>
             <div
-              className={`${styles.circle} ${
-                index === 0 ? styles.active : ""
-              }`}
+              className={`${styles.circle} ${index === 0 ? styles.active : ""
+                }`}
             >
-              {step.number}
+              {index + 1}
             </div>
 
             {index !== steps.length - 1 && (

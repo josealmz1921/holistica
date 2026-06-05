@@ -1,0 +1,84 @@
+@reference "@/index.css";
+
+.root {
+    @apply flex;
+    @apply flex-col;
+    @apply items-start;
+    @apply w-full;
+}
+
+.input_file_button {
+    @apply flex flex-row gap-2;
+    @apply flex-wrap;
+    @apply text-left;
+    @apply w-full;
+    @apply overflow-hidden;
+    @apply mb-1;
+    @apply relative;
+    @apply w-full;
+}
+
+.file_name {
+    @apply text-left;
+}
+
+.input_hide {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    opacity: 1;
+    overflow: hidden;
+    height: 1px;
+    opacity: 0;
+}
+
+.input_file {
+    @apply cursor-pointer;
+    @apply max-[420px]:w-full;
+}
+
+.input_file_hide {
+    composes: input_file;
+    @apply top-0;
+    @apply left-0;
+    @apply absolute;
+    @apply z-10;
+    @apply opacity-0;
+}
+
+input[type="file"] {
+    font-size: 14px;
+    color: #333;
+}
+
+input[type="file"]::file-selector-button {
+    background: #ccc;
+    border: none;
+    padding: 4px 7px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.file_data_container {
+    @apply flex;
+    @apply justify-end;
+    @apply items-center;
+    @apply text-xs;
+}
+
+.delete_button {
+    @apply text-red-500;
+    @apply ml-2;
+    @apply text-base;
+    @apply cursor-pointer;
+}
+
+.input_file::-webkit-file-upload-button {
+    cursor: pointer;
+}
+
+.error {
+    @apply text-xs;
+    @apply text-red;
+}

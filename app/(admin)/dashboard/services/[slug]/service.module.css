@@ -1,0 +1,163 @@
+.root {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+.title {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+.text {
+    font-family: var(--font-body);
+    margin-bottom: 2rem;
+}
+
+.form {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(4, auto);
+    gap: 20px;
+    background-color: var(--color-secondary);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+}
+
+.name {
+    grid-column: 1 / 5;
+}
+
+.category {
+    grid-column: 5 / 10;
+}
+
+.desc {
+    grid-column: 1 / 10;
+    grid-row: 2 / 3;
+}
+
+.message {
+    grid-column: 1 / 10;
+    grid-row: 3 / 4;
+}
+
+.duration {
+    grid-column: 1 / 2;
+    grid-row: 4 / 5;
+}
+
+.status {
+    grid-column: 2 / 3;
+    grid-row: 4 / 5;
+}
+
+.benefits {
+    grid-column: 1 / 10;
+    grid-row: 6 / 7;
+}
+
+.route {
+    grid-column: 1 / 10;
+    grid-row: 7 / 8;
+}
+
+.dropzone {
+    grid-column: 1 / 10;
+    grid-row: 8 / 9;
+}
+
+.formHead {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    background-color: var(--color-secondary);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem
+}
+
+.saveButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: var(--color-secondary) !important;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+    .name {
+        grid-column: 1 / 10;
+        grid-row: 1 / 2;
+    }
+
+    .category {
+        grid-column: 1 / 10;
+        grid-row: 2 / 3;
+    }
+
+    .desc {
+        grid-column: 1 / 10;
+        grid-row: 3 / 4;
+    }
+
+    .message {
+        grid-column: 1 / 10;
+        grid-row: 4 / 5;
+    }
+
+    .duration {
+        grid-column: 1 / 4;
+        grid-row: 6 / 7;
+    }
+
+    .status {
+        grid-column: 4 / 5;
+        grid-row: 6 / 7;
+    }
+
+    .benefits {
+        grid-column: 1 / 10;
+        grid-row: 7 / 8;
+    }
+
+    .route {
+        grid-column: 1 / 10;
+        grid-row: 8 / 9;
+    }
+
+    .dropzone {
+        grid-column: 1 / 10;
+        grid-row: 9 / 10;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .formHead {
+        display: grid;
+        margin-bottom: 1rem;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .duration {
+        grid-column: 1 / 6;
+        grid-row: 4 / 5;
+    }
+
+    .status {
+        grid-column: 6 / 8;
+        grid-row: 4 / 5;
+    }
+}

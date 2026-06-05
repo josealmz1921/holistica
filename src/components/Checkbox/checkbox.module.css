@@ -1,0 +1,48 @@
+@reference "../../index.css";
+
+.root {
+	@apply flex;
+	@apply flex-col;
+	@apply gap-4px;
+}
+
+.label {
+	@apply font-bold;
+	@apply text-12px;
+}
+
+.radio {
+	@apply cursor-pointer;
+	@apply h-20px;
+	@apply relative;
+	@apply w-36px;
+
+	@apply after:absolute;
+	@apply after:border;
+	@apply after:border-input;
+	@apply after:border-solid;
+	@apply after:h-inherit;
+	@apply after:rounded-20px;
+	@apply after:transition-colors;
+	@apply after:w-inherit;
+
+	@apply before:absolute;
+	@apply before:bg-white;
+	@apply before:border;
+	@apply before:border-input;
+	@apply before:border-solid;
+	@apply before:h-inherit;
+	@apply before:rounded-20px;
+	@apply before:transition-transform;
+	@apply before:w-20px;
+	@apply before:z-1;
+
+	@apply has-[+_input]:after:bg-checkboxInactive;
+	@apply has-[+_input:checked]:after:bg-checkboxActive;
+
+	@apply has-[+_input:checked]:before:translate-x-16px;
+}
+
+.input {
+	@apply hidden;
+}

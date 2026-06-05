@@ -1,0 +1,70 @@
+@reference "../../index.css";
+
+.root {
+	@apply bg-white border border-input border-solid h-[34px] w-[84px] rounded-[12px] text-[14px];
+	@apply flex;
+	@apply overflow-hidden;
+}
+
+.rootDisable {
+	composes: root;
+	@apply opacity-50;
+}
+
+.radio {
+	@apply basis-full;
+	@apply cursor-pointer;
+	@apply flex;
+	@apply items-center;
+	@apply justify-center;
+	@apply relative;
+	/* @apply bg-slate-200; */
+}
+
+.radio label {
+	@apply w-full;
+	@apply h-full;
+	@apply absolute;
+	@apply top-0 left-0;
+	@apply flex;
+	@apply justify-center;
+	@apply items-center;
+}
+
+.radio.radioActivesi label {
+	@apply bg-green;
+	@apply top-0 left-0;
+}
+
+.radio.radioActiveno label {
+	@apply bg-red;
+	@apply absolute;
+}
+
+.radioActivesi label,
+.radioActiveno label {
+	@apply flex;
+	@apply justify-center;
+	@apply items-center;
+	@apply text-white;
+}
+
+.radio label input {
+	@apply absolute;
+	@apply opacity-0;
+	@apply w-full;
+	@apply h-full;
+	@apply z-10;
+	@apply cursor-pointer;
+
+}
+
+.labelText {
+	@apply absolute;
+	@apply text-white;
+	@apply z-[5]
+}
+
+.radio:has(.input:checked) {
+	@apply bg-green;
+}

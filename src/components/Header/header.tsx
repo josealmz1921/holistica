@@ -3,6 +3,8 @@ import { useEffect, useState, useRef } from "react";
 import classes from "./header.module.css";
 import { BurgerIcon } from "../Icons/icons";
 import { useIsMobile } from "@/src/hooks/useIsMobile";
+import Link from "next/link";
+import { LogoIcon } from "../Icons/icons";
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,18 +33,20 @@ const Header = () => {
 
     return (
         <header className={classes.root}>
-            <h1 className={classes.title}>Templo sahkti</h1>
+            <p className={classes.title}>
+                <LogoIcon className="w-40" />
+            </p>
             <nav className={classes.nav}>
                 {
                     ((isMobile && isMenuOpen) || !isMobile) && (
                         <ul ref={wrapperRef} className={classes.list}>
-                            <li><a href="#" className={classes.link}>Servicios</a></li>
-                            <li><a href="#" className={classes.link}>Nosotros</a></li>
-                            <li><a href="#" className={classes.link}>Experiencia</a></li>
+                            <li><Link href="/#servicios" className={classes.link}>Servicios</Link></li>
+                            <li><Link href="/#nosotros" className={classes.link}>Nosotros</Link></li>
+                            <li><Link href="/#experiencia" className={classes.link}>Experiencia</Link></li>
                             <li className={classes.whatsappContainer}>
-                                <a href="https://wa.me/527711814454" target="_blank" rel="noopener noreferrer" className={classes.whatsapp}>
+                                <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_PHONE_NUMBER}`} target="_blank" rel="noopener noreferrer" className={classes.whatsapp}>
                                     Reserva por WhatsApp
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     )

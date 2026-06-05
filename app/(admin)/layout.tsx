@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Manrope } from "next/font/google";
-import Header from "@/src/components/Header/header";
-import Footer from "@/src/components/Footer/footer";
+import AdminLayout from "@/src/components/AdminLayout/adminLayout";
 
-import "./globals.css";
+import "@/app/globals.css";
 
 const ebGaramond = EB_Garamond({
   subsets: ["latin"],
@@ -16,8 +15,8 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Templo sahkti",
-  description: "Vive una experiencia de masaje nuru y tántrico en Pachuca diseñada para despertar los sentidos, liberar tensiones y crear momentos de auténtico bienestar.",
+  title: "Dashboard",
+  description: "",
 };
 
 export default function RootLayout({
@@ -25,18 +24,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html
       lang="en"
       className={`${ebGaramond.variable} ${manrope.variable} h-full antialiased`}
     >
-
-      <body>
-        <Header />
-        {children}
-        <Footer />
+      <body className="h-screen overflow-hidden">
+        <AdminLayout>
+          {children}
+        </AdminLayout>
       </body>
-
     </html>
   );
 }

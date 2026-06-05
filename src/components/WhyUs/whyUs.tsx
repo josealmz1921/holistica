@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const WhyUs = () => {
     return (
-        <div className={classes.root}>
+        <div id="nosotros" className={classes.root}>
             <div>
                 <h2 className={classes.title}>¿Por qué elegirnos?</h2>
                 <ul className={classes.list}>

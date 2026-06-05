@@ -1,0 +1,57 @@
+@reference "../../index.css";
+
+.root {
+    @apply grid;
+    @apply w-full;
+}
+
+.label {
+    @apply text-sm font-medium text-gray-900;
+}
+
+.datePickerContainer {
+    @apply relative;
+    @apply w-full;
+    @apply h-full;
+}
+
+.datePicker {
+    @apply border rounded-full text-sm w-full;
+    @apply font-normal;
+    @apply bg-white;
+    @apply outline-none;
+    @apply cursor-pointer;
+    @apply px-12px;
+    @apply border;
+    @apply border-gray-300;
+    @apply h-34px;
+    @apply placeholder:text-black;
+}
+
+.disabled {
+    composes: datePicker;
+    @apply bg-gray-100;
+    @apply cursor-not-allowed;
+}
+
+.datePickerWrapper {
+    @apply w-full;
+}
+
+.datePickerPopper {
+    @apply z-30;
+}
+
+.datePickerError {
+    @apply text-xs text-red-500;
+}
+
+.icon {
+    @apply absolute;
+    @apply z-1;
+    @apply bg-white;
+    @apply pointer-events-none;
+    @apply right-12px;
+    @apply top-1/2;
+    @apply -translate-y-1/2;
+}

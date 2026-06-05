@@ -1,0 +1,17 @@
+.root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: #60606084;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.loader {
+  width: 4rem;
+  position: relative;
+}

@@ -1,0 +1,40 @@
+@reference "../../index.css";
+
+.container {
+    @apply rounded-xl overflow-hidden;
+}
+
+.button {
+    @apply w-full flex justify-between items-center bg-white;
+    @apply px-4 py-3 cursor-pointer font-medium transition-all duration-100;
+}
+
+.buttonCollapse {
+    composes: button;
+    @apply rounded-2xl;
+}
+
+.icon {
+    @apply text-sm;
+}
+
+.panel {
+    @apply p-4 bg-white transition-all duration-300 overflow-hidden;
+}
+
+.panelHidden {
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.title {
+    @apply font-bold;
+}
+
+.comments {}
+
+.comments .button,
+.comments .panel {
+    @apply bg-commentsBlock;
+}

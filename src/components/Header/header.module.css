@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: 2fr 3fr;
     padding: 1rem;
-    background-color: var(--color-secondary);
+    background-color: var(--color-tertiary);
 }
 
 .title {
@@ -26,7 +26,7 @@
 
 .list li a {
     position: relative;
-    color: var(--color-tertiary);
+    color: var(--color-secondary);
     font-family: var(--font-body);
     font-size: 1rem;
     text-decoration: none;
@@ -75,6 +75,7 @@
 
 .icon {
     width: 1.5rem;
+    color: #fff;
 }
 
 @media only screen and (max-width: 768px) {
@@ -91,6 +92,7 @@
         display: flex;
         justify-content: flex-end;
         position: relative;
+        z-index: 999;
     }
 
     .list {
@@ -106,4 +108,15 @@
         -webkit-box-shadow: 12px 13px 16px -7px rgba(194, 194, 194, 0.75);
         -moz-box-shadow: 12px 13px 16px -7px rgba(194, 194, 194, 0.75);
     }
+
+    .list li a {
+        position: relative;
+        color: black;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+
 }

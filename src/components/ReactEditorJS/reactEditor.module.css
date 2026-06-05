@@ -1,0 +1,41 @@
+@reference "@/index.css";
+
+
+.editorContainer h1 {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.editorContainer h2 {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.editorContainer h3 {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.editorContainer h4 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.editorContainer h5 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.editorContainer h6 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.editorContainer a {
+    color: blue;
+}
+
+.editorContainer {
+    font-size: 16px;
+    line-height: 1.6;
+}

@@ -1,45 +1,50 @@
 import Image from "next/image";
 import classes from "./services.module.css";
-import services from "./services.json";
 
 const WHATSAPP_NUMBER = "527711814454";
 
-const Services = () => {
+import { getServices } from "@/src/firebase/getServices";
+import Link from "next/link";
+
+const Services = async () => {
+
+    const services = await getServices();
+
     return (
-        <div className={classes.root}>
+        <div id="servicios" className={classes.root}>
             <h1 className={classes.title}>Nuestros masajes</h1>
             <div className={classes.servicesContainer}>
-              {services.map((service) => (
-                <div key={service.id} className={classes.service}>
-                    <div className={classes.imageContainer}>
-                        <Image
-                            fill
-                            src={service.image}
-                            alt={service.title}
-                            sizes="(max-width: 768px) 100vw, 33vw"
-                        />
-                    </div>
+                {services.map((service: any) => {                    
+                    const mainImage = service?.gallery?.[0]?.url;
+                    return (
+                        <div key={service.id} className={classes.service}>
+                            <div className={classes.imageContainer}>
+                                <Image
+                                    fill
+                                    src={mainImage || '/img/no-image.jpg'}
+                                    alt={mainImage || '/img/no-image.jpg'}
+                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                />
+                            </div>
 
-                    <div className={classes.description}>
-                        <p className={classes.serviceTitle}>
-                            {service.title}
-                        </p>
+                            <div className={classes.description}>
+                                <p className={classes.serviceTitle}>
+                                    {service.name}
+                                </p>
 
-                        <p>{service.description}</p>
+                                <p>{service.description}</p>
 
-                        <a
-                            className={classes.agendar}
-                            href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                                service.whatsappMessage
-                            )}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Agendar
-                        </a>
-                    </div>
-                </div>
-            ))}
+                                <Link
+                                    className={classes.agendar}
+                                    href={`${service.slug}`}
+                                    rel="noopener noreferrer"
+                                >
+                                    Ver servicio
+                                </Link>
+                            </div>
+                        </div>
+                    )
+                })}
             </div>
         </div>
     );

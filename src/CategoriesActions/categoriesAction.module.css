@@ -1,0 +1,110 @@
+.root {
+    display: grid;
+    height: 100%;
+    grid-template-rows: 1fr 11fr;
+}
+
+.header {
+    padding: 0.5rem;
+    text-align: center;
+    font-family: var(--font-heading);
+    background: var(--color-primary);
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.form {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
+    background-color: var(--color-secondary);
+    padding: 1rem;
+}
+
+.status {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding: 1rem;
+    align-items: end;
+    height: 100%;
+}
+
+.newCategoryButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: var(--color-secondary) !important;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    min-width: 15rem;
+    cursor: pointer;
+}
+
+.saveButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: var(--color-secondary) !important;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.cancelButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(233, 26, 26);
+    color: var(--color-secondary) !important;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0 auto;
+    cursor: pointer;
+    width: 100%;
+
+}
+
+.titles {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    padding: 2rem;
+    background: var(--color-secondary);
+    border-radius: 8px;
+}
+
+.titles h1 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 500px) {
+    .titles {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+}

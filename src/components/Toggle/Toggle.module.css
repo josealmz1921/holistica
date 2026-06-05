@@ -1,0 +1,47 @@
+.root {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.toggle {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  border: none;
+  border-radius: 999px;
+  background-color: #d6d6d6;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  padding: 0;
+}
+
+.active {
+  background-color: #55695d;
+}
+
+.thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: white;
+  transition: transform 0.2s ease;
+}
+
+.active .thumb {
+  transform: translateX(24px);
+}
+
+.toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
