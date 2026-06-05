@@ -1,8 +1,6 @@
 import Image from "next/image";
 import classes from "./services.module.css";
 
-const WHATSAPP_NUMBER = "527711814454";
-
 import { getServices } from "@/src/firebase/getServices";
 import Link from "next/link";
 
