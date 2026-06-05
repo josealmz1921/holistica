@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { findOptionByValue, isEqualVal} from "./selectUtils";
 
-import type {SelectOption, SelectMeta} from "@utilities/types/selectTypes";
+import { SelectMeta, SelectOption } from "@/src/types/selectTypes";
 
 interface UseSelectProps<T, O extends SelectOption<T> = SelectOption<T>> {
     /** Controlled value */

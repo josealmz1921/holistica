@@ -1,25 +1,24 @@
-@reference "@/index.css";
-
 .root {
-    @apply flex;
-    @apply flex-col;
-    @apply items-start;
-    @apply w-full;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
 }
 
 .input_file_button {
-    @apply flex flex-row gap-2;
-    @apply flex-wrap;
-    @apply text-left;
-    @apply w-full;
-    @apply overflow-hidden;
-    @apply mb-1;
-    @apply relative;
-    @apply w-full;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    text-align: left;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+    position: relative;
 }
 
 .file_name {
-    @apply text-left;
+    text-align: left;
 }
 
 .input_hide {
@@ -27,24 +26,36 @@
     left: 0;
     top: 0;
     z-index: -1;
-    opacity: 1;
     overflow: hidden;
     height: 1px;
     opacity: 0;
 }
 
 .input_file {
-    @apply cursor-pointer;
-    @apply max-[420px]:w-full;
+    cursor: pointer;
 }
 
-.input_file_hide {
-    composes: input_file;
-    @apply top-0;
-    @apply left-0;
-    @apply absolute;
-    @apply z-10;
-    @apply opacity-0;
+.file_data_container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 0.75rem;
+}
+
+.delete_button {
+    color: #ef4444;
+    margin-left: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.error {
+    font-size: 0.75rem;
+    color: red;
+}
+
+.input_file::-webkit-file-upload-button {
+    cursor: pointer;
 }
 
 input[type="file"] {
@@ -60,25 +71,20 @@ input[type="file"]::file-selector-button {
     cursor: pointer;
 }
 
-.file_data_container {
-    @apply flex;
-    @apply justify-end;
-    @apply items-center;
-    @apply text-xs;
-}
-
-.delete_button {
-    @apply text-red-500;
-    @apply ml-2;
-    @apply text-base;
-    @apply cursor-pointer;
-}
-
-.input_file::-webkit-file-upload-button {
+/* Equivalente de .input_file_hide */
+.input_file_hide {
     cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    opacity: 0;
 }
 
-.error {
-    @apply text-xs;
-    @apply text-red;
+/* Equivalente de max-[420px]:w-full */
+@media (max-width: 420px) {
+    .input_file,
+    .input_file_hide {
+        width: 100%;
+    }
 }

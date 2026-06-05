@@ -1,70 +1,80 @@
-@reference "../../index.css";
-
 .root {
-	@apply bg-white border border-input border-solid h-[34px] w-[84px] rounded-[12px] text-[14px];
-	@apply flex;
-	@apply overflow-hidden;
+    background: #ffffff;
+    border: 1px solid var(--input-color, #d1d5db);
+    height: 34px;
+    width: 84px;
+    border-radius: 12px;
+
+    font-size: 14px;
+
+    display: flex;
+    overflow: hidden;
 }
 
 .rootDisable {
-	composes: root;
-	@apply opacity-50;
+    opacity: 0.5;
 }
 
 .radio {
-	@apply basis-full;
-	@apply cursor-pointer;
-	@apply flex;
-	@apply items-center;
-	@apply justify-center;
-	@apply relative;
-	/* @apply bg-slate-200; */
+    flex-basis: 100%;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
 }
 
 .radio label {
-	@apply w-full;
-	@apply h-full;
-	@apply absolute;
-	@apply top-0 left-0;
-	@apply flex;
-	@apply justify-center;
-	@apply items-center;
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
 }
 
-.radio.radioActivesi label {
-	@apply bg-green;
-	@apply top-0 left-0;
+.radioActivesi label {
+    background: var(--green-color, #22c55e);
+    top: 0;
+    left: 0;
 }
 
-.radio.radioActiveno label {
-	@apply bg-red;
-	@apply absolute;
+.radioActiveno label {
+    background: var(--red-color, #ef4444);
+    position: absolute;
 }
 
 .radioActivesi label,
 .radioActiveno label {
-	@apply flex;
-	@apply justify-center;
-	@apply items-center;
-	@apply text-white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
 }
 
 .radio label input {
-	@apply absolute;
-	@apply opacity-0;
-	@apply w-full;
-	@apply h-full;
-	@apply z-10;
-	@apply cursor-pointer;
+    position: absolute;
+    width: 100%;
+    height: 100%;
 
+    opacity: 0;
+    z-index: 10;
+
+    cursor: pointer;
 }
 
 .labelText {
-	@apply absolute;
-	@apply text-white;
-	@apply z-[5]
+    position: absolute;
+    color: #ffffff;
+    z-index: 5;
 }
 
 .radio:has(.input:checked) {
-	@apply bg-green;
+    background: var(--green-color, #22c55e);
 }

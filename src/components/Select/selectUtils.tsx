@@ -1,6 +1,5 @@
 // utils/options.ts
-import type {Option} from "@utilities/types/selectTypes"
-
+import type { Option } from "@/src/types/selectTypes";
 // Safely stringify any value (handles circular refs by falling back to Object tag)
 const safeStringify = (v: unknown): string => {
     try {

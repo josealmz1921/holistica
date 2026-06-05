@@ -21,7 +21,7 @@ import type { ToolConstructable } from "@editorjs/editorjs";
 
 export const EDITOR_JS_TOOLS:  EditorConfig["tools"] = {
   paragraph: {
-    class: Paragraph,
+    class: Paragraph as unknown as ToolConstructable,
     inlineToolbar: true
   },
 

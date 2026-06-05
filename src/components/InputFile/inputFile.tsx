@@ -1,8 +1,8 @@
 import { Fragment } from "react";
-import Input from "@components/Input";
+import Input from "@/src/components/Input";
 import defaultClasses from "./inputFile.module.css";
 import Message from "../Message";
-import { TrashIcon as Trash } from "../Icons";
+import { TrashIcon as Trash } from "../Icons/icons"; 
 import type { InputFileProps } from "./types";
 import { useInputFile } from "./hooks/useInputFile";
 

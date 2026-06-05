@@ -2,8 +2,8 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/dist/svg-arrow.css';
 import classes from './toolTip.module.css';
-import { InfoIcon } from '../Icons';
-import { useWindowSize } from '@/hooks/useWindowSize';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import { useWindowSize } from '@/src/hooks/useWindowSize';
 
 const Tooltip = ({ content }: { content: string }) => {
     const size = useWindowSize();
@@ -23,7 +23,7 @@ const Tooltip = ({ content }: { content: string }) => {
                 hideOnClick={true}
             >
                 <button type='button'>
-                    <InfoIcon />
+                    <InformationCircleIcon />
                 </button>
             </Tippy>
         </div>

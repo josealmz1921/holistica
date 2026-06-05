@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import defaultClasses from './collapsible.module.css'
 import {CollapsibleProps} from './types'
-import {ChevronDown, ChevronUp} from '../Icons'
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";  
 import clsx from 'clsx'
 
 const Collapsible = (props: CollapsibleProps) => {
@@ -39,7 +39,7 @@ const Collapsible = (props: CollapsibleProps) => {
             >
                 <span className={classes.title}>{title}</span>
                 <span className={classes.icon}>
-                    {open ? <ChevronUp className="size-4"/> : <ChevronDown className="size-4"/>}
+                    {open ? <ChevronUpIcon className="size-4"/> : <ChevronDownIcon className="size-4"/>}
                 </span>
             </button>
 

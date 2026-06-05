@@ -1,5 +1,5 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { ChevronDown } from "@/components/Icons";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";  
 import defaultClasses from "./bulkActions.module.css";
 import { type BulkActionsProps } from "./type";
 
@@ -22,7 +22,7 @@ const BulkActions = (props: BulkActionsProps) => {
                     data-label={label}
                 >
                     <p>{variant.includes('outline') ? placeholder : label}</p>
-                    <span><ChevronDown className={classes.icon} /></span>
+                    <span><ChevronDownIcon className={classes.icon} /></span>
                 </MenuButton>
 
                 <MenuItems className={classes.items}>

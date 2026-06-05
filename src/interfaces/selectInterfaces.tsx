@@ -1,4 +1,4 @@
-import type {SelectMeta, SelectOption} from "@utilities/types/selectTypes";
+import type {SelectMeta, SelectOption} from "@/src/types/selectTypes";
 
 interface UseSelectResult<T, O extends SelectOption<T> = SelectOption<T>> {
     // state

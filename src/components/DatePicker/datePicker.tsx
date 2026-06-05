@@ -5,7 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useMemo } from 'react';
 import classes from './datePicker.module.css';
 import { DatePickerProps } from './types';
-import { CalendarIcon } from '../Icons';
+import { CalendarDateRangeIcon } from '@heroicons/react/24/outline'; 
 
 const DatePicker = (props: DatePickerProps) => {
   const {
@@ -62,7 +62,7 @@ const DatePicker = (props: DatePickerProps) => {
       <label className={classes.label}>{label}</label>
 
       <div className={classes.datePickerContainer}>
-        <CalendarIcon className={classes.icon} />
+        <CalendarDateRangeIcon className={classes.icon} />
 
         <DatePickerLib
           disabled={disabled}
@@ -90,11 +90,11 @@ const DatePicker = (props: DatePickerProps) => {
         />
       </div>
 
-      {error && (
+      {error ? (
         <p className={classes.datePickerError}>
-          {error as string}
+          {String(error)}
         </p>
-      )}
+      ) : null}
     </div>
   ));
 };

@@ -1,25 +1,36 @@
-@reference "../../index.css";
-
 .container {
-    @apply rounded-xl overflow-hidden;
+    border-radius: 0.75rem;
+    overflow: hidden;
 }
 
 .button {
-    @apply w-full flex justify-between items-center bg-white;
-    @apply px-4 py-3 cursor-pointer font-medium transition-all duration-100;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.1s ease;
 }
 
 .buttonCollapse {
     composes: button;
-    @apply rounded-2xl;
+    border-radius: 1rem;
 }
 
 .icon {
-    @apply text-sm;
+    font-size: 0.875rem;
 }
 
 .panel {
-    @apply p-4 bg-white transition-all duration-300 overflow-hidden;
+    padding: 1rem;
+    background: white;
+    overflow: hidden;
+    transition:
+        max-height 0.3s ease,
+        opacity 0.3s ease;
 }
 
 .panelHidden {
@@ -29,12 +40,14 @@
 }
 
 .title {
-    @apply font-bold;
+    font-weight: 700;
 }
 
-.comments {}
+.comments {
+}
 
+/* Variantes */
 .comments .button,
 .comments .panel {
-    @apply bg-commentsBlock;
+    background: var(--comments-block-color);
 }
