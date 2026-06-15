@@ -5,17 +5,19 @@ import Input from "@/src/components/Input";
 import Textarea from "@/src/components/Textarea";
 import styles from "./benefitsField.module.css";
 import { TrashIcon } from "../Icons/icons";
+import { CallbackFunction } from "../Input/types";
+import Message from "@/src/components/Message";
 
 type Benefit = {
     title: string;
     description: string;
 };
 
-
-const BenefitsField = ({ name = "benefits", title = 'Beneficios' }) => {
+const BenefitsField = ({ name = "benefits", title = 'Beneficios', validate }: { name: string, title?: string, validate?: CallbackFunction }) => {
 
     const { fieldState } = useField({
         name,
+        validate
     });
 
     const [benefits, setBenefits] = useState<Benefit[]>(
@@ -73,6 +75,7 @@ const BenefitsField = ({ name = "benefits", title = 'Beneficios' }) => {
                     </div>
                 ))}
             </div>
+            <Message field={name} />
         </div>
     );
 };

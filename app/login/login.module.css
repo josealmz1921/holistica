@@ -1,0 +1,17 @@
+.title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.titleName {
+    color: #FFD700;
+    font-family: var(--font-body);
+    font-size: 1.6rem;
+}
