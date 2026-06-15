@@ -34,8 +34,8 @@ const Header = () => {
     return (
         <header className={classes.root}>
             <p className={classes.title}>
-                <MiniLogo className="w-40" />
-                <p className={classes.titleName}>Flor de luna</p>
+                <MiniLogo className="w-8" />
+                <span className={classes.titleName}>Flor de luna</span>
             </p>
             <nav className={classes.nav}>
                 {
