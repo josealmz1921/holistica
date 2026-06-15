@@ -10,6 +10,7 @@ import BenefitsField from "@/src/components/BenefitsField"
 import { useServicePage } from "./hooks/useServicePage"
 import { ArrowLeft } from "@/src/components/Icons/icons"
 import LoaderPage from "@/src/components/LoaderPage";
+import { isRequired } from "@/src/utilities/formValidations"
 
 import { useRouter } from 'next/navigation'
 
@@ -46,13 +47,13 @@ export default function ServicesPage() {
                     <button className={classes.saveButton}>Guardar</button>
                 </div>
                 <div className={classes.form}>
-                    <Input className={classes.name} identifier="name" label="Nombre" />
+                    <Input className={classes.name} identifier="name" label="Nombre" validate={isRequired} />
                     <div className={classes.category}>
-                        <Select name="category" label="Categoria" options={categories} />
+                        <Select name="category" label="Categoria" options={categories} validate={isRequired} />
                     </div>
-                    <Textarea className={classes.desc} label="Descripcion" identifier="desc" type={'type'} />
-                    <Textarea className={classes.message} label="Mensaje para whatsapp" identifier="message" type={'type'} />
-                    <Input className={classes.duration} identifier="duration" label="Duracion" after={'min'} type={'number'} />
+                    <Textarea className={classes.desc} label="Descripcion" identifier="desc" type={'type'} validate={isRequired} />
+                    <Textarea className={classes.message} label="Mensaje para whatsapp" identifier="message" type={'type'} validate={isRequired} />
+                    <Input className={classes.duration} identifier="duration" label="Duracion" after={'min'} type={'number'} validate={isRequired} />
                     <div className={classes.status}>
                         <Toggle label="Status" name="active" initialValue={initialValues?.active} />
                     </div>
@@ -64,10 +65,10 @@ export default function ServicesPage() {
                         />
                     </div>
                     <div className={classes.benefits}>
-                        <BenefitsField name='benefits' />
+                        <BenefitsField name='benefits' validate={isRequired} />
                     </div>
                     <div className={classes.route}>
-                        <BenefitsField name='route' title="Ruta del masaje" />
+                        <BenefitsField name='route' title="Ruta del masaje" validate={isRequired} />
                     </div>
                 </div>
             </Form>

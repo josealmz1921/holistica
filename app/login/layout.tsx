@@ -14,7 +14,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Login - Templo shakti",
+  title: "Login - Flor de luna",
   description: "",
 };
 

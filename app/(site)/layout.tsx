@@ -16,7 +16,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Templo shakti",
+  title: "Flor de luna",
   description: "Vive una experiencia de masaje nuru y tántrico en Pachuca diseñada para despertar los sentidos, liberar tensiones y crear momentos de auténtico bienestar.",
 };
 

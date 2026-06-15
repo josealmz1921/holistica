@@ -9,7 +9,9 @@ import { type FormState } from "informed";
 
 import Swal from "sweetalert2";
 
-import { LogoIcon } from "@/src/components/Icons/icons";
+import { MiniLogo } from "@/src/components/Icons/icons";
+
+import classes from './login.module.css'
 
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -56,7 +58,11 @@ export default function ServicesPage() {
                 className="bg-[#7b8d85] w-[30rem] p-8 grid gap-4 rounded-sm"
                 onSubmit={handleLogin}
             >
-                <LogoIcon className="w-40 mx-auto" />
+                <p className={classes.title}>
+                    <MiniLogo className="w-8" />
+                    <span className={classes.titleName}>Flor de luna</span>
+                </p>
+                <p></p>
                 <Input placeholder="Email" identifier="email" />
                 <Input placeholder="password" identifier="password" type={'password'} />
                 <button className="bg-[#F5F2ED] rounded-full p-2">
