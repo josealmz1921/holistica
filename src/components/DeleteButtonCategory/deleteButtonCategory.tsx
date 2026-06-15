@@ -1,6 +1,6 @@
 "use client"
 import { TrashIcon } from "@heroicons/react/24/outline"
-import { deleteCategory } from "../firebase/categories"
+import { deleteCategory } from "@/src/firebase/categories"
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2"
 

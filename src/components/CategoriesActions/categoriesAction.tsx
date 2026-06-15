@@ -3,18 +3,18 @@
 import { useState, useEffect } from "react";
 import Dialog from "@/src/components/Dialog";
 import { Form, type FormState } from "informed";
-import Input from "../components/Input";
-import { Toggle } from "../components/Toggle/Toggle";
+import Input from "@/src/components/Input";
+import { Toggle } from "@/src/components/Toggle/Toggle";
 import classes from "./categoriesAction.module.css";
 import { usePathname, useRouter } from "next/navigation";
 import {
     createCategory,
     updateCategory,
     getCategoryById
-} from "../firebase/categories";
+} from "@/src/firebase/categories";
 import { createSlug } from "@/src/utilities/helpers";
 import Swal from "sweetalert2";
-import LoaderPage from "../components/LoaderPage";
+import LoaderPage from "@/src/components/LoaderPage";
 
 type CategoriesActionProps = {
     categoryId?: string;
