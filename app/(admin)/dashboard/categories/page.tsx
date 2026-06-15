@@ -1,9 +1,9 @@
-import CategoriesAction from "@/src/CategoriesActions";
+import CategoriesAction from "@/src/components/CategoriesActions";
 import { PencilIcon } from '@/src/components/Icons/icons';
 import classes from './categories.module.css';
 import Link from "next/link";
 import { getCategories } from "@/src/firebase/categories";
-import DeleteButtonCategory from "@/src/DeleteButtonCategory";
+import DeleteButtonCategory from "@/src/components/DeleteButtonCategory";
 
 type CategoriesPageProps = {
     searchParams: Promise<{ edit?: string }>

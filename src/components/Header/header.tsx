@@ -4,7 +4,7 @@ import classes from "./header.module.css";
 import { BurgerIcon } from "../Icons/icons";
 import { useIsMobile } from "@/src/hooks/useIsMobile";
 import Link from "next/link";
-import { LogoIcon } from "../Icons/icons";
+import { MiniLogo } from "../Icons/icons";
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,7 +34,8 @@ const Header = () => {
     return (
         <header className={classes.root}>
             <p className={classes.title}>
-                <LogoIcon className="w-40" />
+                <MiniLogo className="w-40" />
+                <p className={classes.titleName}>Flor de luna</p>
             </p>
             <nav className={classes.nav}>
                 {
