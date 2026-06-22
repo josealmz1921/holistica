@@ -1,5 +1,5 @@
 export type CollapsibleProps = {
-    title: string;  
+    title?: string;  
     children: ReactNode;
     classes?: { [key: string] : string};
     defaultOpen?: boolean;

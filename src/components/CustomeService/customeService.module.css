@@ -1,0 +1,38 @@
+.root {
+    padding: 1rem;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 20px;
+    max-width: 800px;
+    margin: 4rem auto 0 auto;
+    padding: 0 2rem;
+    background-color: var(--color-primary);
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.title {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 2rem;
+    color: #fff;
+    text-align: center;
+}
+
+.text {
+    font-family: var(--font-body);
+    text-align: center;
+    color: #fff;
+}
+
+.button {
+    background-color: var(--color-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-family: var(--font-body);
+}

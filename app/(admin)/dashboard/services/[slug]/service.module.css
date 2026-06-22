@@ -65,9 +65,14 @@
     grid-row: 7 / 8;
 }
 
-.dropzone {
+.seo {
     grid-column: 1 / 10;
     grid-row: 8 / 9;
+}
+
+.dropzone {
+    grid-column: 1 / 10;
+    grid-row: 9 / 10;
 }
 
 .formHead {
@@ -94,6 +99,12 @@
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
+}
+
+.seoForm {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
 }
 
 @media only screen and (max-width: 768px) {
@@ -137,9 +148,14 @@
         grid-row: 8 / 9;
     }
 
-    .dropzone {
+    .seo {
         grid-column: 1 / 10;
         grid-row: 9 / 10;
+    }
+
+    .dropzone {
+        grid-column: 1 / 10;
+        grid-row: 10 / 11;
     }
 }
 

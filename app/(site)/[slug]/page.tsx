@@ -24,11 +24,18 @@ export async function generateMetadata({
     }
 
     const image =
+        service.ogImage ||
         service.mainImage ||
         service.gallery?.[0]?.url ||
         `${SITE_URL}/img/bed.jpg`;
 
+    const twitterImage =
+        service.twitterImage ||
+        service.ogImage ||
+        image;
+
     const description =
+        service.seoDescription ||
         service.shortDescription ||
         service.description?.slice(0, 160) ||
         service.name;
@@ -36,7 +43,10 @@ export async function generateMetadata({
     const url = `${SITE_URL}/services/${slug}`;
 
     return {
-        title: `${service.name} | Masajes Profesionales`,
+        title:
+            service.seoTitle ||
+            `${service.name} | Masajes Profesionales`,
+
         description,
 
         keywords: [
@@ -56,24 +66,44 @@ export async function generateMetadata({
             type: "website",
             locale: "es_MX",
             url,
-            title: service.name,
-            description,
+            title:
+                service.ogTitle ||
+                service.seoTitle ||
+                service.name,
+
+            description:
+                service.ogDescription ||
+                description,
+
             siteName: "Masajes Profesionales",
+
             images: [
                 {
                     url: image,
                     width: 1200,
                     height: 630,
-                    alt: service.name
+                    alt:
+                        service.ogTitle ||
+                        service.name
                 }
             ]
         },
 
         twitter: {
             card: "summary_large_image",
-            title: service.name,
-            description,
-            images: [image]
+
+            title:
+                service.twitterTitle ||
+                service.ogTitle ||
+                service.seoTitle ||
+                service.name,
+
+            description:
+                service.twitterDescription ||
+                service.ogDescription ||
+                description,
+
+            images: [twitterImage]
         },
 
         robots: {

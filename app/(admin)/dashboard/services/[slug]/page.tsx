@@ -11,6 +11,7 @@ import { useServicePage } from "./hooks/useServicePage"
 import { ArrowLeft } from "@/src/components/Icons/icons"
 import LoaderPage from "@/src/components/LoaderPage";
 import { isRequired } from "@/src/utilities/formValidations"
+import Collapsible from "@/src/components/Collapsible"
 
 import { useRouter } from 'next/navigation'
 
@@ -27,15 +28,15 @@ export default function ServicesPage() {
         handleDeleteImage
     } = useServicePage();
 
-    if(loading) return <LoaderPage />
+    if (loading) return <LoaderPage />
 
     return (
         <div className={classes.root}>
-            <button 
-            className="my-4"
-            onClick={() => {
-                router.back();
-            }}>
+            <button
+                className="my-4"
+                onClick={() => {
+                    router.back();
+                }}>
                 <ArrowLeft className='size-6' />
             </button>
             <Form initialValues={initialValues} onSubmit={handleSubmit} >
@@ -64,14 +65,68 @@ export default function ServicesPage() {
                             onDelete={handleDeleteImage}
                         />
                     </div>
+
                     <div className={classes.benefits}>
-                        <BenefitsField name='benefits' validate={isRequired} />
+                        <Collapsible title="Beneficios">
+                            <BenefitsField
+                                name='benefits'
+                                validate={isRequired}
+                                title="Beneficios"
+                            />
+                        </Collapsible>
                     </div>
+
                     <div className={classes.route}>
-                        <BenefitsField name='route' title="Ruta del masaje" validate={isRequired} />
+                        <Collapsible title="Ruta del masaje">
+                            <BenefitsField 
+                            name='route' 
+                            title="Ruta del masaje" 
+                            validate={isRequired} 
+                            />
+                        </Collapsible>
+                    </div>
+
+                    <div className={classes.seo}>
+                        <Collapsible title="SEO y Redes Sociales">
+                            <div className={classes.seoForm}>
+                                <Input
+                                    identifier="seoTitle"
+                                    label="Título SEO"
+                                />
+
+                                <Textarea
+                                    identifier="seoDescription"
+                                    label="Descripción SEO"
+                                    type='text'
+                                />
+
+                                <Input
+                                    identifier="ogTitle"
+                                    label="Título para Facebook y WhatsApp"
+                                />
+
+                                <Textarea
+                                    identifier="ogDescription"
+                                    label="Descripción para Facebook y WhatsApp"
+                                    type='text'
+
+                                />
+
+                                <Input
+                                    identifier="twitterTitle"
+                                    label="Título para X"
+                                />
+
+                                <Textarea
+                                    identifier="twitterDescription"
+                                    label="Descripción para X"
+                                    type='text'
+                                />
+                            </div>
+                        </Collapsible>
                     </div>
                 </div>
-            </Form>
-        </div>
+            </Form >
+        </div >
     )
 }
