@@ -39,9 +39,14 @@ export const useServicePage = () => {
             benefits,
             active,
             duration,
-            message
+            message,
+            seoTitle,
+            seoDescription,
+            ogTitle,
+            ogDescription,
+            twitterTitle,
+            twitterDescription,
         } = service;
-        console.log('service', service);
 
         return {
             name,
@@ -52,6 +57,12 @@ export const useServicePage = () => {
             active,
             duration,
             message,
+            seoTitle,
+            seoDescription,
+            ogTitle,
+            ogDescription,
+            twitterTitle,
+            twitterDescription,
             desc: description,
             gallery: gallery?.map((img: any) => {
                 return {
@@ -106,23 +117,22 @@ export const useServicePage = () => {
             const service = {
                 name: (values.name as string)?.trim(),
                 slug: createSlug(values.name as string),
-
                 category: values.category || "",
-
                 description: (values.desc as string)?.trim(),
-
                 duration: Number(values.duration),
-
                 active: Boolean(values.active),
-
                 message: values.message,
-
                 gallery,
-
+                seoTitle: values.seoTitle,
+                seoDescription: values.seoDescription,
+                ogTitle: values.ogTitle,
+                ogDescription: values.ogDescription,
+                twitterTitle: values.twitterTitle,
+                twitterDescription: values.twitterDescription,
+                ogImage: gallery[0]?.url || null,
+                twitterImage: gallery[0]?.url || null,
                 thumbnail: gallery[0]?.url || null,
-
                 benefits: values.benefits || [],
-
                 route:
                     (values.route as any[])?.map(
                         (item: any, index: number) => ({
@@ -131,9 +141,7 @@ export const useServicePage = () => {
                             description: item.description
                         })
                     ) || [],
-
                 updatedAt: serverTimestamp(),
-
                 ...(id
                     ? {}
                     : {
