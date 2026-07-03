@@ -12,7 +12,8 @@ const Services = async () => {
         <div id="servicios" className={classes.root}>
             <h1 className={classes.title}>Nuestros masajes</h1>
             <div className={classes.servicesContainer}>
-                {services.map((service: any) => {                    
+                {services.map((service: any) => {    
+                    if(!service?.active) return null;
                     const mainImage = service?.gallery?.[0]?.url;
                     return (
                         <div key={service.id} className={classes.service}>
