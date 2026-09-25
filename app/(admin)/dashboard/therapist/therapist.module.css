@@ -1,0 +1,24 @@
+.root { padding: clamp(1.25rem, 4vw, 3rem); max-width: 1200px; margin: 0 auto; color: #2f3b32; }
+.header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
+.header h1 { font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 3rem); margin: 0.4rem 0; line-height: 1.1; }
+.header p { color: #647067; }
+.eyebrow { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.14em; }
+.preview { font-size: 0.9rem; text-decoration: underline; text-underline-offset: 4px; white-space: nowrap; }
+.form { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 1.5rem; border: 0; padding: 0; min-width: 0; }
+.card { min-width: 0; padding: clamp(1rem, 2vw, 1.75rem); border: 1px solid #e1e5df; border-radius: 1rem; background: #fafbf8; }
+.card h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.75rem; }
+.help { font-size: 0.85rem; line-height: 1.65; color: #647067; }
+.note { font-size: 0.8rem; margin-top: 1rem; color: #647067; }
+.field { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; margin: 1.25rem 0; }
+.field input, .field textarea { width: 100%; min-width: 0; background: white; border: 1px solid #cbd3c9; border-radius: 0.5rem; padding: 0.8rem; color: #28362b; font: inherit; }
+.field textarea { resize: vertical; min-height: 180px; }
+.field input:focus, .field textarea:focus { outline: 2px solid #7b8d85; outline-offset: 2px; }
+.actions { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.save { background: var(--color-tertiary); color: white; padding: 0.85rem 1.5rem; border-radius: 0.5rem; cursor: pointer; }
+.save:disabled { opacity: 0.6; cursor: wait; }
+.save:focus-visible, .preview:focus-visible { outline: 2px solid #7b8d85; outline-offset: 4px; }
+.error, .success { margin-top: 1rem; padding: 1rem; border-radius: 0.5rem; font-size: 0.9rem; }
+.error { color: #8b2525; background: #fff0f0; }
+.success { color: #28543c; background: #eaf4ed; }
+@media (max-width: 1000px) { .form { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { .header, .actions { align-items: stretch; flex-direction: column; } .preview { align-self: flex-start; } .save { width: 100%; } }

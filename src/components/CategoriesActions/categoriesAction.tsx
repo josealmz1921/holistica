@@ -14,6 +14,7 @@ import {
 } from "@/src/firebase/categories";
 import { createSlug } from "@/src/utilities/helpers";
 import Swal from "sweetalert2";
+import ui from "@/src/components/AdminLayout/admin.module.css";
 import LoaderPage from "@/src/components/LoaderPage";
 
 type CategoriesActionProps = {
@@ -114,15 +115,15 @@ const CategoriesAction = ({
     };
 
     return (
-        <div className="p-4">
-            <div className={classes.titles}>
-                <h1>Categorías</h1>
+        <div>
+            <div className={ui.header}>
+                <div><p className={ui.eyebrow}>Tu espacio de bienestar</p><h1 className={ui.title}>Categorías</h1><p className={ui.help}>Organiza tus servicios en grupos fáciles de explorar.</p></div>
 
                 <button
                     onClick={() => setIsOpen(true)}
-                    className={classes.newCategoryButton}
+                    className={ui.primary}
                 >
-                    Nueva categoría +
+                    + Nueva categoría
                 </button>
             </div>
 
@@ -132,11 +133,12 @@ const CategoriesAction = ({
             >
                 <div className={classes.root}>
                     <div className={classes.header}>
-                        <p>
+                        <h2>
                             {categoryId
                                 ? "Editar categoría"
-                                : "Crear categoría"}
-                        </p>
+                                : "Nueva categoría"}
+                        </h2>
+                        <p>Dale un nombre claro a este grupo de servicios.</p>
                     </div>
 
                     {loading ? (
@@ -157,7 +159,7 @@ const CategoriesAction = ({
 
                             <div className={classes.status}>
                                 <Toggle
-                                    label="Status"
+                                    label="Categoría activa"
                                     name="active"
                                     initialValue={initialValues.active ?? false}
                                 />

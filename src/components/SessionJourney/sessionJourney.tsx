@@ -1,32 +1,5 @@
 import styles from "./sessionJourney.module.css";
 
-const steps = [
-  {
-    number: "01",
-    title: "CONSULTA INICIAL",
-    description:
-      "Identificamos tus puntos de tensión y preferencias de presión.",
-  },
-  {
-    number: "02",
-    title: "PREPARACIÓN",
-    description:
-      "Aromaterapia personalizada y ajuste de temperatura ambiental.",
-  },
-  {
-    number: "03",
-    title: "MASAJE PROFUNDO",
-    description:
-      "60 minutos de técnicas manuales rítmicas y envolventes.",
-  },
-  {
-    number: "04",
-    title: "MOMENTO DE CALMA",
-    description:
-      "Despertar suave acompañado de una infusión herbaria orgánica.",
-  },
-];
-
 export default function SessionJourney(props: any) {
 
   const { route } = props;
@@ -45,7 +18,7 @@ export default function SessionJourney(props: any) {
               {index + 1}
             </div>
 
-            {index !== steps.length - 1 && (
+            {index !== route.length - 1 && (
               <div className={styles.line} />
             )}
 

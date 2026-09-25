@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { useField } from "informed";
 import styles from "./Toggle.module.css";
 
@@ -6,6 +7,8 @@ interface ToggleProps {
   label?: string;
   disabled?: boolean;
   initialValue?: boolean;
+  onChange?: (checked: boolean) => Promise<boolean>;
+  ariaLabel?: string;
 }
 
 export const Toggle = ({
@@ -13,6 +16,8 @@ export const Toggle = ({
   label,
   disabled = false,
   initialValue = false,
+  onChange,
+  ariaLabel,
 }: ToggleProps) => {
   const { fieldState, fieldApi } = useField({
     name,
@@ -20,11 +25,28 @@ export const Toggle = ({
     initialValue,
   });
 
+  const [saving, setSaving] = useState(false);
+  const pending = useRef(false);
   const checked = Boolean(fieldState.value);
 
-  const handleToggle = () => {
-    if (!disabled) {
-      fieldApi.setValue(!checked);
+  const handleToggle = async () => {
+    if (disabled || pending.current) return;
+
+    const nextValue = !checked;
+    if (!onChange) {
+      fieldApi.setValue(nextValue);
+      return;
+    }
+
+    pending.current = true;
+    setSaving(true);
+    try {
+      if (await onChange(nextValue)) {
+        fieldApi.setValue(nextValue);
+      }
+    } finally {
+      pending.current = false;
+      setSaving(false);
     }
   };
 
@@ -39,7 +61,11 @@ export const Toggle = ({
       <button
         id={name}
         type="button"
-        disabled={disabled}
+        role="switch"
+        aria-checked={checked}
+        aria-label={ariaLabel || label || name}
+        aria-busy={saving}
+        disabled={disabled || saving}
         onClick={handleToggle}
         className={`${styles.toggle} ${
           checked ? styles.active : ""

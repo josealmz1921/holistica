@@ -1,40 +1,50 @@
 "use client"
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
     HomeIcon,
     WrenchScrewdriverIcon,
     ArrowLeftOnRectangleIcon,
-    ListBulletIcon
+    ListBulletIcon,
+    UserCircleIcon
 } from "@heroicons/react/24/outline";
 
 import { logout } from "@/src/firebase/auth";
 
-import { LogoIcon, MiniLogo } from "../Icons/icons";
+import { MiniLogo } from "../Icons/icons";
 import styles from "./Sidebar.module.css";
 
 const Sidebar = () => {
+    const pathname = usePathname();
+    const isActive = (href: string) => href === "/dashboard" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
     return (
         <>
             {/* Desktop */}
             <nav className={styles.desktop}>
                 <div className={styles.logoContainer}>
-                    <LogoIcon className={styles.logo} />
+                    <MiniLogo className={styles.logo} />
+                    <span className={styles.titleName}>Flor de luna</span>
                 </div>
 
-                <Link href="/dashboard" className={styles.link}>
+                <Link href="/dashboard" aria-current={isActive("/dashboard") ? "page" : undefined} className={styles.link}>
                     <HomeIcon className={styles.icon} />
-                    <span>Home</span>
+                    <span>Inicio</span>
                 </Link>
 
-                <Link href="/dashboard/services" className={styles.link}>
+                <Link href="/dashboard/services" aria-current={isActive("/dashboard/services") ? "page" : undefined} className={styles.link}>
                     <WrenchScrewdriverIcon className={styles.icon} />
                     <span>Servicios</span>
                 </Link>
 
-                <Link href="/dashboard/categories" className={styles.link}>
+                <Link href="/dashboard/categories" aria-current={isActive("/dashboard/categories") ? "page" : undefined} className={styles.link}>
                     <ListBulletIcon className={styles.icon} />
-                    <span>Categorias</span>
+                    <span>Categorías</span>
+                </Link>
+
+                <Link href="/dashboard/therapist" aria-current={isActive("/dashboard/therapist") ? "page" : undefined} className={styles.link}>
+                    <UserCircleIcon className={styles.icon} />
+                    <span>Terapeuta</span>
                 </Link>
 
                 {/* <Link href="/dashboard/content" className={styles.link}>
@@ -50,23 +60,24 @@ const Sidebar = () => {
 
             {/* Mobile */}
             <nav className={styles.mobile}>
-                <Link href="/dashboard" className={styles.mobileLink}>
+                <Link href="/dashboard" aria-current={isActive("/dashboard") ? "page" : undefined} className={styles.mobileLink}>
                     <HomeIcon className={styles.mobileIcon} />
-                    <span>Home</span>
+                    <span>Inicio</span>
                 </Link>
 
-                <Link href="/dashboard/services" className={styles.mobileLink}>
+                <Link href="/dashboard/services" aria-current={isActive("/dashboard/services") ? "page" : undefined} className={styles.mobileLink}>
                     <WrenchScrewdriverIcon className={styles.mobileIcon} />
                     <span>Servicios</span>
                 </Link>
 
-                <div className={styles.mobileLogo}>
-                    <MiniLogo className={styles.mobileLogoSvg} />
-                </div>
+                <Link href="/dashboard/therapist" aria-current={isActive("/dashboard/therapist") ? "page" : undefined} className={styles.mobileLink}>
+                    <UserCircleIcon className={styles.mobileIcon} />
+                    <span>Terapeuta</span>
+                </Link>
 
-                <Link href="/dashboard/categories" className={styles.mobileLink}>
+                <Link href="/dashboard/categories" aria-current={isActive("/dashboard/categories") ? "page" : undefined} className={styles.mobileLink}>
                     <ListBulletIcon className={styles.mobileIcon} />
-                    <span>Categorias</span>
+                    <span>Categorías</span>
                 </Link>
 
                 <button onClick={() => logout()} className={styles.mobileLogout}>

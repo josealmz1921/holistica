@@ -19,7 +19,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode; }) => {
             </aside>
 
             {/* Contenido */}
-            <main className="flex-1 overflow-y-auto pb-16 md:pb-0">
+            <main className="min-w-0 flex-1 overflow-y-auto pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
                 {children}
             </main>
 
