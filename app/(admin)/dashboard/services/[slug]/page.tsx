@@ -1,132 +1,129 @@
-"use client"
-import { Form } from "informed"
-import Input from "@/src/components/Input"
-import Select from '@/src/components/Select'
-import Textarea from "@/src/components/Textarea"
-import { Toggle } from "@/src/components/Toggle/Toggle"
-import classes from './service.module.css';
-import Dropzone from "@/src/components/Dropzone"
-import BenefitsField from "@/src/components/BenefitsField"
-import { useServicePage } from "./hooks/useServicePage"
-import { ArrowLeft } from "@/src/components/Icons/icons"
-import LoaderPage from "@/src/components/LoaderPage";
-import { isRequired } from "@/src/utilities/formValidations"
-import Collapsible from "@/src/components/Collapsible"
+"use client";
 
-import { useRouter } from 'next/navigation'
+import { useState } from "react";
+import { Form } from "informed";
+import Link from "next/link";
+import Input from "@/src/components/Input";
+import Select from "@/src/components/Select";
+import Textarea from "@/src/components/Textarea";
+import { Toggle } from "@/src/components/Toggle/Toggle";
+import Dropzone from "@/src/components/Dropzone";
+import BenefitsField from "@/src/components/BenefitsField";
+import { useServicePage } from "./hooks/useServicePage";
+import { ArrowLeft } from "@/src/components/Icons/icons";
+import LoaderPage from "@/src/components/LoaderPage";
+import { isRequired } from "@/src/utilities/formValidations";
+import classes from "./service.module.css";
 
 export default function ServicesPage() {
-
-    const router = useRouter()
-
+    const [saving, setSaving] = useState(false);
+    const [processingImages, setProcessingImages] = useState(false);
     const {
         loading,
         categories,
         initialValues,
         handleSubmit,
         setDropzoneFiles,
-        handleDeleteImage
+        handleDeleteImage,
     } = useServicePage();
 
-    if (loading) return <LoaderPage />
+    if (loading) return <LoaderPage />;
+    const editing = Boolean(initialValues.id);
 
     return (
         <div className={classes.root}>
-            <button
-                className="my-4"
-                onClick={() => {
-                    router.back();
-                }}>
-                <ArrowLeft className='size-6' />
-            </button>
-            <Form initialValues={initialValues} onSubmit={handleSubmit} >
-                <div className={classes.formHead}>
-                    <div>
-                        <h1 className={classes.title}>Crear nuevo servicio</h1>
-                        <p className={classes.text}>Defina los detalles de su nueva terapia. Los cambios se reflejarán instantáneamente en su catálogo de reservas.</p>
-                    </div>
-                    <button className={classes.saveButton}>Guardar</button>
-                </div>
-                <div className={classes.form}>
-                    <Input className={classes.name} identifier="name" label="Nombre" validate={isRequired} />
-                    <div className={classes.category}>
-                        <Select name="category" label="Categoria" options={categories} validate={isRequired} />
-                    </div>
-                    <Textarea className={classes.desc} label="Descripcion" identifier="desc" type={'type'} validate={isRequired} />
-                    <Textarea className={classes.message} label="Mensaje para whatsapp" identifier="message" type={'type'} validate={isRequired} />
-                    <Input className={classes.duration} identifier="duration" label="Duracion" after={'min'} type={'number'} validate={isRequired} />
-                    <div className={classes.status}>
-                        <Toggle label="Status" name="active" initialValue={initialValues?.active} />
-                    </div>
-                    <div className={classes.dropzone}>
-                        <Dropzone
-                            getValues={setDropzoneFiles}
-                            initialValues={initialValues.gallery}
-                            onDelete={handleDeleteImage}
-                        />
-                    </div>
-
-                    <div className={classes.benefits}>
-                        <Collapsible title="Beneficios">
-                            <BenefitsField
-                                name='benefits'
-                                validate={isRequired}
-                                title="Beneficios"
-                            />
-                        </Collapsible>
-                    </div>
-
-                    <div className={classes.route}>
-                        <Collapsible title="Ruta del masaje">
-                            <BenefitsField 
-                            name='route' 
-                            title="Ruta del masaje" 
-                            validate={isRequired} 
-                            />
-                        </Collapsible>
-                    </div>
-
-                    <div className={classes.seo}>
-                        <Collapsible title="SEO y Redes Sociales">
-                            <div className={classes.seoForm}>
-                                <Input
-                                    identifier="seoTitle"
-                                    label="Título SEO"
-                                />
-
-                                <Textarea
-                                    identifier="seoDescription"
-                                    label="Descripción SEO"
-                                    type='text'
-                                />
-
-                                <Input
-                                    identifier="ogTitle"
-                                    label="Título para Facebook y WhatsApp"
-                                />
-
-                                <Textarea
-                                    identifier="ogDescription"
-                                    label="Descripción para Facebook y WhatsApp"
-                                    type='text'
-
-                                />
-
-                                <Input
-                                    identifier="twitterTitle"
-                                    label="Título para X"
-                                />
-
-                                <Textarea
-                                    identifier="twitterDescription"
-                                    label="Descripción para X"
-                                    type='text'
-                                />
+            <Link href="/dashboard/services" className={classes.back}>
+                <ArrowLeft className="size-4" /> Volver a servicios
+            </Link>
+            <header className={classes.header}>
+                <p className={classes.eyebrow}>Tu espacio de bienestar</p>
+                <h1>{editing ? "Editar servicio" : "Nuevo servicio"}</h1>
+                <p className={classes.help}>Dale forma a la experiencia: comparte sus detalles, imágenes y beneficios.</p>
+            </header>
+            <Form initialValues={initialValues} onSubmit={async (data) => {
+                if (saving || processingImages) return;
+                setSaving(true);
+                try {
+                    await handleSubmit(data);
+                } finally {
+                    setSaving(false);
+                }
+            }}>
+                <fieldset className={classes.form} disabled={saving} aria-busy={saving}>
+                    <section className={`${classes.card} ${classes.information}`} aria-labelledby="service-info-title">
+                        <h2 id="service-info-title">Información general</h2>
+                        <p className={classes.help}>Los detalles que ayudarán a elegir esta sesión.</p>
+                        <div className={classes.fields}>
+                            <div className={classes.fullWidth}>
+                                <Input identifier="name" label="Nombre del servicio" placeholder="Ej. Masaje relajante" validate={isRequired} />
                             </div>
-                        </Collapsible>
+                            <Select name="category" label="Categoría" placeholder="Selecciona una categoría" options={categories} validate={isRequired} disabled={saving} classes={{ input: classes.selectInput, standard: classes.fieldLabel, optionSelected: classes.selectedOption }} />
+                            <Input identifier="duration" label="Duración" after="min" type="number" placeholder="60" validate={isRequired} />
+                            <div className={classes.fullWidth}>
+                                <Textarea label="Descripción" identifier="desc" type="text" validate={isRequired} />
+                            </div>
+                        </div>
+                        <div className={classes.status}>
+                            <div><h3>Visible en el catálogo</h3><p className={classes.help}>Activa el servicio para mostrarlo en la página de inicio.</p></div>
+                            <Toggle name="active" ariaLabel="Mostrar servicio en el catálogo" initialValue={initialValues.active} disabled={saving} />
+                        </div>
+                    </section>
+
+                    <section className={`${classes.card} ${classes.gallery}`} aria-labelledby="service-gallery-title">
+                        <h2 id="service-gallery-title">Galería de imágenes</h2>
+                        <p className={classes.help}>Muestra el ambiente y la experiencia de esta sesión.</p>
+                        <Dropzone getValues={setDropzoneFiles} initialValues={initialValues.gallery} onDelete={handleDeleteImage} disabled={saving} onProcessingChange={setProcessingImages} />
+                        <p className={classes.note}>JPG o PNG, hasta 250 KB y 1200 × 1200 px por imagen.</p>
+                        <p className={classes.note}>La primera imagen será la portada. Arrastra las imágenes para ordenarlas.</p>
+                    </section>
+
+                    <section className={`${classes.card} ${classes.fullWidth}`} aria-labelledby="service-message-title">
+                        <h2 id="service-message-title">Reservas por WhatsApp</h2>
+                        <p className={classes.help}>Escribe el mensaje que aparecerá al solicitar una reserva de este servicio.</p>
+                        <div className={classes.messageField}>
+                            <Textarea label="Mensaje de reserva" identifier="message" type="text" validate={isRequired} />
+                        </div>
+                    </section>
+
+                    <section className={`${classes.card} ${classes.fullWidth}`} aria-label="Beneficios del servicio">
+                        <BenefitsField name="benefits" title="Beneficios" validate={isRequired} />
+                    </section>
+
+                    <section className={`${classes.card} ${classes.fullWidth}`} aria-label="Recorrido de la sesión">
+                        <BenefitsField name="route" title="Recorrido de la sesión" validate={isRequired} />
+                        <p className={classes.note}>Describe los momentos de la sesión en el orden en que ocurren.</p>
+                    </section>
+
+                    <details className={`${classes.card} ${classes.seo}`}>
+                        <summary>SEO y redes sociales <span className={classes.optional}>Opcional</span></summary>
+                        <p className={classes.help}>Personaliza cómo se presenta el servicio al buscarlo o compartirlo.</p>
+                        <div className={classes.seoForm}>
+                            <div className={classes.seoGroup}>
+                                <h3>Buscadores</h3>
+                                <Input identifier="seoTitle" label="Título SEO" />
+                                <Textarea identifier="seoDescription" label="Descripción SEO" type="text" />
+                            </div>
+                            <div className={classes.seoGroup}>
+                                <h3>Facebook y WhatsApp</h3>
+                                <Input identifier="ogTitle" label="Título para compartir" />
+                                <Textarea identifier="ogDescription" label="Descripción para compartir" type="text" />
+                            </div>
+                            <div className={classes.seoGroup}>
+                                <h3>X</h3>
+                                <Input identifier="twitterTitle" label="Título para X" />
+                                <Textarea identifier="twitterDescription" label="Descripción para X" type="text" />
+                            </div>
+                        </div>
+                    </details>
+
+                    <div className={classes.actions}>
+                        <p className={classes.help}>Guarda los cambios para actualizar la información del servicio.</p>
+                        <button type="submit" className={classes.saveButton} disabled={saving || processingImages}>
+                            {saving ? "Guardando…" : processingImages ? "Procesando imágenes…" : editing ? "Guardar cambios" : "Crear servicio"}
+                        </button>
                     </div>
-                </div>
-            </Form >
-        </div >
-    )
+                </fieldset>
+            </Form>
+        </div>
+    );
 }

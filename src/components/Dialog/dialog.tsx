@@ -17,9 +17,12 @@ const Dialog = (props: DialogProps) => {
         <Portal>
             <div className={classes.root}>
                 <div
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Formulario de categoría"
                     ref={modalRef as RefObject<HTMLDivElement>}
                     className={classes.content}>
-                    <button type="button" onClick={onClose} className={classes.closeButton}>
+                    <button type="button" aria-label="Cerrar formulario" onClick={onClose} className={classes.closeButton}>
                         <XMarkIcon className={classes.icon} />
                     </button>
                     {children}

@@ -14,5 +14,7 @@ export type DropzoneProps = {
   getValues?: (files: PreviewFile[]) => void;
   onDelete?: (id?: string) => Promise<void>
   disabled?: boolean;
-  initialValues?: Array<PreviewFile> | Array;
+  initialValues?: PreviewFile[];
+  maxFiles?: number;
+  onProcessingChange?: (processing: boolean) => void;
 }

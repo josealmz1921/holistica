@@ -16,10 +16,12 @@ import type { DropzoneProps } from './types';
 
 function Dropzone(props: DropzoneProps) {
 
-    const { disabled } = props;
+    const { disabled, maxFiles } = props;
 
     const {
         files,
+        atLimit,
+        processing,
         sensors,
         isDragActive,
         handleDragEnd,
@@ -29,10 +31,10 @@ function Dropzone(props: DropzoneProps) {
     } = useDropzone(props)
 
     return (
-        <div className={classes.root}>
+        <div className={`${classes.root} ${maxFiles === 1 ? classes.single : ""}`}>
             <div className={classes.imageList}>
                 <DndContext
-                    sensors={disabled ? [] : sensors}
+                    sensors={disabled || processing || maxFiles === 1 ? [] : sensors}
                     collisionDetection={closestCenter}
                     onDragEnd={handleDragEnd}
                 >
@@ -41,22 +43,23 @@ function Dropzone(props: DropzoneProps) {
                         strategy={verticalListSortingStrategy}
                     >
                         {files.map((fileObj, idx) => (
-                            <SortableItem key={fileObj.preview} id={fileObj.preview}>
+                            <SortableItem key={fileObj.preview} id={fileObj.preview} disabled={disabled || processing || maxFiles === 1}>
                                 <div className={classes.itemDropzone}>
-                                    <p>{idx + 1}</p>
+                                    {maxFiles !== 1 && <p>{idx + 1}</p>}
                                     <div className={classes.imageContainer}>
                                         <button
                                             type='button'
-                                            disabled={disabled}
+                                            aria-label="Eliminar imagen"
+                                            disabled={disabled || processing}
                                             onClick={() => !disabled && removeImage(fileObj.preview, fileObj.id)}
                                             className={classes.deleteButton}
                                         >
                                             <DeleteIcon />
                                         </button>
-                                        <CompareArrowsIcons className={classes.compareIcon} />
+                                        {maxFiles !== 1 && <CompareArrowsIcons className={classes.compareIcon} />}
                                         <img
                                             src={fileObj.preview}
-                                            alt={fileObj?.file?.name}
+                                            alt={fileObj?.file?.name || "Imagen seleccionada"}
                                             className={classes.img}
                                         />
                                     </div>
@@ -69,24 +72,25 @@ function Dropzone(props: DropzoneProps) {
                         ))}
                     </SortableContext>
                 </DndContext>
-                <div
+                {!atLimit && <div
                     {...getRootProps({
                         onClick: disabled ? (e) => e.preventDefault() : undefined
                     })}
                     className={`
-                        ${disabled ? classes.disabledDropzone : classes.dropzone}
-                        ${disabled ? classes.disabledDropzone : ""}
+                        ${classes.dropzone}
+                        ${disabled || processing ? classes.disabledDropzone : ""}
                         ${isDragActive ? classes.dragActive : classes.dragInactive}
                     `}
                 >
-                    <input {...getInputProps()} disabled={disabled} />
+                    <input {...getInputProps()} aria-label="Seleccionar imagen" />
                     <AddImageIcon className={classes.icon} />
                     <p className={classes.dropzoneText}>
                         Selecciona o arrastra <br />
                         una imagen aquí
                     </p>
-                </div>
+                </div>}
             </div>
+            {processing && <p role="status">Procesando imagen…</p>}
         </div>
     );
 }

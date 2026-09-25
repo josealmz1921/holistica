@@ -116,3 +116,18 @@
     top: 0.5rem;
     right: 0.5rem;
 }
+
+.single .imageList {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 320px;
+    margin: 1.5rem auto;
+}
+
+.single .itemDropzone { grid-template-columns: minmax(0, 1fr); cursor: default; }
+.single .imageContainer { padding: 0; border-radius: 0.75rem; overflow: hidden; }
+.single .img { width: 100%; max-width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+.single .fileData { grid-column: 1 / -1; }
+.single .dropzone { min-height: 230px; border: 1px dashed #7b8d85; border-radius: 0.75rem; }
+.single .dropzoneText { color: #445247; font-size: 0.85rem; line-height: 1.6; }
+.single .deleteButton { background: white; border-radius: 50%; padding: 0.5rem; }
+.single .deleteButton:focus-visible { outline: 2px solid #445247; outline-offset: 2px; }

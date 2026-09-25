@@ -41,9 +41,11 @@ const DeleteButtonCategory = ({ id }: any) => {
 
     return (
         <button
+            type="button"
+            aria-label="Eliminar categoría"
             onClick={() => handleDeleteService(id)}
         >
-            <TrashIcon className='size-6 cursor-pointer' />
+            <TrashIcon className='size-6 cursor-pointer' /><span>Eliminar</span>
         </button>
     )
 }
