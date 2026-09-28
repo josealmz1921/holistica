@@ -1,0 +1,32 @@
+.editor {
+    border: 1px solid #cbd3c9;
+    border-radius: 0.75rem;
+    background: white;
+    padding: 1.5rem 3.5rem;
+    min-height: 320px;
+    color: #28362b;
+}
+
+.editor :global(.ce-block__content),
+.editor :global(.ce-toolbar__content) {
+    max-width: 100%;
+}
+
+.editor :global(.ce-header) {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+}
+
+.editor :global(.ce-paragraph) {
+    line-height: 1.8;
+}
+
+.editor :global(a) {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .editor {
+        padding: 1rem 1.5rem;
+    }
+}

@@ -1,57 +1,14 @@
-.root {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 4rem auto 0 auto;
-    padding: 0 2rem;
-
-}
-
-.imageContainer {
-    position: relative;
-    width: 100%;
-    height: 400px;
-}
-
-.image {
-    width: 100%;
-    border-radius: 8px;
-    object-fit: cover;
-}
-
-.title {
-    font-family: var(--font-heading);
-    color: var(--color-tertiary);
-    font-size: 2rem;
-    font-weight: 400;
-    margin-bottom: 1rem;
-}
-
-.list {
-    list-style: none;
-    padding: 0;
-}
-
-.item {
-    font-family: var(--font-body);
-    color: var(--color-tertiary);
-    font-size: 1rem;
-    margin-bottom: 1rem;
-}
-
-.itemTitle {
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-}
-
-@media (max-width: 768px) {
-    .root {
-        grid-template-columns: 1fr;
-        padding: 0 2rem;
-    }
-
-    .imageContainer {
-        height: 300px;
-    }
-}
+@reference "../../../app/globals.css";
+.root { @apply mx-auto grid max-w-7xl scroll-mt-8 items-center gap-10 px-5 py-16 md:grid-cols-2 md:gap-16 md:px-8 md:py-24; }
+.imageContainer { @apply relative isolate aspect-[4/5] overflow-hidden rounded-3xl bg-[#e4e7dd]; }
+.image { @apply object-cover; }
+.imageContainer::after { content: ""; @apply absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent; }
+.imageNote { @apply absolute inset-x-5 bottom-8 z-10 text-center font-heading text-3xl text-white; }
+.content { @apply min-w-0; }
+.eyebrow { @apply text-xs uppercase tracking-[0.16em] text-neutral; }
+.title { @apply mt-4 mb-8 font-heading text-4xl leading-tight text-tertiary lg:text-5xl; }
+.list { @apply space-y-6; }
+.item { @apply flex gap-4 border-t border-[#dce2d7] pt-6; }
+.number { @apply pt-1 text-xs text-[#6b7c68]; }
+.itemTitle { @apply mb-2 text-base font-medium text-tertiary; }
+.item p { @apply text-sm leading-7 text-neutral; }

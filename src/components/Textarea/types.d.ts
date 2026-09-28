@@ -12,6 +12,7 @@ export type InputProps = {
   required?: boolean;
   type: inputType;
   className?: string;
+  classes?: Record<string, string>;
   validate?: CallbackFunction;
   disabled?: boolean;
   after?: JSX.Element;

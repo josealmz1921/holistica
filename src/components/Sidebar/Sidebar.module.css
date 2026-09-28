@@ -11,7 +11,7 @@
 .mobile { display: none; }
 @media (max-width: 767px) {
     .desktop { display: none; }
-    .mobile { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; gap: 0.25rem; min-height: 70px; background: var(--color-tertiary); padding: 0.4rem 0.4rem calc(0.4rem + env(safe-area-inset-bottom)); }
+    .mobile { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: center; gap: 0.25rem; min-height: 70px; background: var(--color-tertiary); padding: 0.4rem 0.4rem calc(0.4rem + env(safe-area-inset-bottom)); }
     .mobileLink, .mobileLogout { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 54px; border-radius: 0.6rem; color: #e9eee7; text-decoration: none; font-size: clamp(0.6rem, 2.5vw, 0.75rem); cursor: pointer; }
     .mobileLink[aria-current="page"] { background: #ffffff20; color: white; }
     .mobileIcon { width: 22px; height: 22px; }

@@ -1,0 +1,9 @@
+@reference "../../../app/globals.css";
+.root { @apply bg-tertiary px-5 py-10 text-secondary md:px-8; }
+.inner { @apply mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-center md:justify-between; }
+.brand { @apply font-heading text-3xl; }
+.tagline { @apply mt-2 text-xs text-secondary/80; }
+.links { @apply flex flex-wrap gap-6 text-sm; }
+.links a:hover { @apply underline underline-offset-4; }
+.root a:focus-visible { @apply outline-2 outline-offset-4 outline-secondary; }
+.copyright { @apply text-xs text-secondary/70; }

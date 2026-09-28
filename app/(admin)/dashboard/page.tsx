@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { WrenchScrewdriverIcon, Squares2X2Icon, UserCircleIcon, ArrowUpRightIcon } from "@heroicons/react/24/outline";
+import { WrenchScrewdriverIcon, NewspaperIcon, Squares2X2Icon, UserCircleIcon, ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import ui from "@/src/components/AdminLayout/admin.module.css";
 import classes from "./dashboard.module.css";
 
 const sections = [
+    { href: "/dashboard/blog", title: "Blog", description: "Escribe entradas y acompáñalas con imágenes y videos.", action: "Gestionar blog", Icon: NewspaperIcon },
     { href: "/dashboard/services", title: "Servicios", description: "Crea experiencias, edita sus detalles y decide cuáles mostrar en tu catálogo.", action: "Gestionar servicios", Icon: WrenchScrewdriverIcon },
     { href: "/dashboard/categories", title: "Categorías", description: "Organiza tus servicios para que cada persona encuentre su sesión ideal.", action: "Gestionar categorías", Icon: Squares2X2Icon },
     { href: "/dashboard/therapist", title: "Terapeuta", description: "Presenta tu experiencia y actualiza la foto y la información de tu perfil.", action: "Editar perfil", Icon: UserCircleIcon },

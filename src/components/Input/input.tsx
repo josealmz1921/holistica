@@ -1,6 +1,6 @@
 /* Styles */
 'use client'
-import classes from "./input.module.css";
+import defaultClasses from "./input.module.css";
 
 /* Utilities */
 import { Input as InputInformed } from "informed";
@@ -22,6 +22,7 @@ function Input({
   type = "text",
   placeholder,
   className,
+  classes: propClasses,
   validate,
   disabled,
   after,
@@ -30,6 +31,7 @@ function Input({
   variant = "top",
   parse
 }: Props) {
+  const classes = { ...defaultClasses, ...propClasses };
   const requiredClass = required && classes.required;
 
   return (

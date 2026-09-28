@@ -9,10 +9,10 @@ const Services = async () => {
     const services = await getServices();
 
     return (
-        <div id="servicios" className={classes.root}>
-            <h1 className={classes.title}>Nuestros masajes</h1>
+        <section id="servicios" className={classes.root} aria-labelledby="services-title">
+            <div className={classes.header}><p className={classes.eyebrow}>Encuentra tu momento</p><h2 id="services-title" className={classes.title}>Una experiencia para cada necesidad</h2><p className={classes.intro}>Elige cómo quieres sentirte. Nosotros te acompañamos en el camino.</p></div>
             <div className={classes.servicesContainer}>
-                {services.map((service: any) => {    
+                {services.map((service) => {
                     if(!service?.active) return null;
                     const mainImage = service?.gallery?.[0]?.url;
                     return (
@@ -21,31 +21,31 @@ const Services = async () => {
                                 <Image
                                     fill
                                     src={mainImage || '/img/no-image.jpg'}
-                                    alt={mainImage || '/img/no-image.jpg'}
-                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                    alt={service.name}
+                                    sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
                                 />
                             </div>
 
                             <div className={classes.description}>
-                                <p className={classes.serviceTitle}>
+                                <h3 className={classes.serviceTitle}>
                                     {service.name}
-                                </p>
+                                </h3>
 
-                                <p>{service.description}</p>
+                                <p className={classes.summary}>{service.description}</p>
 
                                 <Link
                                     className={classes.agendar}
-                                    href={`${service.slug}`}
+                                    href={`/${service.slug}`}
                                     rel="noopener noreferrer"
                                 >
-                                    Ver servicio
+                                    Descubrir masaje ↗
                                 </Link>
                             </div>
                         </div>
                     )
                 })}
             </div>
-        </div>
+        </section>
     );
 }
 

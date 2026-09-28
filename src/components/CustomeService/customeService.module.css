@@ -1,38 +1,8 @@
-.root {
-    padding: 1rem;
-}
-
-.content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    row-gap: 20px;
-    max-width: 800px;
-    margin: 4rem auto 0 auto;
-    padding: 0 2rem;
-    background-color: var(--color-primary);
-    padding: 1rem;
-    border-radius: 8px;
-}
-
-.title {
-    font-family: var(--font-heading);
-    font-weight: 400;
-    font-size: 2rem;
-    color: #fff;
-    text-align: center;
-}
-
-.text {
-    font-family: var(--font-body);
-    text-align: center;
-    color: #fff;
-}
-
-.button {
-    background-color: var(--color-secondary);
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    font-family: var(--font-body);
-}
+@reference "../../../app/globals.css";
+.root { @apply px-5 py-16 md:px-8 md:py-24; }
+.content { @apply mx-auto flex max-w-6xl flex-col items-center gap-6 rounded-[2rem] bg-[#e4e9dc] px-6 py-14 text-center md:px-16 md:py-20; }
+.eyebrow { @apply text-xs uppercase tracking-[0.18em] text-neutral; }
+.title { @apply max-w-2xl font-heading text-4xl leading-tight text-tertiary md:text-5xl; }
+.text { @apply max-w-2xl text-sm leading-8 text-neutral; }
+.button { @apply mt-2 inline-flex items-center justify-center rounded-full bg-tertiary px-8 py-4 text-sm text-secondary transition-colors hover:bg-[#344238]; }
+.button:focus-visible { @apply outline-2 outline-offset-4 outline-tertiary; }
