@@ -1,6 +1,7 @@
 .root {
     display: grid;
-    grid-template-columns: 2fr 3fr;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1.5rem;
     padding: 1rem;
     background-color: var(--color-tertiary);
 }
@@ -24,7 +25,7 @@
 
 .list {
     display: grid;
-    grid-template-columns: repeat(3, auto) 1fr;
+    grid-template-columns: repeat(4, auto) 1fr;
     align-items: center;
     gap: 1rem;
 }
@@ -74,7 +75,8 @@
     font-family: var(--font-body);
     font-size: 1rem;
     font-weight: 500;
-    width: 15rem;
+    width: auto;
+    white-space: nowrap;
 }
 
 .menuButton {
@@ -101,6 +103,8 @@
     .menuButton {
         display: block;
     }
+
+    .root { gap: 0.5rem; }
 
     .nav {
         display: flex;
@@ -133,4 +137,8 @@
     }
 
 
+}
+@media (min-width: 769px) and (max-width: 1100px) {
+    .root { grid-template-columns: minmax(0, 1fr); }
+    .list { grid-template-columns: repeat(4, auto) 1fr; }
 }

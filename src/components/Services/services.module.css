@@ -1,81 +1,16 @@
-.root {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-width: 1200px;
-    margin: 4rem auto 0 auto;
-    padding: 0 2rem;
-}
-
-.servicesContainer {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-top: 2rem;
-    width: 100%;
-}
-
-.service {
-    background: white;
-}
-
-.imageContainer {
-    position: relative;
-    width: 100%;
-    height: 250px;
-}
-
-.imageContainer img {
-    object-fit: cover;
-    border-radius: 8px 8px 0 0;
-}
-
-.description {
-    padding: 1rem;
-}
-
-.agendar {
-    display: inline-block;
-    margin-top: 1rem;
-    background-color: var(--color-primary);
-    color: var(--color-secondary) !important;
-    padding: 0.5rem 1rem;
-    border-radius: 9999px;
-    font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 500;
-    width: 100%;
-    text-align: center;
-}
-
-.serviceTitle {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-}
-
-.title {
-    font-family: var(--font-heading);
-    color: var(--color-tertiary);
-    font-size: 1.5rem;
-    font-weight: 400;
-    margin-bottom: 1rem;
-    position: relative;
-    display: inline-block;
-}
-
-.title::after {
-    content: "";
-    position: absolute;
-    left: calc(50% - 20px);
-    bottom: -4px;
-    width: 40px;
-    height: 2px;
-    background: currentColor;
-}
-
-@media (max-width: 768px) {
-    .servicesContainer {
-        grid-template-columns: 1fr;
-    }
-}
+@reference "../../../app/globals.css";
+.root { @apply mx-auto max-w-7xl scroll-mt-8 px-5 py-16 md:px-8 md:py-24; }
+.header { @apply mx-auto mb-10 max-w-2xl text-center; }
+.eyebrow { @apply mb-4 text-xs uppercase tracking-[0.16em] text-neutral; }
+.title { @apply font-heading text-4xl leading-tight text-tertiary md:text-5xl; }
+.intro { @apply mt-4 text-sm leading-7 text-neutral; }
+.servicesContainer { @apply grid gap-6 sm:grid-cols-2 lg:grid-cols-3; }
+.service { @apply flex min-w-0 flex-col overflow-hidden rounded-2xl border border-[#dce2d7] bg-[#fafbf8]; }
+.imageContainer { @apply relative aspect-[4/3] w-full overflow-hidden bg-[#e4e7dd]; }
+.imageContainer img { @apply object-cover transition-transform duration-500 motion-reduce:transition-none; }
+.service:hover .imageContainer img { @apply scale-105 motion-reduce:scale-100; }
+.description { @apply flex flex-1 flex-col p-6; }
+.serviceTitle { @apply mb-3 font-heading text-3xl leading-tight break-words text-tertiary; }
+.summary { @apply mb-6 line-clamp-3 text-sm leading-7 text-neutral; }
+.agendar { @apply mt-auto inline-flex justify-between border-t border-[#dce2d7] pt-5 text-sm font-medium text-tertiary; }
+.agendar:focus-visible { @apply outline-2 outline-offset-4 outline-tertiary; }

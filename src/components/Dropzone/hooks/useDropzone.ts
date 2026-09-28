@@ -10,7 +10,7 @@ const MAX_FILE_SIZE = 250 * 1024;
 const MAX_WIDTH = 1200;
 const MAX_HEIGHT = 1200;
 
-const useDropzone = ({ getValues, initialValues = [], onDelete, disabled = false, maxFiles = 0, onProcessingChange }: DropzoneProps) => {
+const useDropzone = ({ getValues, initialValues = [], onDelete, disabled = false, maxFiles = 0, allowVideo = false, maxImageSize = MAX_FILE_SIZE, onProcessingChange }: DropzoneProps) => {
     const [files, setFiles] = useState<PreviewFile[]>(() => maxFiles > 0 ? initialValues.slice(0, maxFiles) : initialValues);
     const [processing, setProcessing] = useState(false);
     const pending = useRef(false);
@@ -54,7 +54,7 @@ const useDropzone = ({ getValues, initialValues = [], onDelete, disabled = false
     const onDrop = async (acceptedFiles: File[]) => {
         if (disabled || pending.current || !acceptedFiles.length) return;
         if (maxFiles > 0 && filesRef.current.length + acceptedFiles.length > maxFiles) {
-            displayError(`Solo puedes seleccionar ${maxFiles} imagen${maxFiles === 1 ? "" : "es"}. Elimina una imagen antes de agregar otra.`);
+            displayError(`Solo puedes seleccionar ${maxFiles} archivo(s). Elimina un archivo antes de agregar otra.`);
             return;
         }
         pending.current = true;
@@ -63,13 +63,19 @@ const useDropzone = ({ getValues, initialValues = [], onDelete, disabled = false
         const errors: string[] = [];
         try {
             for (const file of acceptedFiles) {
-                if (file.name.length > 100 || file.size > MAX_FILE_SIZE) {
-                    errors.push(`${file.name}: máximo 250 KB y 100 caracteres en el nombre.`);
+                const isVideo = allowVideo && ["video/mp4", "video/webm"].includes(file.type);
+                const sizeLimit = isVideo ? 50 * 1024 * 1024 : maxImageSize;
+                if ((!isVideo && !["image/jpeg", "image/png"].includes(file.type)) || file.name.length > 100 || file.size > sizeLimit) {
+                    errors.push(`${file.name}: formato no permitido, nombre mayor a 100 caracteres o tamaño superior a ${Math.round(sizeLimit / 1024)} KB.`);
                     continue;
                 }
                 const preview = URL.createObjectURL(file);
                 blobUrls.current.add(preview);
                 try {
+                    if (isVideo) {
+                        updateFiles([...filesRef.current, { file, preview, name: file.name, resourceType: "video", position: filesRef.current.length + 1 }]);
+                        continue;
+                    }
                     const image = await new Promise<HTMLImageElement>((resolve, reject) => {
                         const img = new Image();
                         img.onload = () => resolve(img);
@@ -80,7 +86,7 @@ const useDropzone = ({ getValues, initialValues = [], onDelete, disabled = false
                         throw new Error("Dimensiones máximas: 1200 × 1200 px.");
                     }
                     const base64 = await fileToBase64(file);
-                    updateFiles([...filesRef.current, { file, preview, width: image.width, height: image.height, base64, position: filesRef.current.length + 1 }]);
+                    updateFiles([...filesRef.current, { file, preview, resourceType: "image", width: image.width, height: image.height, base64, position: filesRef.current.length + 1 }]);
                 } catch (error) {
                     URL.revokeObjectURL(preview);
                     blobUrls.current.delete(preview);
@@ -97,12 +103,12 @@ const useDropzone = ({ getValues, initialValues = [], onDelete, disabled = false
 
     const atLimit = maxFiles > 0 && files.length >= maxFiles;
     const { getRootProps, getInputProps, isDragActive } = useDropzoneReact({
-        accept: { "image/png": [".png"], "image/jpeg": [".jpg", ".jpeg"] },
+        accept: { "image/png": [".png"], "image/jpeg": [".jpg", ".jpeg"], ...(allowVideo ? { "video/mp4": [".mp4"], "video/webm": [".webm"] } : {}) },
         disabled: disabled || processing || atLimit,
         multiple: maxFiles !== 1,
         maxFiles,
         onDrop,
-        onDropRejected: () => displayError(maxFiles === 1 ? "Selecciona una sola imagen JPG o PNG." : "Selecciona imágenes JPG o PNG dentro del límite permitido."),
+        onDropRejected: () => displayError(allowVideo ? "Selecciona imágenes JPG/PNG o videos MP4/WebM dentro del límite de archivos." : maxFiles === 1 ? "Selecciona una sola imagen JPG o PNG." : "Selecciona imágenes JPG o PNG dentro del límite permitido."),
     });
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
     const handleDragEnd = ({ active, over }: DragEndEvent) => {

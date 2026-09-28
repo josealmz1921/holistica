@@ -1,0 +1,24 @@
+.back { display: inline-block; margin-bottom: 1.5rem; color: #647067; font-size: 0.85rem; }
+.form { display: flex; flex-direction: column; gap: 1.5rem; border: 0; min-width: 0; }
+.card { min-width: 0; padding: clamp(1rem, 3vw, 2rem); border: 1px solid #e1e5df; border-radius: 1rem; background: #fafbf8; }
+.card h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
+.field { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; margin: 1rem 0; }
+.field input, .field textarea { width: 100%; background: white; border: 1px solid #cbd3c9; border-radius: 0.5rem; padding: 0.8rem; }
+.field textarea { resize: vertical; }
+.visibility { display: flex; align-items: center; gap: 0.75rem; margin: 1.25rem 0 0.5rem; }
+.visibility input { width: 20px; height: 20px; accent-color: #445247; }
+.help { font-size: 0.85rem; line-height: 1.7; color: #647067; margin-bottom: 1rem; }
+.actions { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.actions button:disabled { opacity: 0.6; cursor: wait; }
+.error, .success { margin-top: 1rem; padding: 1rem; border-radius: 0.5rem; }
+.error { background: #fff0f0; color: #8b2525; }
+.success { background: #eaf4ed; color: #28543c; }
+.success a { text-decoration: underline; }
+.field input:focus-visible, .field textarea:focus-visible { outline: 2px solid #7b8d85; outline-offset: 3px; }
+@media (max-width: 600px) { .actions { flex-direction: column; align-items: stretch; } }
+
+.textInput, .textarea { background: white; border: 1px solid #cbd3c9; border-radius: 0.5rem; padding: 0.8rem; width: 100%; font: inherit; }
+.textInput { min-height: 46px; }
+.textarea { min-height: 120px; resize: vertical; }
+.fieldLabel { font-size: 0.9rem; font-weight: 500; }
+.visibility > div { flex-direction: row; gap: 1rem; }

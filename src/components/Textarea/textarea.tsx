@@ -1,5 +1,5 @@
 /* Styles */
-import classes from "./textarea.module.css";
+import defaultClasses from "./textarea.module.css";
 
 /* Utilities */
 import { TextArea } from 'informed';
@@ -21,6 +21,7 @@ function Textarea({
   type = "text",
   placeholder,
   className,
+  classes: propClasses,
   validate,
   disabled,
   after,
@@ -28,6 +29,7 @@ function Textarea({
   formatter,
   variant = "top",
 }: Props) {
+  const classes = { ...defaultClasses, ...propClasses };
   const requiredClass = required && classes.required;
 
   return (

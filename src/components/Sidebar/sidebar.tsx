@@ -7,6 +7,7 @@ import {
     WrenchScrewdriverIcon,
     ArrowLeftOnRectangleIcon,
     ListBulletIcon,
+    NewspaperIcon,
     UserCircleIcon
 } from "@heroicons/react/24/outline";
 
@@ -47,6 +48,10 @@ const Sidebar = () => {
                     <span>Terapeuta</span>
                 </Link>
 
+                <Link href="/dashboard/blog" aria-current={isActive("/dashboard/blog") ? "page" : undefined} className={styles.link}>
+                    <NewspaperIcon className={styles.icon} /><span>Blog</span>
+                </Link>
+
                 {/* <Link href="/dashboard/content" className={styles.link}>
                     <PencilSquareIcon className={styles.icon} />
                     <span>Contenido</span>
@@ -78,6 +83,10 @@ const Sidebar = () => {
                 <Link href="/dashboard/categories" aria-current={isActive("/dashboard/categories") ? "page" : undefined} className={styles.mobileLink}>
                     <ListBulletIcon className={styles.mobileIcon} />
                     <span>Categorías</span>
+                </Link>
+
+                <Link href="/dashboard/blog" aria-current={isActive("/dashboard/blog") ? "page" : undefined} className={styles.mobileLink}>
+                    <NewspaperIcon className={styles.mobileIcon} /><span>Blog</span>
                 </Link>
 
                 <button onClick={() => logout()} className={styles.mobileLogout}>

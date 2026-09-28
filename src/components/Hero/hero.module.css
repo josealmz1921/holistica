@@ -1,66 +1,20 @@
-.root {
-    position: relative;
-    height: 91dvh;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    padding: 0 4rem;
-}
-
-.root::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-
-   background:
-    linear-gradient(
-        90deg,
-        rgba(185, 178, 168, 0.95) 0%,
-        rgba(195, 188, 178, 0.75) 40%,
-        rgba(195, 188, 178, 0.25) 70%,
-        rgba(195, 188, 178, 0) 100%
-    ),
-    url("/img/heroImage.jpg") center/cover no-repeat;
-
-    transform: scale(1.02);
-    z-index: -1;
-}
-
-.title {
-    font-family: var(--font-body);
-    color: var(--color-tertiary);
-    font-size: 1.2rem;
-    font-weight: 500;
-    max-width: 600px;
-}
-
-.heading {
-    font-family: var(--font-heading);
-    color: var(--color-tertiary);
-    font-size: 2.5rem;
-    font-weight: 400;
-    margin-top: 1rem;
-}
-
-.description {
-    font-family: var(--font-body);
-    color: var(--color-tertiary);
-    font-size: 1rem;
-    font-weight: normal;
-    margin-top: 1rem;
-    margin-bottom: 2rem;
-}
-
-.whatsappLink {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--color-primary);
-    color: var(--color-secondary) !important;
-    padding: 0.5rem 1rem;
-    border-radius: 9999px;
-    font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 500;
-    width: 16rem;
-}
+@reference "../../../app/globals.css";
+.root { @apply relative mx-auto grid max-w-7xl items-center gap-10 px-5 py-10 md:grid-cols-2 md:gap-12 md:px-8 md:py-16 lg:gap-20 lg:py-20; }
+.content { @apply min-w-0; }
+.eyebrow { @apply mb-6 text-xs font-medium uppercase tracking-[0.18em] text-tertiary; }
+.heading { @apply font-heading text-6xl leading-[1.02] font-normal tracking-tight text-tertiary lg:text-8xl; }
+.heading em { @apply font-normal text-[#6b7c68]; }
+.description { @apply mt-7 max-w-md text-base leading-8 text-neutral; }
+.actions { @apply mt-8 flex flex-wrap items-center gap-6; }
+.whatsappLink { @apply inline-flex items-center justify-center gap-8 rounded-full bg-tertiary px-7 py-4 text-sm font-medium text-secondary transition-colors hover:bg-[#344238]; }
+.explore { @apply inline-flex items-center gap-3 border-b border-[#b4beb0] pb-1 text-sm text-tertiary; }
+.note { @apply mt-9 flex items-center gap-2 text-xs leading-6 text-neutral; }
+.note > span { @apply size-1.5 shrink-0 rounded-full bg-primary; }
+.visual { @apply relative isolate aspect-[4/5] w-full overflow-hidden rounded-t-[45%] rounded-b-3xl bg-[#dfe4d8] md:max-h-[640px]; }
+.image { @apply object-cover; }
+.visual::after { content: ""; @apply absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent; }
+.caption { @apply absolute inset-x-6 bottom-8 z-10 text-center text-white; }
+.caption span { @apply font-heading text-3xl; }
+.caption p { @apply mt-2 text-xs tracking-wide text-white/90; }
+.root a:focus-visible { @apply outline-2 outline-offset-4 outline-tertiary; }
+@media (max-width: 639px) { .whatsappLink { @apply w-full; } .visual { @apply max-h-[430px]; } }

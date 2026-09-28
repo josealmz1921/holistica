@@ -1,5 +1,6 @@
 export interface PreviewFile {
   id?: string;
+  resourceType?: "image" | "video";
   file?: File | null;
   preview: string;
   width?: number;
@@ -16,5 +17,7 @@ export type DropzoneProps = {
   disabled?: boolean;
   initialValues?: PreviewFile[];
   maxFiles?: number;
+  allowVideo?: boolean;
+  maxImageSize?: number;
   onProcessingChange?: (processing: boolean) => void;
 }

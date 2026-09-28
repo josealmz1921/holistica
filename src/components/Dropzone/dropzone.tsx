@@ -16,7 +16,7 @@ import type { DropzoneProps } from './types';
 
 function Dropzone(props: DropzoneProps) {
 
-    const { disabled, maxFiles } = props;
+    const { disabled, maxFiles, allowVideo } = props;
 
     const {
         files,
@@ -49,7 +49,7 @@ function Dropzone(props: DropzoneProps) {
                                     <div className={classes.imageContainer}>
                                         <button
                                             type='button'
-                                            aria-label="Eliminar imagen"
+                                            aria-label="Eliminar archivo"
                                             disabled={disabled || processing}
                                             onClick={() => !disabled && removeImage(fileObj.preview, fileObj.id)}
                                             className={classes.deleteButton}
@@ -57,14 +57,16 @@ function Dropzone(props: DropzoneProps) {
                                             <DeleteIcon />
                                         </button>
                                         {maxFiles !== 1 && <CompareArrowsIcons className={classes.compareIcon} />}
-                                        <img
+                                        {fileObj.resourceType === "video" ? (
+                                            <video src={fileObj.preview} controls preload="metadata" className={classes.img} onPointerDown={event => event.stopPropagation()} aria-label={fileObj.name || "Video seleccionado"} />
+                                        ) : <img
                                             src={fileObj.preview}
                                             alt={fileObj?.file?.name || "Imagen seleccionada"}
                                             className={classes.img}
-                                        />
+                                        />}
                                     </div>
                                     <p className={classes.fileData}>
-                                        {fileObj.width}px X {fileObj.height}px {" "}
+                                        {fileObj.resourceType === "video" ? "Video " : `${fileObj.width}px × ${fileObj.height}px `}
                                         {fileObj?.file ? `${(fileObj.file.size / 1024).toFixed(1)} KB` : null}
                                     </p>
                                 </div>
@@ -82,11 +84,11 @@ function Dropzone(props: DropzoneProps) {
                         ${isDragActive ? classes.dragActive : classes.dragInactive}
                     `}
                 >
-                    <input {...getInputProps()} aria-label="Seleccionar imagen" />
+                    <input {...getInputProps()} aria-label={allowVideo ? "Seleccionar imágenes o videos" : "Seleccionar imagen"} />
                     <AddImageIcon className={classes.icon} />
                     <p className={classes.dropzoneText}>
                         Selecciona o arrastra <br />
-                        una imagen aquí
+                        {allowVideo ? "imágenes o videos aquí" : "una imagen aquí"}
                     </p>
                 </div>}
             </div>

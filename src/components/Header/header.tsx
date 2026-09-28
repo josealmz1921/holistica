@@ -44,6 +44,7 @@ const Header = () => {
                             <li><Link href="/#servicios" className={classes.link}>Servicios</Link></li>
                             <li><Link href="/#nosotros" className={classes.link}>Nosotros</Link></li>
                             <li><Link href="/#experiencia" className={classes.link}>Experiencia</Link></li>
+                            <li><Link href="/blog" className={classes.link} onClick={() => setIsMenuOpen(false)}>Blog</Link></li>
                             <li className={classes.whatsappContainer}>
                                 <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_PHONE_NUMBER}`} target="_blank" rel="noopener noreferrer" className={classes.whatsapp}>
                                     Reserva por WhatsApp

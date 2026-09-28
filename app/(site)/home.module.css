@@ -1,0 +1,10 @@
+@reference "../globals.css";
+.experience { @apply scroll-mt-8 border-y border-[#dce2d7] bg-[#eeeee5] px-5 py-16 md:px-8 md:py-20; }
+.inner { @apply mx-auto max-w-6xl; }
+.eyebrow { @apply mb-4 text-center text-xs uppercase tracking-[0.16em] text-neutral; }
+.title { @apply text-center font-heading text-4xl leading-tight text-tertiary md:text-5xl; }
+.steps { @apply mt-12 grid gap-8 md:grid-cols-3 md:gap-12; }
+.steps > div { @apply border-t border-[#c5cebd] pt-5; }
+.steps span { @apply text-xs tracking-widest text-neutral; }
+.steps h3 { @apply mt-4 mb-3 font-heading text-2xl text-tertiary; }
+.steps p { @apply max-w-sm text-sm leading-7 text-neutral; }
