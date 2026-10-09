@@ -5,6 +5,7 @@ import SessionJourney from "@/src/components/SessionJourney";
 import ImageCarousel from "@/src/components/ImageCarousel/imageCarousel";
 import { getServiceBySlug } from "@/src/firebase/getServices";
 import { notFound } from "next/navigation";
+import ServiceDescription from "@/src/components/ServiceDescription/serviceDescription";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL
 
@@ -148,9 +149,9 @@ export default async function ServicePage({
                         {service.name}
                     </h1>
 
-                    <p className={classes.description}>
-                        {service.description}
-                    </p>
+                    <div className={classes.description}>
+                        <ServiceDescription text={service.description} content={service.descriptionContent} />
+                    </div>
 
                     <div className={classes.info}>
                         <div className={classes.infoItem}>
