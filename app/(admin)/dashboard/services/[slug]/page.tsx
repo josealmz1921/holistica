@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Form } from "informed";
 import Link from "next/link";
 import Input from "@/src/components/Input";
 import Select from "@/src/components/Select";
 import Textarea from "@/src/components/Textarea";
+import ServiceDescriptionEditor, { type ServiceDescriptionApi } from "@/src/components/ServiceDescriptionEditor/serviceDescriptionEditor";
 import { Toggle } from "@/src/components/Toggle/Toggle";
 import Dropzone from "@/src/components/Dropzone";
 import BenefitsField from "@/src/components/BenefitsField";
@@ -18,6 +19,8 @@ import classes from "./service.module.css";
 export default function ServicesPage() {
     const [saving, setSaving] = useState(false);
     const [processingImages, setProcessingImages] = useState(false);
+    const descriptionEditor = useRef<ServiceDescriptionApi | null>(null);
+    const [descriptionError, setDescriptionError] = useState("");
     const {
         loading,
         categories,
@@ -43,8 +46,14 @@ export default function ServicesPage() {
             <Form initialValues={initialValues} onSubmit={async (data) => {
                 if (saving || processingImages) return;
                 setSaving(true);
+                setDescriptionError("");
                 try {
-                    await handleSubmit(data);
+                    if (!descriptionEditor.current) throw new Error("Espera a que el editor de descripción termine de cargar.");
+                    const { content, text } = await descriptionEditor.current.save();
+                    if (!text) throw new Error("Escribe la descripción del servicio.");
+                    await handleSubmit({ ...data, values: { ...data.values, desc: text, descriptionContent: content } });
+                } catch (error) {
+                    setDescriptionError(error instanceof Error ? error.message : "No se pudo guardar la descripción.");
                 } finally {
                     setSaving(false);
                 }
@@ -60,7 +69,8 @@ export default function ServicesPage() {
                             <Select name="category" label="Categoría" placeholder="Selecciona una categoría" options={categories} validate={isRequired} disabled={saving} classes={{ input: classes.selectInput, standard: classes.fieldLabel, optionSelected: classes.selectedOption }} />
                             <Input identifier="duration" label="Duración" after="min" type="number" placeholder="60" validate={isRequired} />
                             <div className={classes.fullWidth}>
-                                <Textarea label="Descripción" identifier="desc" type="text" validate={isRequired} />
+                                <ServiceDescriptionEditor initialText={initialValues.desc || ""} initialContent={initialValues.descriptionContent} apiRef={descriptionEditor} disabled={saving} />
+                                {descriptionError && <p role="alert">{descriptionError}</p>}
                             </div>
                         </div>
                         <div className={classes.status}>

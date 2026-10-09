@@ -1,0 +1,9 @@
+.legacy { white-space: pre-line; overflow-wrap: anywhere; }
+.prose { line-height: 1.8; overflow-wrap: anywhere; }
+.prose p { margin: 0 0 0.75rem; }
+.prose ul, .prose ol { margin: 0 0 0.75rem; padding-left: 1.5rem; }
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
+.prose li > ul, .prose li > ol { margin-bottom: 0; }
+.prose strong, .prose b { font-weight: 700; }
+.prose em, .prose i { font-style: italic; }

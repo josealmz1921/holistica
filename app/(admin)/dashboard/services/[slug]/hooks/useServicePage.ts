@@ -36,6 +36,7 @@ export const useServicePage = () => {
             gallery,
             id,
             description,
+            descriptionContent,
             benefits,
             active,
             duration,
@@ -64,6 +65,7 @@ export const useServicePage = () => {
             twitterTitle,
             twitterDescription,
             desc: description,
+            descriptionContent,
             gallery: gallery?.map((img: any) => {
                 return {
                     ...img,
@@ -119,6 +121,7 @@ export const useServicePage = () => {
                 slug: createSlug(values.name as string),
                 category: values.category || "",
                 description: (values.desc as string)?.trim(),
+                descriptionContent: values.descriptionContent,
                 duration: Number(values.duration),
                 active: Boolean(values.active),
                 message: values.message,
