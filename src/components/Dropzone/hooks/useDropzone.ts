@@ -64,7 +64,7 @@ const useDropzone = ({ getValues, initialValues = [], onDelete, disabled = false
         try {
             for (const file of acceptedFiles) {
                 const isVideo = allowVideo && ["video/mp4", "video/webm"].includes(file.type);
-                const sizeLimit = isVideo ? 50 * 1024 * 1024 : maxImageSize;
+                const sizeLimit = isVideo ? 150 * 1024 * 1024 : maxImageSize;
                 if ((!isVideo && !["image/jpeg", "image/png"].includes(file.type)) || file.name.length > 100 || file.size > sizeLimit) {
                     errors.push(`${file.name}: formato no permitido, nombre mayor a 100 caracteres o tamaño superior a ${Math.round(sizeLimit / 1024)} KB.`);
                     continue;
