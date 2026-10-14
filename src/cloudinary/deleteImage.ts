@@ -1,3 +1,5 @@
+import { adminHeaders } from "@/src/firebase/adminRequest";
+
 export const deleteImage = async (
     publicId: string
 ) => {
@@ -6,9 +8,7 @@ export const deleteImage = async (
         "/api/cloudinary/delete",
         {
             method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: await adminHeaders(),
             body: JSON.stringify({
                 publicId
             })

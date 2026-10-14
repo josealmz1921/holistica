@@ -3,9 +3,15 @@ import Link from "next/link";
 import { getPublishedBlogPosts } from "@/src/firebase/blog";
 import BlogCards from "@/src/components/Blog/blogCards";
 import styles from "@/src/components/Blog/blog.module.css";
+import { siteUrl } from "@/src/utilities/blogSeo";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Blog | Flor de luna", description: "Ideas e historias para cuidar tu bienestar y reconectar contigo." };
+export const metadata: Metadata = {
+    title: "Blog | Flor de luna", description: "Ideas e historias para cuidar tu bienestar y reconectar contigo.",
+    alternates: { canonical: siteUrl("/blog") },
+    openGraph: { type: "website", locale: "es_MX", siteName: "Flor de luna", url: siteUrl("/blog"), title: "Blog | Flor de luna", description: "Ideas e historias para cuidar tu bienestar y reconectar contigo." },
+    twitter: { card: "summary", title: "Blog | Flor de luna", description: "Ideas e historias para cuidar tu bienestar y reconectar contigo." },
+};
 export default async function BlogPage() {
     const posts = await getPublishedBlogPosts();
     return <main className={styles.page}>

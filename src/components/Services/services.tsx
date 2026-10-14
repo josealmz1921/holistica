@@ -1,12 +1,12 @@
 import Image from "next/image";
 import classes from "./services.module.css";
 
-import { getServices } from "@/src/firebase/getServices";
+import { getPublicServices } from "@/src/firebase/getServices";
 import Link from "next/link";
 
 const Services = async () => {
 
-    const services = await getServices();
+    const services = await getPublicServices();
 
     return (
         <section id="servicios" className={classes.root} aria-labelledby="services-title">

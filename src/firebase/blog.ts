@@ -2,12 +2,15 @@ import { query, where, documentId, collection, doc, getDoc, getDocs, deleteDoc, 
 import type { OutputData } from "@editorjs/editorjs";
 import { createBlogSlug, getBlogSlug, validateBlogSlug, validateBlogTitle, validateBlogExcerpt } from "@/src/utilities/blogSlug";
 import { db } from "./firebase";
+import type { Timestamp } from "firebase/firestore";
+import { validateSeoTitle, validateSeoDescription } from "@/src/utilities/blogSeo";
 
 export interface BlogMedia {
     url: string;
     publicId: string;
     resourceType: "image" | "video";
     name: string;
+    alt?: string;
 }
 export interface BlogPost {
     slug?: string;
@@ -17,6 +20,12 @@ export interface BlogPost {
     content: OutputData;
     media: BlogMedia[];
     published: boolean;
+    seoTitle?: string;
+    seoDescription?: string;
+    seoImagePublicId?: string;
+    createdAt?: Timestamp;
+    publishedAt?: Timestamp;
+    updatedAt?: Timestamp;
 }
 export type BlogEntry = BlogPost & { id: string };
 const posts = () => collection(db, "blog");
@@ -32,7 +41,8 @@ export async function getBlogPost(id: string): Promise<BlogPost | null> {
 }
 export async function saveBlogPost(id: string, post: BlogPost) {
     const slug = post.slug || createBlogSlug(post.title);
-    const error = validateBlogTitle(post.title) || validateBlogSlug(slug) || validateBlogExcerpt(post.excerpt);
+    const error = validateBlogTitle(post.title) || validateBlogSlug(slug) || validateBlogExcerpt(post.excerpt)
+        || validateSeoTitle(post.seoTitle) || validateSeoDescription(post.seoDescription);
     if (error || !slug) throw new Error(error || "Escribe un slug válido.");
     const existing = await getBlogPosts();
     if (existing.some(item => item.id !== id && (getBlogSlug(item) === slug || item.id === slug || item.previousSlugs?.includes(slug)))) {
@@ -52,7 +62,11 @@ export async function saveBlogPost(id: string, post: BlogPost) {
             ...(oldSlug && oldSlug !== slug ? [oldSlug] : []),
         ]));
         transaction.set(claim, { postId: id });
-        transaction.set(doc(posts(), id), { ...post, slug, previousSlugs, updatedAt: serverTimestamp() });
+        transaction.set(doc(posts(), id), {
+            ...post, slug, previousSlugs, updatedAt: serverTimestamp(),
+            ...(!previous.exists() ? { createdAt: serverTimestamp() } : {}),
+            ...(post.published && !oldPost?.published && !oldPost?.publishedAt ? { publishedAt: serverTimestamp() } : {}),
+        }, { merge: true });
     });
 }
 export async function deleteBlogPost(id: string) {
