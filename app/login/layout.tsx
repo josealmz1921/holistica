@@ -16,6 +16,7 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: "Login - Flor de luna",
   description: "",
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({

@@ -22,3 +22,9 @@
 .textarea { min-height: 120px; resize: vertical; }
 .fieldLabel { font-size: 0.9rem; font-weight: 500; }
 .visibility > div { flex-direction: row; gap: 1rem; }
+.seoSummary { cursor: pointer; font-size: 1rem; font-weight: 600; margin-bottom: 1rem; }
+.seoSummary span { margin-left: 0.5rem; font-size: 0.75rem; font-weight: 400; color: #647067; }
+.seoPreview { margin-top: 1.5rem; padding: 1.25rem; border: 1px solid #dce2d7; border-radius: 0.75rem; background: white; overflow-wrap: anywhere; }
+.previewUrl { margin-top: 1rem; font-size: 0.75rem; color: #52604e; }
+.previewTitle { margin: 0.4rem 0; font-size: 1.15rem; color: #254c8a; }
+.previewDescription { margin-bottom: 1rem; font-size: 0.85rem; line-height: 1.7; color: #647067; }
