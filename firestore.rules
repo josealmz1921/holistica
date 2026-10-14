@@ -1,0 +1,92 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function admin() {
+      return request.auth != null && request.auth.token.get('admin', false) == true;
+    }
+    function text(data, key, max) {
+      return data.get(key, '') is string && data.get(key, '').size() <= max;
+    }
+    function nonempty(data, key, max) {
+      return text(data, key, max) && data[key].size() > 0;
+    }
+    function auditTimes() {
+      return request.resource.data.updatedAt == request.time
+        && (!('createdAt' in request.resource.data) || request.resource.data.createdAt is timestamp);
+    }
+    function immutableCreatedAt() {
+      return !('createdAt' in resource.data) || request.resource.data.createdAt == resource.data.createdAt;
+    }
+    function serviceData() {
+      let d = request.resource.data;
+      return nonempty(d, 'name', 160) && nonempty(d, 'slug', 160)
+        && nonempty(d, 'description', 30000) && text(d, 'category', 128)
+        && d.active is bool && d.duration is number && d.duration > 0 && d.duration <= 1440
+        && text(d, 'message', 10000) && d.gallery is list && d.gallery.size() <= 30
+        && d.benefits is list && d.benefits.size() <= 50 && d.route is list && d.route.size() <= 50
+        && text(d, 'seoTitle', 200) && text(d, 'seoDescription', 1000)
+        && text(d, 'ogTitle', 200) && text(d, 'ogDescription', 1000)
+        && text(d, 'twitterTitle', 200) && text(d, 'twitterDescription', 1000)
+        && auditTimes();
+    }
+    function blogData() {
+      let d = request.resource.data;
+      return nonempty(d, 'title', 160) && nonempty(d, 'slug', 120)
+        && d.slug.matches('^[a-z0-9]+(-[a-z0-9]+)*$') && text(d, 'excerpt', 400)
+        && d.published is bool && d.content is map
+        && d.content.blocks is list && d.content.blocks.size() <= 500
+        && d.media is list && d.media.size() <= 10
+        && text(d, 'seoTitle', 70) && text(d, 'seoDescription', 160)
+        && text(d, 'seoImagePublicId', 255)
+        && (!('publishedAt' in d) || d.publishedAt is timestamp)
+        && auditTimes();
+    }
+    function categoryData() {
+      let d = request.resource.data;
+      return nonempty(d, 'name', 160) && nonempty(d, 'slug', 160) && d.active is bool && auditTimes();
+    }
+
+    match /services/{id} {
+      allow read: if admin() || resource.data.active == true;
+      allow create: if admin() && serviceData() && request.resource.data.createdAt == request.time;
+      allow update: if admin() && serviceData() && immutableCreatedAt();
+      allow delete: if admin();
+    }
+    // Category names/status are public taxonomy used by public service pages.
+    match /categories/{id} {
+      allow read: if true;
+      allow create: if admin() && categoryData() && request.resource.data.createdAt == request.time;
+      allow update: if admin() && categoryData() && immutableCreatedAt();
+      allow delete: if admin();
+    }
+    match /blog/{id} {
+      allow read: if admin() || resource.data.published == true;
+      allow create: if admin() && blogData() && request.resource.data.createdAt == request.time
+        && (!('publishedAt' in request.resource.data) || request.resource.data.publishedAt == request.time);
+      allow update: if admin() && blogData() && immutableCreatedAt()
+        && (resource.data.get('publishedAt', null) == request.resource.data.get('publishedAt', null)
+          || (!('publishedAt' in resource.data) && request.resource.data.publishedAt == request.time));
+      allow delete: if admin();
+    }
+    match /blogSlugs/{slug} {
+      allow read: if admin();
+      allow create: if admin() && request.resource.data.keys().hasOnly(['postId'])
+        && nonempty(request.resource.data, 'postId', 128);
+      allow update: if admin() && request.resource.data == resource.data;
+      allow delete: if admin();
+    }
+    match /content/therapist {
+      allow read: if true;
+      allow create, update: if admin()
+        && nonempty(request.resource.data, 'name', 160)
+        && nonempty(request.resource.data, 'specialty', 300)
+        && nonempty(request.resource.data, 'description', 3000)
+        && (request.resource.data.photo == null || request.resource.data.photo is map)
+        && auditTimes();
+      allow delete: if admin();
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

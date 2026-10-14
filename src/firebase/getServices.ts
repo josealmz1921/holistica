@@ -24,7 +24,8 @@ export const getServiceBySlug = async (
 ) => {
     const q = query(
         collection(db, SERVICES_COLLECTION),
-        where("slug", "==", slug)
+        where("slug", "==", slug),
+        where("active", "==", true)
     );
 
     const snapshot = await getDocs(q);
@@ -64,9 +65,9 @@ export const createService = async (
     );
 };
 
-export const getServices = async () => {
+export const getServices = async (publicOnly = false) => {
     const snapshot = await getDocs(
-        collection(db, SERVICES_COLLECTION)
+        publicOnly ? query(collection(db, SERVICES_COLLECTION), where("active", "==", true)) : collection(db, SERVICES_COLLECTION)
     );
 
     const services = await Promise.all(
@@ -93,6 +94,8 @@ export const getServices = async () => {
 
     return services;
 };
+
+export const getPublicServices = () => getServices(true);
 
 export const getServiceById = async (
     id: string

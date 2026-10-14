@@ -5,7 +5,7 @@ import { Form, type FormState } from "informed";
 import Link from "next/link";
 import { ArrowLeftIcon, ArrowRightIcon, EyeIcon, EyeSlashIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import Input from "@/src/components/Input";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "@/src/firebase/firebase";
 import { MiniLogo } from "@/src/components/Icons/icons";
 import { isRequired } from "@/src/utilities/formValidations";
@@ -26,7 +26,15 @@ export default function LoginPage() {
         setLoading(true);
         setError("");
         try {
-            await signInWithEmailAndPassword(auth, String(email).trim(), String(password));
+            const credentials = await signInWithEmailAndPassword(auth, String(email).trim(), String(password));
+            const token = await credentials.user.getIdTokenResult(true);
+            if (token.claims.admin !== true) {
+                await signOut(auth);
+                setError("Esta cuenta no tiene permisos para acceder al panel.");
+                pending.current = false;
+                setLoading(false);
+                return;
+            }
             router.push("/dashboard/");
         } catch (error: unknown) {
             const code = typeof error === "object" && error !== null && "code" in error ? error.code : "";

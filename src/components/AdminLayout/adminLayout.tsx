@@ -2,10 +2,13 @@
 import Sidebar from "@/src/components/Sidebar/sidebar";
 import { useProtectedRoute } from "@/src/hooks/useProtectedRoute";
 import LoaderPage from "@/src/components/LoaderPage";
+import Link from "next/link";
 
 const AdminLayout = ({ children }: { children: React.ReactNode; }) => {
 
-    const { loading } = useProtectedRoute();
+    const { loading, error } = useProtectedRoute();
+
+    if (error) return <main className="p-8"><p role="alert">{error}</p><Link href="/login">Volver al inicio de sesión</Link></main>;
 
     if (loading) {
         return <LoaderPage />
