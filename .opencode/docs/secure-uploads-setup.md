@@ -75,6 +75,16 @@ El antiguo `rate-limit` con código 7 provenía de escribir en Firestore; el con
 
 La firma se calcula localmente: una firma exitosa no acredita que el preset exista o que Cloudinary acepte el archivo. Si `/sign` funciona y la petición directa a Cloudinary falla, revisa la respuesta de Cloudinary y el preset, sin compartir secretos.
 
+### 500 en Vercel: `ERR_REQUIRE_ESM` al cargar Firebase Admin
+
+Se reportó un fallo de carga `firebase-admin/auth → jwks-rsa → jose` en Vercel. `jwks-rsa` 4.1.0 usa `require('jose')`, pero `jose` 6 es ESM. En runtimes sin soporte de `require(ESM)`, la función falla al cargar, antes del handler y de su respuesta JSON de diagnóstico. No es un error de credenciales, claims ni presets.
+
+Se añadió un override de npm **solo para `jwks-rsa → jose`, fijando `jose` 5.10.0**, con entrada CommonJS. No se baja Firebase Admin ni se cambian permisos. Referencia del problema: [firebase-admin-node #3181](https://github.com/firebase/firebase-admin-node/issues/3181). Revisa el override cuando upstream publique una corrección compatible; no lo retires sin repetir la prueba de runtime.
+
+`npm run test:security` incluye una prueba con las dependencias reales y Node `--no-experimental-require-module`: carga Firebase Admin y convierte una clave pública local mediante `jwks-rsa`, sin conexiones externas ni credenciales. Un build correcto por sí solo no detectaba este fallo de runtime.
+
+Para publicar la corrección deben llegar **`package.json` y `package-lock.json` juntos** al nuevo despliegue. Si persiste en Vercel, comprueba el commit activo y redespliega sin reutilizar la caché de build. Falta confirmar esta corrección en el entorno remoto.
+
 ## 5. Límites y decisiones
 
 - Se verifica token y revocación con Firebase Admin, y claim booleano de administrador.

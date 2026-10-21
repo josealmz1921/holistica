@@ -45,6 +45,12 @@ Estas mejoras están documentadas, no autorizadas automáticamente para implemen
 
 ## Registro de verificaciones
 
+### Compatibilidad de Firebase Admin en Vercel
+
+Se reportó un 500 por `ERR_REQUIRE_ESM` al cargar `firebase-admin/auth`, no por autorización. Se reprodujo localmente deshabilitando `require(ESM)` y se añadió un override limitado a `jwks-rsa → jose` 5.10.0, más una prueba real de carga/conversión de claves sin red. Falta confirmar el nuevo despliegue de Vercel y una subida real. La auditoría actual detectó además un aviso moderado independiente en `sanitize-html` <2.18.0; no forma parte de esta incompatibilidad y requiere revisión separada.
+
+Verificación local: 13 pruebas de seguridad correctas, ESLint focalizado y build con TypeScript correctos. Auditoría: ningún aviso para el `jose` fijado; queda 1 aviso moderado de producción en `sanitize-html` y 5 altos de herramientas de desarrollo. No se aplicó `npm audit fix --force` ni se modificaron esas dependencias fuera del alcance de este arreglo.
+
 ### Cambio a contador local — 20 de octubre de 2026
 
 Se sustituyó el contador persistente de Firestore por memoria: 20 solicitudes/minuto/UID/acción por proceso. Se mantienen token, revocación, claim y firmas. La incidencia reportada fue un 503 en `rate-limit` con código 7; se elimina esa dependencia de escritura, no los permisos del resto de Firestore. No se modifican IAM, reglas remotas, presets ni documentos antiguos. Falta confirmar una subida real autorizada con el cambio. Consulta [la guía de configuración](docs/secure-uploads-setup.md).

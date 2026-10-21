@@ -2,6 +2,30 @@ const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const createLoader = require("./load-ts.cjs");
 
+test("real Firebase Admin loads and resolves signing keys without require(ESM) support", () => {
+    const { spawnSync } = require("node:child_process");
+    const result = spawnSync(process.execPath, ["--no-experimental-require-module", "-e", `
+        const assert = require('node:assert/strict');
+        const { createRequire } = require('node:module');
+        const { generateKeyPairSync, createPublicKey } = require('node:crypto');
+        assert.equal(typeof require('firebase-admin/auth').getAuth, 'function');
+        const adminRequire = createRequire(require.resolve('firebase-admin/auth'));
+        const jwksClient = adminRequire('jwks-rsa');
+        const { publicKey } = generateKeyPairSync('rsa', { modulusLength: 2048 });
+        const client = jwksClient({ jwksUri: 'https://unused.invalid', cache: false });
+        // Local keys only: this regression test never contacts Firebase or a JWKS server.
+        client.getKeys = async () => [{ ...publicKey.export({ format: 'jwk' }), kid: 'local', alg: 'RS256', use: 'sig' }];
+        client.getSigningKey('local').then(key => {
+            assert.deepEqual(
+                createPublicKey(key.getPublicKey()).export({ format: 'jwk' }),
+                publicKey.export({ format: 'jwk' })
+            );
+        }).catch(() => { process.exitCode = 1; });
+    `], { encoding: "utf8", timeout: 15000 });
+    assert.equal(result.error, undefined);
+    assert.equal(result.status, 0, result.stderr);
+});
+
 function context() {
     const state = { token: { uid: "admin", admin: true }, destroyed: [], signed: [], verified: [], dbCalls: 0, services: [], blog: [], therapist: null };
     const db = {
