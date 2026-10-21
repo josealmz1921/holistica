@@ -63,7 +63,7 @@ No hay protección automática del “último administrador” en este script. R
 | `blog/{id}` | Título, slug, resumen, bloques, media, estado, SEO y fechas | Público si `published == true`; borradores para admin |
 | `blogSlugs/{slug}` | `postId`, para reservar slugs | Solo admin |
 | `content/therapist` | Nombre, especialidad, presentación y foto | Pública |
-| `_adminRateLimits/{hash}` | Contadores de solicitudes de archivos | Denegada a clientes, incluso admin; la usa el SDK Admin del servidor |
+| `_adminRateLimits/{hash}` (legado) | Contadores de la implementación anterior; ya no se utilizan | Denegada a clientes por la regla general; no se borran documentos remotos automáticamente |
 | Otras rutas | No forman parte del modelo permitido | Denegada por defecto |
 
 Las operaciones de escritura de contenido requieren administrador y validación de datos. No guardes datos privados en las categorías o el perfil, porque sus documentos son públicos.

@@ -27,7 +27,7 @@ Los tamaños se calculan con base 1024; aunque la interfaz diga MB, los límites
 
 Dropzone solo acepta videos con `allowVideo`. Limita el nombre del archivo a 100 caracteres y permite ordenar los archivos. El helper de subida admite como máximo 5 MiB en imágenes y 150 MiB en videos; la interfaz puede imponer límites más bajos.
 
-**Estas validaciones del navegador se pueden eludir.** El preset y el plan de Cloudinary deben imponer los límites externos.
+**Estas validaciones del navegador se pueden eludir.** Las firmas no garantizan tamaño ni dimensiones del archivo real. Los límites generales de la cuenta/proveedor siguen aplicando; no se ofrece aquí un límite propio de bytes por preset ni un proxy que inspeccione los archivos.
 
 ## Configurar presets firmados
 
@@ -35,12 +35,12 @@ En la consola de Cloudinary, crea dos presets con modo **signed**, no unsigned:
 
 | Variable privada | Configuración requerida del preset |
 | --- | --- |
-| `CLOUDINARY_IMAGE_UPLOAD_PRESET` | JPG/PNG, hasta 5 MiB y dimensiones máximas 1200 × 1200 según las capacidades de la cuenta |
-| `CLOUDINARY_VIDEO_UPLOAD_PRESET` | MP4/WebM, hasta 150 MiB, sujeto al límite real de tu plan |
+| `CLOUDINARY_IMAGE_UPLOAD_PRESET` | Nombre sugerido `holistica_images_signed`; Signed, sin sobrescritura, formatos JPG/PNG |
+| `CLOUDINARY_VIDEO_UPLOAD_PRESET` | Nombre sugerido `holistica_videos_signed`; Signed, sin sobrescritura, formatos MP4/WebM |
 
 Configura `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` y el cloud name público según [Desarrollo](development.md#variables-de-entorno). `CLOUDINARY_ASSET_FOLDER` debe identificar una carpeta exclusiva del sitio; por defecto es `holistica`. Se admiten segmentos de letras, números, `_` y `-`, separados por `/`.
 
-Desactiva la sobrescritura y comprueba cómo se aplican las restricciones de tamaño/formato del preset en tu cuenta. La firma no convierte un preset mal configurado en una política correcta de tamaño.
+Desactiva la sobrescritura y configura los formatos permitidos. Cloudinary no ofrece un límite propio de bytes por preset: no trates `max_file_size` como garantía de seguridad. Los 5/150 MiB y 1200 × 1200 son controles del cliente. Comprueba los límites reales del plan. El servidor firma parámetros restringidos, pero no consulta la configuración remota del preset antes de firmar.
 
 ### Migración del flujo unsigned
 
@@ -61,7 +61,9 @@ Quitar un archivo de una lista de Dropzone solo invoca borrado remoto cuando el 
 
 ## Límites de solicitudes y fallos
 
-Las firmas y las eliminaciones tienen contadores separados de **30 solicitudes por minuto, por UID y acción**, persistidos en `_adminRateLimits`. Un exceso devuelve 429. No es un límite global por cuenta ni por IP.
+Las firmas y las eliminaciones tienen contadores separados de **20 solicitudes por minuto, por UID y acción, por proceso**, en memoria. La ventana de 60 segundos comienza con la primera solicitud. Un exceso devuelve 429; se eliminan contadores vencidos al recibir solicitudes. El mapa admite hasta 10000 claves activas y rechaza nuevas claves con 503 si se llena, sin expulsar contadores activos.
+
+No se escribe en Firestore para contar solicitudes. El contador se pierde al reiniciar o recargar el módulo, y no se comparte entre instancias/serverless. No es un límite global por cuenta ni por IP; varias instancias requieren control distribuido adicional si se necesita esa garantía.
 
 La firma puede reutilizarse dentro de la ventana que acepte Cloudinary; el ID fijo y `overwrite: false` reducen el riesgo de sobrescritura. No registres firmas o tokens en documentación.
 

@@ -8,7 +8,7 @@ Los cambios fallan de forma segura: sin permiso `admin: true`, el dashboard y la
 
 Configura en `.env.local` y en el despliegue las [variables públicas y privadas](development.md#variables-de-entorno). La guía distingue configuración web de Firebase de las credenciales del SDK Admin, y contiene únicamente ejemplos ficticios.
 
-La cuenta de servicio debe pertenecer al mismo proyecto que Firebase del navegador. También se admite Application Default Credentials en entornos Google. Nunca uses prefijos `NEXT_PUBLIC_` para secretos ni subas claves al repositorio. La cuenta de servicio necesita verificar usuarios y operar en Firestore (incluido `_adminRateLimits`); aplica privilegio mínimo.
+La cuenta de servicio debe pertenecer al mismo proyecto que Firebase del navegador. También se admite Application Default Credentials en entornos Google. Nunca uses prefijos `NEXT_PUBLIC_` para secretos ni subas claves al repositorio. La firma necesita verificar usuarios, no escribir contadores en Firestore. La eliminación de imágenes antiguas fuera de la carpeta del sitio sí consulta referencias en Firestore; aplica privilegio mínimo según las operaciones necesarias.
 
 ## 2. Asignar tu administrador
 
@@ -24,11 +24,11 @@ El sitio consulta servicios activos y entradas publicadas. Si Firebase solicita 
 
 ## 4. Cloudinary (imprescindible)
 
-En la consola crea **dos presets de subida firmada**, nunca unsigned, siguiendo la [guía de Cloudinary](cloudinary.md#configurar-presets-firmados). Configura restricciones de formato/tamaño, evita sobrescritura y utiliza una carpeta exclusiva del sitio.
+En la consola crea **dos presets de subida firmada**, nunca unsigned, siguiendo la [guía de Cloudinary](cloudinary.md#configurar-presets-firmados). Configura formatos, evita sobrescritura y utiliza una carpeta exclusiva del sitio. Los límites de bytes/dimensiones del cliente no son una garantía del preset.
 
 **Desactiva o elimina el preset unsigned anterior** en Cloudinary. Quitar una variable del código no invalida un preset ya publicado. Verifica con archivos reales antes de habilitarlo en producción: los límites del navegador no son controles de seguridad.
 
-Los archivos nuevos usan IDs aleatorios en la carpeta controlada. Las eliminaciones requieren administrador y admiten solo esa carpeta o imágenes antiguas referenciadas por servicios/blog/perfil. Las firmas y eliminaciones tienen límites persistentes por administrador/minuto. Una firma puede reutilizarse durante su ventana de validez; el ID fijo y `overwrite: false` evitan sobrescribir contenido.
+Los archivos nuevos usan IDs aleatorios en la carpeta controlada. Las eliminaciones requieren administrador y admiten solo esa carpeta o imágenes antiguas referenciadas por servicios/blog/perfil. Las firmas y eliminaciones tienen límites en memoria de 20 solicitudes/minuto por administrador y acción, por proceso, no compartidos entre instancias. Una firma puede reutilizarse durante su ventana de validez; el ID fijo y `overwrite: false` evitan sobrescribir contenido.
 
 ## 5. Dependencias y comprobación
 
@@ -45,7 +45,7 @@ Antes de desplegar, comprueba:
 3. Administrador: CRUD y archivos funcionan; archivos ajenos se rechazan.
 4. Visitante: sitio público funciona, borradores y servicios inactivos no son accesibles.
 5. Token caducado/revocado: API lo rechaza; cuenta sin claim no puede subir ni borrar.
-6. Presets antiguos desactivados, límites de tamaño/tipo aplicados en Cloudinary.
+6. Presets antiguos desactivados tras revisar sus consumidores, formatos restringidos y límites reales de la cuenta comprobados; no asumir límites de bytes por preset.
 
 Los metadatos `noindex` y `robots.txt` no sustituyen a la autorización. Nunca expongas `next dev` como servidor de producción.
 
@@ -63,7 +63,7 @@ Los metadatos `noindex` y `robots.txt` no sustituyen a la autorización. Nunca e
 | 429 | Límite de solicitudes excedido |
 | 503 | Error interno, servicio externo no disponible o configuración incompleta |
 
-No añadas un endpoint público para otorgar claims ni aceptes parámetros arbitrarios para firmar subidas. Los contadores persistentes protegen por UID/acción, no proporcionan una defensa global por IP contra todos los tipos de abuso.
+No añadas un endpoint público para otorgar claims ni aceptes parámetros arbitrarios para firmar subidas. Los contadores locales protegen por UID/acción solo dentro de cada proceso y se reinician con él; no proporcionan una defensa global por IP ni distribuida. Para errores inesperados de firma se registra una etapa controlada y, si existe, un código reconocido de Firebase/gRPC; no se registran mensajes originales ni credenciales. Consulta el [diagnóstico de 503](development.md#diagnosticar-un-503-al-autorizar-subidas).
 
 ## HTML y cabeceras
 

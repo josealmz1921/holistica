@@ -41,6 +41,7 @@ npm run dev
 | [Firebase](.opencode/docs/firebase.md) | Colecciones, usuarios, claims y explicación de `firestore.rules` |
 | [Seguridad](.opencode/docs/security.md) | Activación de protecciones, alcance y limitaciones |
 | [Cloudinary](.opencode/docs/cloudinary.md) | Presets firmados, archivos y límites |
+| [Configuración de subidas seguras](.opencode/docs/secure-uploads-setup.md) | Credenciales, presets y diagnóstico de esta instalación |
 | [Despliegue](.opencode/docs/deployment.md) | Firebase, Vercel y comprobaciones en producción |
 | [Especificación del dashboard](.opencode/specs/dashboard.md) | Comportamiento de servicios, categorías y terapeuta |
 | [Especificación del blog](.opencode/specs/blog.md) | Editor, publicación, archivos y SEO |

@@ -3,17 +3,13 @@ const assert = require("node:assert/strict");
 const createLoader = require("./load-ts.cjs");
 
 function context() {
-    const state = { token: { uid: "admin", admin: true }, destroyed: [], signed: [], verified: [], counters: new Map(), services: [], blog: [], therapist: null };
+    const state = { token: { uid: "admin", admin: true }, destroyed: [], signed: [], verified: [], dbCalls: 0, services: [], blog: [], therapist: null };
     const db = {
         collection: name => ({
             doc: id => ({ name, id }),
             get: async () => ({ docs: (state[name] || []).map(data => ({ data: () => data })) }),
         }),
         doc: () => ({ get: async () => ({ data: () => state.therapist }) }),
-        runTransaction: async fn => fn({
-            get: async ref => ({ data: () => state.counters.get(ref.id) }),
-            set: (ref, data) => state.counters.set(ref.id, data),
-        }),
     };
     const firebase = {
         adminAuth: () => ({ verifyIdToken: async (...args) => {
@@ -21,7 +17,11 @@ function context() {
             if (state.invalid) throw new Error("Invalid token");
             return state.token;
         } }),
-        adminDb: () => db,
+        adminDb: () => {
+            state.dbCalls++;
+            if (state.dbError) throw state.dbError;
+            return db;
+        },
     };
     const cloudinary = {
         uploader: { destroy: async id => { state.destroyed.push(id); return { result: "ok" }; } },
@@ -41,7 +41,7 @@ test("delete requires a session before reading body or contacting Cloudinary", a
     const response = await load("app/api/cloudinary/delete/route.ts").DELETE(request({ publicId: "holistica/file" }, ""));
     assert.equal(response.status, 401);
     assert.deepEqual(state.destroyed, []);
-    assert.equal(state.counters.size, 0);
+    assert.equal(state.dbCalls, 0);
 });
 
 test("normal authenticated users cannot delete", async () => {
@@ -90,12 +90,22 @@ test("JSON input is bounded and malformed bodies return client errors", async ()
     assert.equal((await DELETE(nonJson)).status, 415);
 });
 
-test("rate limits persist in shared storage and return 429", async () => {
-    const { load } = context();
+test("rate limits are local, separate users/actions and expire after one minute", async t => {
+    let now = 100000;
+    t.mock.method(Date, "now", () => now);
+    const { load, state } = context();
     const { limitAdminRequests } = load("src/server/adminApi.ts");
-    await limitAdminRequests("user", "delete", 1);
-    await assert.rejects(limitAdminRequests("user", "delete", 1), error => error.status === 429);
-    await limitAdminRequests("another-user", "delete", 1);
+    await Promise.all(Array.from({ length: 20 }, () => limitAdminRequests("user", "upload")));
+    await assert.rejects(limitAdminRequests("user", "upload"), error => error.status === 429);
+    await limitAdminRequests("another-user", "upload");
+    await limitAdminRequests("user", "delete");
+    now += 59999;
+    await assert.rejects(limitAdminRequests("user", "upload"), error => error.status === 429);
+    now++;
+    await limitAdminRequests("user", "upload");
+    assert.equal(state.dbCalls, 0);
+    const isolated = context().load("src/server/adminApi.ts");
+    await isolated.limitAdminRequests("user", "upload");
 });
 
 test("upload signatures require admin and never accept arbitrary signing parameters", async () => {
@@ -125,7 +135,8 @@ test("upload signatures require admin and never accept arbitrary signing paramet
     } finally { process.env = saved; }
 });
 
-test("missing server configuration fails closed without returning internals", async () => {
+test("missing server configuration fails closed without returning internals", async t => {
+    const log = t.mock.method(console, "error", () => {});
     const saved = process.env.CLOUDINARY_IMAGE_UPLOAD_PRESET;
     delete process.env.CLOUDINARY_IMAGE_UPLOAD_PRESET;
     try {
@@ -133,8 +144,49 @@ test("missing server configuration fails closed without returning internals", as
         const response = await load("app/api/cloudinary/sign/route.ts").POST(request({ resourceType: "image" }, "valid", "POST"));
         assert.equal(response.status, 503);
         assert(!JSON.stringify(await response.json()).includes("stack"));
+        assert.equal(log.mock.calls[0].arguments[1].stage, "configuration");
     } finally {
         if (saved === undefined) delete process.env.CLOUDINARY_IMAGE_UPLOAD_PRESET;
         else process.env.CLOUDINARY_IMAGE_UPLOAD_PRESET = saved;
     }
+});
+
+test("upload signatures do not access Firestore even when its credentials lack data permissions", async () => {
+    const saved = { ...process.env };
+    Object.assign(process.env, { CLOUDINARY_API_SECRET: "secret", CLOUDINARY_API_KEY: "key", NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: "cloud", CLOUDINARY_IMAGE_UPLOAD_PRESET: "signed-images", CLOUDINARY_ASSET_FOLDER: "holistica" });
+    const { state, load } = context();
+    state.dbError = Object.assign(new Error("PRIVATE_ERROR_CONTENT"), { code: 7 });
+    try {
+        const { POST } = load("app/api/cloudinary/sign/route.ts");
+        const response = await POST(request({ resourceType: "image" }, "valid", "POST"));
+        assert.equal(response.status, 200);
+        assert.equal(state.dbCalls, 0);
+        assert(!JSON.stringify(await response.json()).includes("PRIVATE_ERROR_CONTENT"));
+        assert.equal(state.signed.length, 1);
+        for (let i = 1; i < 20; i++) {
+            assert.equal((await POST(request({ resourceType: "image" }, "valid", "POST"))).status, 200);
+        }
+        assert.equal((await POST(request({ resourceType: "image" }, "valid", "POST"))).status, 429);
+        assert.equal(state.signed.length, 20);
+        assert.equal(state.dbCalls, 0);
+    } finally { process.env = saved; }
+});
+
+test("local counters bound memory without discarding active limits and reclaim expired entries", async t => {
+    let now = 100000;
+    t.mock.method(Date, "now", () => now);
+    const { limitAdminRequests } = context().load("src/server/adminApi.ts");
+    for (let i = 0; i < 10000; i++) await limitAdminRequests(`user-${i}`, "upload", 1);
+    await assert.rejects(limitAdminRequests("overflow", "upload"), error => error.status === 503);
+    await assert.rejects(limitAdminRequests("user-0", "upload", 1), error => error.status === 429);
+    now += 60000;
+    await limitAdminRequests("overflow", "upload");
+});
+
+test("upload client surfaces the safe API error and status without attempting a Cloudinary upload", async t => {
+    const fetch = t.mock.method(globalThis, "fetch", async () => Response.json({ error: "Servicio temporalmente no disponible." }, { status: 503 }));
+    const load = createLoader({ "@/src/firebase/adminRequest": { adminHeaders: async () => ({ Authorization: "Bearer test-token" }) } });
+    const { uploadImage } = load("src/utilities/cloudinary.ts");
+    await assert.rejects(uploadImage(new File(["example"], "image.png", { type: "image/png" })), /Servicio temporalmente no disponible\. \(HTTP 503\)/);
+    assert.equal(fetch.mock.calls.length, 1);
 });

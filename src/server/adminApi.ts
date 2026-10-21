@@ -1,6 +1,5 @@
 import "server-only";
-import { createHash } from "node:crypto";
-import { adminAuth, adminDb } from "./firebaseAdmin";
+import { adminAuth } from "./firebaseAdmin";
 
 export class ApiError extends Error {
     constructor(public status: number, message: string) { super(message); }
@@ -38,27 +37,46 @@ export async function readJson(request: Request): Promise<Record<string, unknown
     } catch { throw new ApiError(400, "JSON no válido."); }
 }
 
-// Persisted counters work across serverless instances; clients cannot access this collection.
-export async function limitAdminRequests(uid: string, action: string, limit = 30) {
-    const bucket = Math.floor(Date.now() / 60000);
-    const key = createHash("sha256").update(`${uid}:${action}`).digest("hex");
-    const db = adminDb();
-    const ref = db.collection("_adminRateLimits").doc(key);
-    await db.runTransaction(async transaction => {
-        const snapshot = await transaction.get(ref);
-        const previous = snapshot.data();
-        const count = previous?.bucket === bucket ? Number(previous.count) : 0;
-        if (count >= limit) throw new ApiError(429, "Demasiadas solicitudes. Espera un minuto.");
-        transaction.set(ref, { bucket, count: count + 1 });
-    });
+// Local to this module/process: resets on restart and is not shared between instances.
+const requestCounters = new Map<string, { expiresAt: number; count: number }>();
+
+export async function limitAdminRequests(uid: string, action: string, limit = 20) {
+    const now = Date.now();
+    for (const [key, counter] of requestCounters) {
+        if (counter.expiresAt <= now) requestCounters.delete(key);
+    }
+    const key = JSON.stringify([uid, action]);
+    const counter = requestCounters.get(key);
+    if (counter) {
+        if (counter.count >= limit) throw new ApiError(429, "Demasiadas solicitudes. Espera un minuto.");
+        counter.count++;
+    } else {
+        // Bound memory without evicting active counters and bypassing their limits.
+        if (requestCounters.size >= 10000) throw new ApiError(503, "Servicio temporalmente no disponible. Intenta más tarde.");
+        requestCounters.set(key, { expiresAt: now + 60000, count: 1 });
+    }
 }
 
 export function apiResponse(body: unknown, status = 200) {
     return Response.json(body, { status, headers: { "Cache-Control": "no-store" } });
 }
 
-export function apiError(error: unknown) {
+type ApiErrorContext = {
+    operation: "cloudinary-sign";
+    stage: "authentication" | "rate-limit" | "request" | "configuration" | "signing";
+};
+
+export function apiError(error: unknown, context?: ApiErrorContext) {
     if (error instanceof ApiError) return apiResponse({ error: error.message }, error.status);
-    console.error("Admin API failed:", error instanceof Error ? error.name : "UnknownError");
+    const rawCode = typeof error === "object" && error !== null && "code" in error ? error.code : undefined;
+    const code = typeof rawCode === "number" && Number.isInteger(rawCode) && rawCode >= 0 && rawCode <= 16
+        ? rawCode
+        : typeof rawCode === "string" && /^(auth|app|firestore)\/[a-z-]{1,60}$/.test(rawCode) ? rawCode : undefined;
+    // Log only controlled stages and recognized status codes, never messages, tokens or credentials.
+    console.error("Admin API failed:", {
+        ...context,
+        type: error instanceof Error ? "Error" : "UnknownError",
+        ...(code !== undefined ? { code } : {}),
+    });
     return apiResponse({ error: "La operación no está disponible. Revisa la configuración del servidor." }, 503);
 }

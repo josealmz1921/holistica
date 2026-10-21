@@ -18,16 +18,16 @@ Este archivo distingue **implementación en el repositorio** de **configuración
 - [x] Reglas de Firestore con escritura administrativa y lectura pública limitada.
 - [x] Script de asignación/revocación de administradores con invalidación de sesiones.
 - [x] Dependencias de runtime actualizadas y gRPC corregido mediante override.
-- [x] Pruebas persistentes: 9 casos de APIs y 6 casos de reglas en emulador.
+- [x] Pruebas persistentes de APIs, diagnósticos seguros y reglas en emulador; ejecutarlas antes de publicar.
 - [x] README, instrucciones, guías operativas y especificaciones centralizadas en `.opencode/`.
 
 ## Prioridad: activación externa pendiente de confirmar
 
 - [ ] Confirmar que las tres cuentas indicadas tienen el claim booleano de administrador y pueden iniciar sesión de nuevo.
 - [ ] Confirmar credenciales privadas de Firebase Admin en el entorno de destino y coincidencia de proyecto.
-- [ ] Confirmar permisos de la cuenta de servicio para verificar usuarios y operar Firestore/contadores.
+- [ ] Confirmar permisos de la cuenta de servicio para verificar usuarios y, si se usa el borrado de imágenes antiguas fuera de la carpeta, consultar sus referencias en Firestore. El contador ya no necesita Firestore.
 - [ ] Desplegar o confirmar las reglas remotas correctas, después de revisar datos antiguos e índices necesarios.
-- [ ] Confirmar ambos presets signed, sus límites de formato/tamaño y la carpeta exclusiva.
+- [ ] Confirmar ambos presets signed, sin sobrescritura, formatos restringidos y carpeta exclusiva; no asumir límite de bytes por preset.
 - [ ] Desactivar o confirmar desactivación del preset unsigned anterior.
 - [ ] Verificar con Cloudinary que el plan admite 150 MiB y rechaza archivos fuera de política.
 - [ ] Confirmar variables de Vercel, Node 22+, dominio SEO, cloud name y número de WhatsApp.
@@ -44,6 +44,12 @@ Este archivo distingue **implementación en el repositorio** de **configuración
 Estas mejoras están documentadas, no autorizadas automáticamente para implementación. No se ha solicitado gestión dinámica de usuarios: la decisión vigente es habilitar solo las tres cuentas indicadas.
 
 ## Registro de verificaciones
+
+### Cambio a contador local — 20 de octubre de 2026
+
+Se sustituyó el contador persistente de Firestore por memoria: 20 solicitudes/minuto/UID/acción por proceso. Se mantienen token, revocación, claim y firmas. La incidencia reportada fue un 503 en `rate-limit` con código 7; se elimina esa dependencia de escritura, no los permisos del resto de Firestore. No se modifican IAM, reglas remotas, presets ni documentos antiguos. Falta confirmar una subida real autorizada con el cambio. Consulta [la guía de configuración](docs/secure-uploads-setup.md).
+
+Verificación de este cambio: 12 pruebas de seguridad con proveedores simulados, ESLint focalizado, build con TypeScript y enlaces/anclas de documentación correctos. No se repitieron las pruebas de reglas (no se modificaron) ni una subida contra proveedores reales.
 
 Al introducir las protecciones se completaron build, TypeScript, ESLint focalizado, las 15 pruebas de seguridad y una comprobación de servidor local (401 anónimo, cabeceras y noindex). La auditoría de producción reportó 0 vulnerabilidades y la completa 5 avisos en desarrollo. Son resultados históricos de esa revisión; repetir antes de una publicación y registrar cambios de estado sin asumir que siguen vigentes.
 

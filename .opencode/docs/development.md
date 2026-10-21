@@ -122,3 +122,15 @@ Ese pin es una referencia de reproducción, no una recomendación para usar una 
 | Sitemap vacío | Dominio ausente o inválido; `app/sitemap.ts` devuelve una lista vacía en ese caso |
 
 No resuelvas errores de permisos abriendo toda la base. Para cambios de acceso consulta [Firebase](firebase.md), y para cambios remotos utiliza la [lista de despliegue](deployment.md).
+
+### Diagnosticar un 503 al autorizar subidas
+
+Después de cambiar `.env.local`, detén y vuelve a iniciar `npm run dev`. Repite la subida y consulta la terminal del servidor, no solo la consola del navegador. El mensaje `Admin API failed:` identifica `operation: 'cloudinary-sign'` y una etapa controlada:
+
+- `authentication`: inicialización de Firebase Admin; comprueba credenciales y coincidencia del proyecto.
+- `rate-limit`: contador en memoria, sin acceso a Firebase. El exceso normal devuelve 429. La versión anterior escribía el contador en Firestore y podía fallar con código gRPC `7` (permisos denegados); ese acceso se eliminó. Si aún aparece ese error, comprueba que reiniciaste el servidor con el código actualizado.
+- `request`: fallo inesperado al leer la solicitud.
+- `configuration`: faltan variables de Cloudinary o la carpeta tiene un formato inválido.
+- `signing`: fallo al generar la firma.
+
+El registro solo contiene etapa y códigos reconocidos; omite mensajes originales, claves y tokens. La interfaz muestra el mensaje seguro de la API y el estado HTTP. Una variable presente y una clave con formato válido no demuestran que las credenciales sigan activas o tengan los permisos remotos necesarios.

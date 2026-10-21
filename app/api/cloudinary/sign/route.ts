@@ -6,11 +6,15 @@ import { assetFolder } from "@/src/server/cloudinaryAssets";
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+    let stage: "authentication" | "rate-limit" | "request" | "configuration" | "signing" = "authentication";
     try {
         const user = await requireAdmin(request);
+        stage = "rate-limit";
         await limitAdminRequests(user.uid, "upload");
+        stage = "request";
         const { resourceType } = await readJson(request);
         if (resourceType !== "image" && resourceType !== "video") throw new ApiError(400, "Tipo de archivo no permitido.");
+        stage = "configuration";
         const uploadPreset = resourceType === "image" ? process.env.CLOUDINARY_IMAGE_UPLOAD_PRESET : process.env.CLOUDINARY_VIDEO_UPLOAD_PRESET;
         const apiSecret = process.env.CLOUDINARY_API_SECRET;
         const apiKey = process.env.CLOUDINARY_API_KEY;
@@ -22,7 +26,8 @@ export async function POST(request: Request) {
             upload_preset: uploadPreset,
             allowed_formats: resourceType === "image" ? "jpg,png" : "mp4,webm",
         };
+        stage = "signing";
         const signature = cloudinary.utils.api_sign_request(params, apiSecret);
         return apiResponse({ params, signature, apiKey, cloudName, resourceType });
-    } catch (error) { return apiError(error); }
+    } catch (error) { return apiError(error, { operation: "cloudinary-sign", stage }); }
 }

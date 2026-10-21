@@ -16,7 +16,7 @@ Un despliegue de Vercel no publica `firestore.rules`, asigna administradores ni 
 - Confirma acceso y respaldo del contenido relevante antes de cambiar reglas.
 - Configura las variables descritas en [Desarrollo](development.md#variables-de-entorno).
 - Autoriza individualmente las tres cuentas mediante el [procedimiento de Firebase](firebase.md#asignar-las-tres-cuentas). Confirma un nuevo inicio de sesión de cada una.
-- Configura los [presets firmados](cloudinary.md#configurar-presets-firmados), restricciones y desactivación del preset unsigned anterior.
+- Configura los [presets firmados](cloudinary.md#configurar-presets-firmados), formatos y desactivación del preset unsigned anterior tras revisar sus consumidores. Los límites de tamaño del cliente no son límites de bytes por preset.
 - Comprueba datos antiguos frente a los límites de las reglas; no se migran automáticamente.
 
 ## Desplegar reglas de Firestore
@@ -62,9 +62,9 @@ Si Firebase Authentication rechaza un dominio, revisa sus dominios autorizados p
 - Cada una de las tres cuentas autorizadas entra y puede gestionar contenido.
 - Una cuenta sin claim no obtiene acceso administrativo ni puede escribir en Firestore.
 - Sin token, las APIs de archivos responden 401; una cuenta sin admin recibe 403.
-- Un admin puede subir archivos válidos y se rechazan formatos/tamaños indebidos en Cloudinary, no solo en el navegador.
+- Un admin puede subir archivos válidos y Cloudinary rechaza formatos no permitidos. Comprueba los límites reales de cuenta; los tamaños del cliente pueden eludirse y no son garantía de un preset.
 - La eliminación de archivos ajenos se deniega.
-- Las credenciales de servicio permiten verificar usuarios y operar los contadores internos; las APIs no devuelven 503 por falta de configuración.
+- Las credenciales de servicio permiten verificar usuarios; la firma no escribe contadores en Firestore. El borrado de imágenes antiguas fuera de la carpeta necesita consultar referencias. Las APIs no devuelven 503 por falta de configuración.
 - El preset unsigned anterior está realmente desactivado.
 
 Para verificar guardado o borrado real, usa documentos/archivos de prueba con autorización; no elimines contenido existente como experimento. Las pruebas automáticas locales no acreditan estos pasos externos.

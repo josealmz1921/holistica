@@ -8,7 +8,14 @@ async function upload(file: File, resourceType: "image" | "video") {
     const response = await fetch("/api/cloudinary/sign", {
         method: "POST", headers: await adminHeaders(), body: JSON.stringify({ resourceType }),
     });
-    if (!response.ok) throw new Error("No se pudo autorizar la subida. Verifica tu sesión y la configuración del servidor.");
+    if (!response.ok) {
+        let message = "No se pudo autorizar la subida. Verifica tu sesión y la configuración del servidor.";
+        try {
+            const body = await response.json();
+            if (typeof body?.error === "string" && body.error.length <= 300) message = body.error;
+        } catch { /* An upstream failure may return HTML instead of the API's JSON error. */ }
+        throw new Error(`${message} (HTTP ${response.status})`);
+    }
     const { params, signature, apiKey, cloudName } = await response.json();
     const body = new FormData();
     body.append("file", file);
