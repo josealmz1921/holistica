@@ -11,6 +11,7 @@ Este archivo distingue **implementación en el repositorio** de **configuración
 - [x] Descripciones de servicios con texto enriquecido básico y compatibilidad con texto anterior.
 - [x] Blog con editor, borradores/publicación, archivos y slugs anteriores.
 - [x] SEO de blog opcional, imagen social, alt, JSON-LD, sitemap y robots.
+- [x] SEO local de inicio/servicios: Pachuca como ubicación, visitantes de CDMX/Edomex, canónicas corregidas y metadatos personalizados respetados.
 - [x] Tarjetas del blog sin portada ficticia cuando no hay imagen.
 - [x] Collage responsive en el detalle del blog, sin carrusel, con visor modal y zoom de 100 % a 300 %; videos separados con controles nativos.
 - [x] Integración de GTM pública con consentimiento previo y eventos `page_view`, `whatsapp_click`, `blog_read`; configuración de GA4/etiquetas/publicación del contenedor aún requiere verificación externa.
@@ -41,14 +42,19 @@ Este archivo distingue **implementación en el repositorio** de **configuración
 ## Mejoras y revisión técnica
 
 - [ ] Revisar próximas correcciones para los avisos de desarrollo de la cadena ESLint/fast-glob/micromatch/braces; no resolverlos con un downgrade incompatible automático.
-- [ ] Añadir pruebas persistentes específicas de SEO, slugs y renderizado de descripciones; las validaciones manuales previas no sustituyen una suite mantenida.
-- [ ] Revisar canónicas de servicios: su ruta pública es `/{slug}`, pero la generación actual de metadatos del servicio construye `/services/{slug}`.
+- [ ] Ampliar pruebas de SEO al blog, slugs y renderizado de descripciones; ya existe `test:seo` para metadatos de inicio/servicios.
+- [x] Corregir canónicas de servicios a `/{slug}`, consistentes con su ruta pública y sitemap.
+- [ ] Tras desplegar el SEO local, inspeccionar HTML público, dominio final y sitemap en Search Console; revisar contenido personalizado del servicio tántrico con el propietario.
 - [ ] Definir si hace falta limpieza explícita de archivos huérfanos y reservas de slug al eliminar contenido; no borrar recursos reales automáticamente sin una política acordada.
 - [ ] Evaluar si hacen falta pruebas de interfaz y una verificación de límites reales de proveedor en un entorno de pruebas autorizado.
 
 Estas mejoras están documentadas, no autorizadas automáticamente para implementación. No se ha solicitado gestión dinámica de usuarios: la decisión vigente es habilitar solo las tres cuentas indicadas.
 
 ## Registro de verificaciones
+
+### SEO local de inicio y servicios — 21 de octubre de 2026
+
+Se corrigieron canónicas y `og:url` de servicios a `/{slug}`, se añadieron metadatos propios del inicio y títulos de respaldo con Pachuca/Flor de luna, y se actualizó el contenido visible con ubicación real y público visitante de CDMX/Edomex. Los campos personalizados tienen prioridad; no se escribieron documentos Firebase ni configuraciones externas. Se verificaron build con TypeScript, ESLint focalizado, 7 pruebas SEO más 19 de Analytics/seguridad, y enlaces/comandos de documentación. Falta revisión visual móvil/escritorio y comprobación del HTML y Search Console tras desplegar. Detalles en [SEO local](docs/local-seo.md).
 
 ### GTM y eventos públicos — 21 de octubre de 2026
 

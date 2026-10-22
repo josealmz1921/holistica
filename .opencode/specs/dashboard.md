@@ -40,6 +40,8 @@ El slug se genera a partir del nombre. Los beneficios y el recorrido son listas 
 
 El estado `active` controla publicación: el catálogo consulta solo activos y el detalle público requiere `active == true`. Ocultar el servicio no elimina el documento ni sus imágenes.
 
+Los metadatos públicos respetan los campos SEO/redes personalizados. En su ausencia, el título añade Pachuca y la marca Flor de luna; canónica y Open Graph usan la ruta pública `/{slug}`. No se modifica el documento para generar estos valores de respaldo. Detalles en [SEO local](../docs/local-seo.md).
+
 ### Reservas
 
 El botón público abre WhatsApp con `NEXT_PUBLIC_PHONE_NUMBER` y el mensaje del servicio codificado para la URL. No crea una reserva en Firestore ni procesa pagos.

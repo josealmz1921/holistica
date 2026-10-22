@@ -8,14 +8,28 @@ import WhyUs from "@/src/components/WhyUs";
 import CustomeService from "@/src/components/CustomeService";
 import Therapist from "@/src/components/Therapist";
 import PageAnalytics from "@/src/components/Analytics/pageAnalytics";
+import { HOME_SEO_TITLE, homeMetadata } from "@/src/utilities/siteSeo";
+
+export const metadata = homeMetadata();
 
 export default function Home() {
   return (
     <main>
-      <PageAnalytics pageType="home" title="Flor de luna" />
+      <PageAnalytics pageType="home" title={HOME_SEO_TITLE} />
       <Hero />
       <Services />
       <WhyUs />
+      <section className={styles.visitors} aria-labelledby="visitors-title">
+        <div className={styles.inner}>
+          <p className={styles.eyebrow}>Tu pausa, en Pachuca</p>
+          <h2 id="visitors-title" className={styles.title}>Un espacio en Pachuca, también para quienes vienen de fuera.</h2>
+          <div className={styles.visitorsText}>
+            <p>Flor de luna es un espacio de masajes tántricos y nuru en Pachuca, Hidalgo. Recibimos a personas de la ciudad y sus alrededores, así como a visitantes de CDMX y el Estado de México.</p>
+            <p>Si vienes de otra ciudad, agenda tu sesión antes de viajar. Por WhatsApp podemos orientarte sobre la ubicación y resolver tus dudas para que prepares tu visita con calma.</p>
+            <a href={`https://wa.me/${process.env.NEXT_PUBLIC_PHONE_NUMBER}`} target="_blank" rel="noopener noreferrer">Consulta la ubicación y planea tu visita ↗</a>
+          </div>
+        </div>
+      </section>
       <section id="experiencia" className={styles.experience} aria-labelledby="experience-title">
         <div className={styles.inner}>
           <p className={styles.eyebrow}>Tu experiencia</p>

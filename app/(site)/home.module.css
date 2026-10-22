@@ -8,3 +8,9 @@
 .steps span { @apply text-xs tracking-widest text-neutral; }
 .steps h3 { @apply mt-4 mb-3 font-heading text-2xl text-tertiary; }
 .steps p { @apply max-w-sm text-sm leading-7 text-neutral; }
+.visitors { @apply border-t border-[#dce2d7] px-5 py-16 md:px-8 md:py-20; }
+.visitors .title { @apply mx-auto max-w-3xl; }
+.visitorsText { @apply mx-auto mt-8 max-w-2xl text-center text-sm leading-7 text-neutral; }
+.visitorsText p + p { @apply mt-4; }
+.visitorsText a { @apply mt-6 inline-block border-b border-[#b4beb0] pb-1 text-tertiary; }
+.visitorsText a:focus-visible { @apply outline-2 outline-offset-4 outline-tertiary; }

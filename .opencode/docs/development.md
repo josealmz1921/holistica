@@ -88,10 +88,11 @@ La variable de medición es opcional. `.env*` está ignorado por Git. Guarda cua
 | `npx tsc --noEmit` | Comprobar tipos sin generar código |
 | `npm run test:security` | Pruebas de autorización y APIs con servicios simulados |
 | `npm run test:analytics` | Pruebas de consentimiento, exclusión de rutas, URLs y umbrales de lectura, sin Google real |
+| `npm run test:seo` | Pruebas de metadatos de inicio/servicios, canónicas y campos personalizados, sin Firebase real |
 | `npm run test:rules` | Pruebas de Firestore; requiere emulador activo |
 | `npm audit --omit=dev` | Auditoría de dependencias de producción |
 
-Todos se ejecutan desde la raíz. No existe actualmente un script genérico `npm test` ni un comando específico de tests de SEO.
+Todos se ejecutan desde la raíz. No existe actualmente un script genérico `npm test`. La suite SEO cubre inicio/servicios; no es una prueba de posiciones o indexación en Google.
 
 ## Pruebas de Firestore
 

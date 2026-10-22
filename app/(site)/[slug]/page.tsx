@@ -7,112 +7,29 @@ import { getServiceBySlug } from "@/src/firebase/getServices";
 import { notFound } from "next/navigation";
 import ServiceDescription from "@/src/components/ServiceDescription/serviceDescription";
 import PageAnalytics from "@/src/components/Analytics/pageAnalytics";
+import { cache } from "react";
+import type { Metadata } from "next";
+import { serviceMetadata } from "@/src/utilities/siteSeo";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL
+const getService = cache(getServiceBySlug);
 
 export async function generateMetadata({
     params
 }: {
     params: Promise<{ slug: string }>
-}) {
+}): Promise<Metadata> {
     const { slug } = await params;
 
-    const service: any = await getServiceBySlug(slug);
+    const service = await getService(slug);
 
     if (!service) {
         return {
-            title: "Servicio no encontrado"
+            title: "Servicio no encontrado | Flor de luna",
+            robots: { index: false, follow: false },
         };
     }
 
-    const image =
-        service.ogImage ||
-        service.mainImage ||
-        service.gallery?.[0]?.url ||
-        `${SITE_URL}/img/bed.jpg`;
-
-    const twitterImage =
-        service.twitterImage ||
-        service.ogImage ||
-        image;
-
-    const description =
-        service.seoDescription ||
-        service.shortDescription ||
-        service.description?.slice(0, 160) ||
-        service.name;
-
-    const url = `${SITE_URL}/services/${slug}`;
-
-    return {
-        title:
-            service.seoTitle ||
-            `${service.name} | Masajes Profesionales`,
-
-        description,
-
-        keywords: [
-            service.name,
-            service.category?.name,
-            "masajes",
-            "bienestar",
-            "relajación",
-            "terapia corporal"
-        ],
-
-        alternates: {
-            canonical: url
-        },
-
-        openGraph: {
-            type: "website",
-            locale: "es_MX",
-            url,
-            title:
-                service.ogTitle ||
-                service.seoTitle ||
-                service.name,
-
-            description:
-                service.ogDescription ||
-                description,
-
-            siteName: "Masajes Profesionales",
-
-            images: [
-                {
-                    url: image,
-                    width: 1200,
-                    height: 630,
-                    alt:
-                        service.ogTitle ||
-                        service.name
-                }
-            ]
-        },
-
-        twitter: {
-            card: "summary_large_image",
-
-            title:
-                service.twitterTitle ||
-                service.ogTitle ||
-                service.seoTitle ||
-                service.name,
-
-            description:
-                service.twitterDescription ||
-                service.ogDescription ||
-                description,
-
-            images: [twitterImage]
-        },
-
-        robots: {
-            index: true,
-            follow: true
-        }
-    };
+    return serviceMetadata(service, slug);
 }
 
 export default async function ServicePage({
@@ -122,7 +39,7 @@ export default async function ServicePage({
 }) {
     const { slug } = await params;
 
-    const service: any = await getServiceBySlug(slug);
+    const service = await getService(slug);
 
     if (!service) {
         notFound();
@@ -136,7 +53,7 @@ export default async function ServicePage({
                     <ImageCarousel
                         images={
                             service?.gallery?.map(
-                                (gallery: any) => gallery.url
+                                (gallery: { url: string }) => gallery.url
                             ) || []
                         }
                     />
@@ -183,7 +100,7 @@ export default async function ServicePage({
 
                 <div className={classes.benefits}>
                     {service?.benefits?.map(
-                        (benefit: any, i: number) => (
+                        (benefit: { title: string; description: string }, i: number) => (
                             <div
                                 key={i}
                                 className={classes.benefit}

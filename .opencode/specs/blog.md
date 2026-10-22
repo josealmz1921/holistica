@@ -97,4 +97,4 @@ La medición opcional de visitas y lecturas estimadas (`page_view`, `blog_read`)
 7. Guardar una entrada antigua no crea una fecha histórica ficticia.
 8. El sitemap no incluye borradores, dashboard ni servicios inactivos.
 
-Las suites persistentes actuales se centran en APIs/reglas de seguridad. No hay una suite específica de SEO en `package.json`; añadirla figura como posible mejora en [Tareas](../tasks.md).
+Las suites persistentes cubren APIs/reglas de seguridad, Analytics y SEO de inicio/servicios (`npm run test:seo`). El SEO y los slugs específicos del blog todavía no tienen una suite dedicada; añadirla figura como mejora en [Tareas](../tasks.md).

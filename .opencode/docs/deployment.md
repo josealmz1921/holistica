@@ -54,6 +54,7 @@ Si Firebase Authentication rechaza un dominio, revisa sus dominios autorizados p
 - `/sitemap.xml` contiene URLs absolutas del dominio correcto, sin dashboard ni borradores.
 - `/robots.txt` referencia el sitemap y desaconseja rastrear login/dashboard/APIs.
 - Las entradas tienen canónica, Open Graph, metadatos de X y JSON-LD sin fechas inventadas.
+- El inicio tiene su canónica `/`; cada servicio usa `/{slug}` (no `/services/{slug}`), con títulos de respaldo orientados a Pachuca y sin sobrescribir SEO personalizado. Ver [SEO local](local-seo.md).
 - Las URLs antiguas de blog redirigen permanentemente al slug vigente.
 - Reservas por WhatsApp apuntan al número correcto.
 

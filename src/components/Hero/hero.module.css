@@ -2,9 +2,10 @@
 .root { @apply relative mx-auto grid max-w-7xl items-center gap-10 px-5 py-10 md:grid-cols-2 md:gap-12 md:px-8 md:py-16 lg:gap-20 lg:py-20; }
 .content { @apply min-w-0; }
 .eyebrow { @apply mb-6 text-xs font-medium uppercase tracking-[0.18em] text-tertiary; }
-.heading { @apply font-heading text-6xl leading-[1.02] font-normal tracking-tight text-tertiary lg:text-8xl; }
+.heading { @apply font-heading leading-[1.05] font-normal tracking-tight text-tertiary; font-size: clamp(2.5rem, 5vw, 4.75rem); }
 .heading em { @apply font-normal text-[#6b7c68]; }
-.description { @apply mt-7 max-w-md text-base leading-8 text-neutral; }
+.tagline { @apply mt-6 font-heading text-2xl text-tertiary; }
+.description { @apply mt-3 max-w-md text-base leading-8 text-neutral; }
 .actions { @apply mt-8 flex flex-wrap items-center gap-6; }
 .whatsappLink { @apply inline-flex items-center justify-center gap-8 rounded-full bg-tertiary px-7 py-4 text-sm font-medium text-secondary transition-colors hover:bg-[#344238]; }
 .explore { @apply inline-flex items-center gap-3 border-b border-[#b4beb0] pb-1 text-sm text-tertiary; }
