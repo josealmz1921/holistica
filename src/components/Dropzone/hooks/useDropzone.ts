@@ -7,8 +7,8 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { fileToBase64 } from "@/src/utilities/helpers";
 
 const MAX_FILE_SIZE = 250 * 1024;
-const MAX_WIDTH = 1200;
-const MAX_HEIGHT = 1200;
+const MAX_WIDTH = 1800;
+const MAX_HEIGHT = 1800;
 
 const useDropzone = ({ getValues, initialValues = [], onDelete, disabled = false, maxFiles = 0, allowVideo = false, maxImageSize = MAX_FILE_SIZE, onProcessingChange }: DropzoneProps) => {
     const [files, setFiles] = useState<PreviewFile[]>(() => maxFiles > 0 ? initialValues.slice(0, maxFiles) : initialValues);
