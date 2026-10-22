@@ -6,6 +6,7 @@ import ImageCarousel from "@/src/components/ImageCarousel/imageCarousel";
 import { getServiceBySlug } from "@/src/firebase/getServices";
 import { notFound } from "next/navigation";
 import ServiceDescription from "@/src/components/ServiceDescription/serviceDescription";
+import PageAnalytics from "@/src/components/Analytics/pageAnalytics";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL
 
@@ -129,6 +130,7 @@ export default async function ServicePage({
 
     return (
         <div className={classes.root}>
+            <PageAnalytics pageType="service" title={service.name} serviceId={service.id} />
             <div className={classes.container}>
                 <div className={classes.carrouselContainer}>
                     <ImageCarousel

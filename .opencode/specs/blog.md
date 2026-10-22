@@ -86,6 +86,8 @@ La vista previa de Google del formulario es orientativa: no garantiza el texto q
 
 ## Criterios para comprobar cambios
 
+La medición opcional de visitas y lecturas estimadas (`page_view`, `blog_read`) requiere consentimiento; definición de umbrales y configuración de GTM en [Métricas](../docs/analytics.md). No se considera que abrir una entrada demuestre lectura.
+
 1. Los borradores no aparecen ni son accesibles por consultas públicas.
 2. Los campos SEO vacíos mantienen útiles las entradas antiguas.
 3. El HTML renderizado contiene título, canónica, metadatos sociales y JSON-LD correctos.

@@ -15,6 +15,7 @@ Flor de luna tiene dos áreas: el sitio público de bienestar y un dashboard de 
 | Firebase Admin | Verificación de tokens/revocación y operaciones internas de las APIs |
 | Cloudinary | Almacenamiento y entrega de imágenes/videos |
 | Editor.js | Contenido estructurado de blog y descripción enriquecida de servicios |
+| Google Tag Manager / GA4 | Medición pública tras consentimiento; eventos de páginas, WhatsApp y lectura estimada. Configuración remota en [Métricas](analytics.md) |
 
 ## Mapa de directorios
 

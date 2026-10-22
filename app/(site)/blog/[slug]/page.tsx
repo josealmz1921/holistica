@@ -6,6 +6,7 @@ import { getPublishedBlogPostBySlug } from "@/src/firebase/blog";
 import { getBlogSlug } from "@/src/utilities/blogSlug";
 import BlogContent from "@/src/components/Blog/blogContent";
 import BlogGallery from "@/src/components/Blog/blogGallery";
+import PageAnalytics from "@/src/components/Analytics/pageAnalytics";
 import styles from "@/src/components/Blog/blog.module.css";
 import { blogMetadata, blogJsonLd, serializeJsonLd } from "@/src/utilities/blogSeo";
 
@@ -29,7 +30,8 @@ export default async function BlogPostPage({ params }: Props) {
         <article className={styles.article}>
             <Link href="/blog" className={styles.back}>← Volver al blog</Link>
             <header className={styles.heading}><p className={styles.eyebrow}>El diario de Flor de luna</p><h1>{post.title}</h1>{post.excerpt && <p className={styles.intro}>{post.excerpt}</p>}</header>
-            <BlogContent content={post.content} />
+            <div data-analytics-blog-content><BlogContent content={post.content} /></div>
+            <PageAnalytics pageType="blog_article" title={post.title} articleId={post.id} />
             <BlogGallery media={post.media || []} title={post.title} />
             <footer className={styles.articleFooter}><p>Haz espacio para ti.</p><Link href="/#servicios" className={styles.all}>Descubre nuestros masajes ↗</Link></footer>
         </article>

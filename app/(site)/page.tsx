@@ -7,10 +7,12 @@ import Services from "@/src/components/Services";
 import WhyUs from "@/src/components/WhyUs";
 import CustomeService from "@/src/components/CustomeService";
 import Therapist from "@/src/components/Therapist";
+import PageAnalytics from "@/src/components/Analytics/pageAnalytics";
 
 export default function Home() {
   return (
     <main>
+      <PageAnalytics pageType="home" title="Flor de luna" />
       <Hero />
       <Services />
       <WhyUs />

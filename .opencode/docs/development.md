@@ -87,6 +87,7 @@ La variable de medición es opcional. `.env*` está ignorado por Git. Guarda cua
 | `npm run lint` | ESLint sobre el proyecto |
 | `npx tsc --noEmit` | Comprobar tipos sin generar código |
 | `npm run test:security` | Pruebas de autorización y APIs con servicios simulados |
+| `npm run test:analytics` | Pruebas de consentimiento, exclusión de rutas, URLs y umbrales de lectura, sin Google real |
 | `npm run test:rules` | Pruebas de Firestore; requiere emulador activo |
 | `npm audit --omit=dev` | Auditoría de dependencias de producción |
 

@@ -13,6 +13,7 @@ Este archivo distingue **implementación en el repositorio** de **configuración
 - [x] SEO de blog opcional, imagen social, alt, JSON-LD, sitemap y robots.
 - [x] Tarjetas del blog sin portada ficticia cuando no hay imagen.
 - [x] Collage responsive en el detalle del blog, sin carrusel, con visor modal y zoom de 100 % a 300 %; videos separados con controles nativos.
+- [x] Integración de GTM pública con consentimiento previo y eventos `page_view`, `whatsapp_click`, `blog_read`; configuración de GA4/etiquetas/publicación del contenedor aún requiere verificación externa.
 - [x] Límite de videos de 150 MiB en Dropzone/helper; restricciones externas dependen del preset y plan.
 - [x] Claim `admin: true` exigido en login, protección visual y APIs de archivos.
 - [x] Subidas firmadas, borrado acotado, límites de solicitudes y validación de JSON.
@@ -23,6 +24,9 @@ Este archivo distingue **implementación en el repositorio** de **configuración
 - [x] README, instrucciones, guías operativas y especificaciones centralizadas en `.opencode/`.
 
 ## Prioridad: activación externa pendiente de confirmar
+
+- [ ] Configurar/publicar las etiquetas GTM y GA4 sin duplicar vistas automáticas; verificar consentimiento, navegación, lectura y eventos reales siguiendo [Métricas](docs/analytics.md).
+- [ ] Revisar política de privacidad, textos de consentimiento, retención/configuración GA4 y obligaciones aplicables; la interfaz local no acredita cumplimiento legal completo.
 
 - [ ] Confirmar que las tres cuentas indicadas tienen el claim booleano de administrador y pueden iniciar sesión de nuevo.
 - [ ] Confirmar credenciales privadas de Firebase Admin en el entorno de destino y coincidencia de proyecto.
@@ -45,6 +49,10 @@ Este archivo distingue **implementación en el repositorio** de **configuración
 Estas mejoras están documentadas, no autorizadas automáticamente para implementación. No se ha solicitado gestión dinámica de usuarios: la decisión vigente es habilitar solo las tres cuentas indicadas.
 
 ## Registro de verificaciones
+
+### GTM y eventos públicos — 21 de octubre de 2026
+
+Se integró el contenedor indicado por el propietario mediante `next/script`, bloqueado hasta consentimiento. Se agregaron `page_view`, `whatsapp_click` y `blog_read`, sin enviar destino/mensaje de WhatsApp. Se documentaron etiquetas, parámetros y prevención de visitas duplicadas en [Métricas](docs/analytics.md). Verificados build con TypeScript, ESLint focalizado, 6 pruebas de Analytics sin red, 13 pruebas de seguridad y enlaces de documentación. No se modificó el contenedor remoto ni se comprobó Tag Assistant/DebugView en navegador; falta verificar publicación y eventos reales tras configurar GTM/GA4.
 
 ### Collage y zoom del blog — 21 de octubre de 2026
 

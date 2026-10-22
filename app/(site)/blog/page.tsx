@@ -4,6 +4,7 @@ import { getPublishedBlogPosts } from "@/src/firebase/blog";
 import BlogCards from "@/src/components/Blog/blogCards";
 import styles from "@/src/components/Blog/blog.module.css";
 import { siteUrl } from "@/src/utilities/blogSeo";
+import PageAnalytics from "@/src/components/Analytics/pageAnalytics";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 export default async function BlogPage() {
     const posts = await getPublishedBlogPosts();
     return <main className={styles.page}>
+        <PageAnalytics pageType="blog_list" title="Blog | Flor de luna" />
         <div className={styles.container}>
             <Link href="/" className={styles.back}>← Volver al inicio</Link>
             <header className={styles.heading}><p className={styles.eyebrow}>El diario de Flor de luna</p><h1>Un momento para tu bienestar</h1><p className={styles.intro}>Descubre ideas, historias y pequeños rituales para reconectar contigo.</p></header>

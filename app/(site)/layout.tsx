@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { EB_Garamond, Manrope } from "next/font/google";
 import Header from "@/src/components/Header/header";
 import Footer from "@/src/components/Footer/footer";
+import SiteAnalytics from "@/src/components/Analytics/siteAnalytics";
 import { getSiteUrl } from "@/src/utilities/blogSeo";
 
 import "@/app/globals.css";
@@ -37,6 +38,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <SiteAnalytics />
       </body>
 
     </html>
