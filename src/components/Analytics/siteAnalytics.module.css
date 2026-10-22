@@ -1,9 +1,10 @@
-.banner { position: fixed; bottom: 1rem; left: 1rem; right: 1rem; z-index: 90; display: flex; align-items: center; gap: 1.5rem; max-width: 1050px; margin: auto; padding: 1.5rem; border: 1px solid #cdd5c9; border-radius: 1rem; color: #2f3b32; background: #fafbf8; box-shadow: 0 8px 40px rgb(25 40 30 / 18%); }
-.banner h2 { margin: 0 0 0.5rem; font-family: var(--font-heading); font-size: 1.5rem; font-weight: 400; }
-.banner p { margin: 0; max-width: 680px; font-size: 0.8rem; line-height: 1.7; }
-.actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
-.actions button { min-height: 44px; padding: 0.6rem 1rem; border: 1px solid #647067; border-radius: 0.5rem; background: transparent; cursor: pointer; font-size: 0.8rem; color: inherit; }
-.actions button:hover { background: #e7e9e1; }
+.banner { position: fixed; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); left: 1rem; z-index: 90; display: flex; flex-direction: column; gap: 1rem; width: min(440px, calc(100% - 2rem)); max-height: 75dvh; overflow: auto; padding: 1.25rem; border: 1px solid #dce1d5; border-radius: 1.1rem; color: #354438; background: #f7f7ef; box-shadow: 0 4px 24px rgb(25 40 30 / 10%); }
+.banner h2 { margin: 0 0 0.55rem; font-family: var(--font-heading); font-size: 1.4rem; line-height: 1.2; font-weight: 400; }
+.banner p { margin: 0; font-size: 0.8rem; line-height: 1.7; color: #566353; }
+.banner p + p { margin-top: 0.5rem; }
+.actions { display: flex; gap: 0.65rem; }
+.actions button { flex: 1; min-width: 0; min-height: 44px; padding: 0.65rem 0.75rem; border: 1px solid #81907c; border-radius: 0.65rem; background: transparent; cursor: pointer; font-size: 0.8rem; color: inherit; }
+.actions button:hover { background: #e9eddf; }
 .preferences { display: block; margin: 1rem auto; padding: 0.5rem; background: transparent; border: 0; color: #647067; text-decoration: underline; text-underline-offset: 3px; font-size: 0.75rem; cursor: pointer; }
 .banner button:focus-visible, .preferences:focus-visible { outline: 2px solid #647067; outline-offset: 3px; }
-@media (max-width: 700px) { .banner { flex-direction: column; align-items: stretch; max-height: 75dvh; overflow: auto; gap: 1rem; padding: 1rem; } .actions button { flex: 1; } }
+@media (max-width: 480px) { .banner { padding: 1rem; } .banner h2 { font-size: 1.3rem; } }

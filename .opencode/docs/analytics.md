@@ -78,6 +78,7 @@ Marca **`whatsapp_click` como evento clave** si deseas medir intención de reser
 ## Consentimiento y privacidad
 
 - Antes de aceptar, no se carga GTM ni se encolan eventos de medición. Rechazar permite seguir usando el sitio.
+- El aviso se presenta como una tarjeta compacta, sin fondo bloqueante, con «¿Nos ayudas a mejorar Flor de luna?» y una explicación breve del uso de Google Analytics. «Ahora no» guarda rechazo y «Aceptar y ayudar» guarda aceptación; ambas opciones tienen igual tamaño y estilo. «Ahora no» no implica aceptar más tarde ni vuelve a pedir permiso automáticamente en la siguiente página.
 - La preferencia se guarda localmente con la clave `flor-de-luna:analytics-consent:v1`; no es un identificador de visitante. Si el navegador bloquea almacenamiento, no se autoriza Analytics automáticamente.
 - «Preferencias de medición», al pie del sitio, permite cambiar la elección. Rechazar después de aceptar actualiza Consent Mode y recarga la página para detener las etiquetas ya cargadas. El cambio se detecta también en otras pestañas del mismo origen.
 - La integración concede únicamente `analytics_storage`; `ad_storage`, `ad_user_data` y `ad_personalization` permanecen denegados. No uses este consentimiento para habilitar publicidad u otros proveedores sin un flujo apropiado.

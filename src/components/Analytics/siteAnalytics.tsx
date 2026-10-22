@@ -48,13 +48,13 @@ export default function SiteAnalytics() {
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','${GTM_ID}');
         `}</Script>}
-        {consent === null || editing ? <section className={styles.banner} aria-label="Preferencias de medición">
-            <div><h2>¿Nos ayudas a mejorar este espacio?</h2><p>Con tu permiso usamos Google Analytics mediante Google Tag Manager para conocer las páginas que visitas y cómo interactúas con ellas. Puedes rechazarlo y seguir navegando, o cambiar tu elección en «Preferencias de medición».</p>
+        {consent === null || editing ? <section className={styles.banner} aria-labelledby="analytics-consent-title">
+            <div><h2 id="analytics-consent-title">¿Nos ayudas a mejorar Flor de luna?</h2><p>Si aceptas, usamos Google Analytics para saber qué servicios y artículos interesan más. Es opcional: puedes seguir navegando sin aceptar y cambiar tu elección cuando quieras.</p>
                 {storageError && <p role="status">Tu navegador no permite guardar la elección. La medición permanece desactivada si no estaba autorizada.</p>}
             </div>
             <div className={styles.actions}>
-                <button type="button" onClick={() => choose("denied")}>Rechazar</button>
-                <button type="button" onClick={() => choose("granted")}>Aceptar medición</button>
+                <button type="button" onClick={() => choose("denied")}>Ahora no</button>
+                <button type="button" onClick={() => choose("granted")}>Aceptar y ayudar</button>
             </div>
         </section> : null}
         <button type="button" className={styles.preferences} onClick={() => setEditing(true)}>Preferencias de medición</button>
