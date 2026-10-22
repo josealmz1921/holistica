@@ -42,6 +42,15 @@ Si una entrada antigua ya estaba publicada y no tiene `publishedAt`, guardarla n
 
 Consulta [Cloudinary](../docs/cloudinary.md) para controles externos, firmas y diferencias entre quitar una referencia y borrar un archivo.
 
+### Galería pública del artículo
+
+- Las imágenes del detalle se muestran como un collage de columnas con proporciones variadas, sin carrusel; una sola imagen utiliza todo el ancho. Con cinco o más imágenes se usan tres columnas en escritorio, dos en móvil.
+- Las miniaturas recortan para componer el collage. Al pulsarlas se abre un visor modal con la imagen completa sin recortar, texto alternativo y zoom de 100 % a 300 % en pasos de 50 %.
+- Los controles permiten acercar, alejar y restablecer el zoom. Con zoom se puede desplazar el área de imagen con scroll/táctil o teclado al enfocar esa área.
+- Se cierra con el botón, `Esc` o clic fuera del panel. Headless UI gestiona foco modal, bloqueo de scroll del fondo y devolución del foco al disparador.
+- No hay reproducción automática ni navegación de carrusel. Los videos se muestran debajo con controles nativos, conservando su orden relativo. Las imágenes conservan el orden relativo de administración en el flujo de columnas.
+- El listado, formulario, archivos guardados y SEO no cambian. No se introduce una dependencia nueva.
+
 ## SEO y redes sociales
 
 La sección plegable “SEO y redes sociales” es opcional. No cambia el título editorial visible de la entrada.

@@ -12,6 +12,7 @@ Este archivo distingue **implementación en el repositorio** de **configuración
 - [x] Blog con editor, borradores/publicación, archivos y slugs anteriores.
 - [x] SEO de blog opcional, imagen social, alt, JSON-LD, sitemap y robots.
 - [x] Tarjetas del blog sin portada ficticia cuando no hay imagen.
+- [x] Collage responsive en el detalle del blog, sin carrusel, con visor modal y zoom de 100 % a 300 %; videos separados con controles nativos.
 - [x] Límite de videos de 150 MiB en Dropzone/helper; restricciones externas dependen del preset y plan.
 - [x] Claim `admin: true` exigido en login, protección visual y APIs de archivos.
 - [x] Subidas firmadas, borrado acotado, límites de solicitudes y validación de JSON.
@@ -44,6 +45,10 @@ Este archivo distingue **implementación en el repositorio** de **configuración
 Estas mejoras están documentadas, no autorizadas automáticamente para implementación. No se ha solicitado gestión dinámica de usuarios: la decisión vigente es habilitar solo las tres cuentas indicadas.
 
 ## Registro de verificaciones
+
+### Collage y zoom del blog — 21 de octubre de 2026
+
+Se añadió `BlogGallery` al detalle público, sin modificar tarjetas, administración ni datos guardados. Headless UI existente gestiona el diálogo; no se añadieron dependencias. Build con TypeScript y ESLint focalizado correctos. Se comprobó el renderizado sin red con 0/1/2/3/5/10 imágenes, alt guardado y contenido de solo video. Falta comprobación visual e interacción real de zoom, foco, cierre y tamaños móviles en navegador (no disponible en esta sesión). Ver [especificación](specs/blog.md#galería-pública-del-artículo).
 
 ### Compatibilidad de Firebase Admin en Vercel
 
