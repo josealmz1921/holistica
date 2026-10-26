@@ -4,6 +4,8 @@
 
 ## Tres piezas distintas
 
+El constructor añade `pageDrafts/home` (privado) y `pagePublished/home` (instantánea publicable). Las reglas locales prohíben toda escritura directa, incluso de administradores: se usa la API con token y validación de servidor. No se han desplegado estas reglas ni escrito documentos en producción. Modelo y límites en [Constructor de páginas](../specs/page-builder.md).
+
 1. **Firebase Authentication** identifica al usuario: correo, contraseña, UID y sesión.
 2. **Cloud Firestore** almacena documentos de contenido, no los archivos de imágenes/videos.
 3. **Firestore Security Rules** deciden qué operaciones del SDK cliente se permiten y qué datos aceptan.

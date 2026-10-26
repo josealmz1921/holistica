@@ -6,6 +6,12 @@ Este archivo distingue **implementación en el repositorio** de **configuración
 
 ## Implementado
 
+- [x] Constructor del inicio en `/dashboard/pages`, importación aislada del módulo Ingenix `a522753`, tema Flor de luna, bloques editables, ordenación y subidas firmadas reutilizadas.
+- [x] API administrativa de borrador/publicación con revisión, validación de servidor y almacenamiento separado; reglas locales sin escritura directa.
+- [x] Vista previa local sin reemplazar el inicio, sin Analytics ni indexación. La instantánea publicada todavía no tiene lector conectado al sitio.
+- [ ] Aprobar presentación y conexiones del inicio antes de activar el constructor en la portada pública.
+- [ ] Con autorización: desplegar reglas, verificar permisos IAM y probar edición/publicación/subidas en un entorno no productivo. No se modificó producción.
+
 - [x] Sitio público, servicios, categorías, perfil de terapeuta y reservas por WhatsApp.
 - [x] Dashboard de contenido y login con Firebase.
 - [x] Descripciones de servicios con texto enriquecido básico y compatibilidad con texto anterior.
@@ -51,6 +57,10 @@ Este archivo distingue **implementación en el repositorio** de **configuración
 Estas mejoras están documentadas, no autorizadas automáticamente para implementación. No se ha solicitado gestión dinámica de usuarios: la decisión vigente es habilitar solo las tres cuentas indicadas.
 
 ## Registro de verificaciones
+
+### Constructor de páginas — 26 de octubre de 2026
+
+Rama de trabajo `feat/flor-de-luna-page-builder`; sin despliegue ni activación en la portada pública. Pasaron TypeScript, ESLint focalizado, build, 18 pruebas de módulo/API y 26 de seguridad/Analytics/SEO. En la verificación inicial también pasaron 7 pruebas de reglas en el emulador `demo-holistica-security`. El lint global reportó 69 errores y 12 avisos en archivos preexistentes no modificados por esta integración. Se revisaron el editor y la vista previa en navegador a 1280/500 px, con identidad ficticia y persistencia simulada. La revisión posterior de edición directa cubrió título guardado, foco al vaciarlo, pegado como texto plano y arrastre desde el catálogo mediante puntero y teclado, incluido el catálogo superpuesto a 500 px. No se usaron credenciales de usuarios para pruebas ni se hicieron subidas reales. Falta la integración interactiva con proveedores en un entorno no productivo; ver [especificación](specs/page-builder.md).
 
 ### SEO local de inicio y servicios — 21 de octubre de 2026
 

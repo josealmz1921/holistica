@@ -59,6 +59,10 @@ Los grupos `(site)` y `(admin)` organizan layouts; sus nombres no aparecen en la
 | `/dashboard/therapist` | Perfil público de terapeuta |
 | `/dashboard/blog` | Entradas administrativas, incluidos borradores |
 | `/dashboard/blog/new`, `/dashboard/blog/{id}` | Creación y edición por ID de Firestore |
+| `/dashboard/pages` | Listado de páginas; esta versión administra únicamente el inicio |
+| `/dashboard/pages/home` | Constructor visual del inicio; no sustituye la portada pública |
+| `/builder-preview` | Vista previa local para administradores, sin Analytics ni indexación |
+| `/api/admin/pages/home` | Lectura/guardado/publicación de bloques, con verificación de administrador |
 | `/api/cloudinary/sign` | POST autenticado para autorizar una subida |
 | `/api/cloudinary/delete` | DELETE autenticado para eliminar una imagen permitida |
 

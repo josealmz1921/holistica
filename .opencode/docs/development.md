@@ -89,6 +89,7 @@ La variable de medición es opcional. `.env*` está ignorado por Git. Guarda cua
 | `npm run test:security` | Pruebas de autorización y APIs con servicios simulados |
 | `npm run test:analytics` | Pruebas de consentimiento, exclusión de rutas, URLs y umbrales de lectura, sin Google real |
 | `npm run test:seo` | Pruebas de metadatos de inicio/servicios, canónicas y campos personalizados, sin Firebase real |
+| `npm run test:page-builder` | Contrato/renderizador de bloques y APIs de borrador/publicación con servicios simulados |
 | `npm run test:rules` | Pruebas de Firestore; requiere emulador activo |
 | `npm audit --omit=dev` | Auditoría de dependencias de producción |
 

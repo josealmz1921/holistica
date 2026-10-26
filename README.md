@@ -44,6 +44,7 @@ npm run dev
 | [Configuración de subidas seguras](.opencode/docs/secure-uploads-setup.md) | Credenciales, presets y diagnóstico de esta instalación |
 | [Métricas: GTM y GA4](.opencode/docs/analytics.md) | Consentimiento, eventos y configuración del contenedor |
 | [SEO local](.opencode/docs/local-seo.md) | Pachuca, público de CDMX/Edomex, canónicas y metadatos |
+| [Constructor de páginas](.opencode/specs/page-builder.md) | Editor de bloques, borradores, publicación y vista previa sin sustituir el inicio |
 | [Despliegue](.opencode/docs/deployment.md) | Firebase, Vercel y comprobaciones en producción |
 | [Especificación del dashboard](.opencode/specs/dashboard.md) | Comportamiento de servicios, categorías y terapeuta |
 | [Especificación del blog](.opencode/specs/blog.md) | Editor, publicación, archivos y SEO |

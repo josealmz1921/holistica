@@ -1,0 +1,8 @@
+.button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 48px; padding: .75rem 1.5rem; border: 1px solid transparent; border-radius: var(--pb-button-radius, 12px); font: inherit; font-weight: 500; text-align: center; text-decoration: none; cursor: pointer; transition: background-color 180ms ease, box-shadow 180ms ease; }
+.button:focus-visible { outline: 2px solid var(--pb-accent, #9bc5ff); outline-offset: 4px; }
+.primary { composes: button; background: var(--pb-primary, #1164ff); color: var(--pb-on-primary, #fff); }
+.secondary { composes: button; border-color: var(--pb-accent, #789acb); color: var(--pb-accent, #c7dfff); background: transparent; }
+.tertiary { composes: button; color: var(--pb-text, #fff); background: transparent; }
+.primary:hover { filter: brightness(.95); }
+.secondary:hover { background: var(--pb-surface, #161b2b); }
+@media (prefers-reduced-motion: reduce) { .button { transition: none; } }

@@ -1,0 +1,26 @@
+.Banner { position: relative; display: flex; width: 100%; overflow: hidden; border: 1px solid var(--pb-border, #293951); border-radius: var(--pb-radius, 16px); background: var(--pb-surface, #161b2b); color: var(--pb-text, #fff); }
+.Banner--left { flex-direction: row; }
+.Banner--right { flex-direction: row-reverse; }
+.Banner--top { flex-direction: column; }
+.Banner--bottom { flex-direction: column-reverse; }
+.Banner__image { position: relative; flex: 1 1 50%; min-width: 0; min-height: 300px; }
+.Banner__image img { object-fit: cover; }
+.Banner__content { position: relative; z-index: 2; display: flex; flex: 1 1 50%; flex-direction: column; justify-content: center; min-width: 0; padding: clamp(1.5rem, 4cqw, 3rem); }
+.Banner__title { margin: 0; max-width: 760px; text-wrap: balance; font-family: var(--pb-font-heading, inherit); font-size: clamp(1.75rem, 3cqw, 2.5rem); font-weight: 700; letter-spacing: -.035em; line-height: 1.2; }
+.Banner__description { margin-top: 1rem; max-width: 640px; line-height: 1.8; color: var(--pb-muted, #b8c5d6); }
+.Banner__actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+.Banner--align-left .Banner__content { align-items: flex-start; text-align: left; }
+.Banner--align-center .Banner__content { align-items: center; text-align: center; }
+.Banner--align-right .Banner__content { align-items: flex-end; text-align: right; }
+.Banner--background { min-height: 500px; color: var(--pb-on-image, #fff); }
+.Banner__background { position: absolute; inset: 0; background-position: center; background-size: cover; filter: brightness(.5); }
+.Banner--background .Banner__description { color: var(--pb-on-image, #fff); }
+.Banner__overlay { position: absolute; inset: 0; z-index: 1; background: rgb(0 0 0 / .4); }
+.Banner--small { min-height: 300px; }
+.Banner--medium { min-height: 450px; }
+.Banner--large { min-height: 600px; }
+.Banner--auto { min-height: auto; }
+.Banner--parallax .Banner__background { background-attachment: fixed; }
+@container page-renderer (max-width: 768px) { .Banner--left, .Banner--right { flex-direction: column; } .Banner__image { flex: none; width: 100%; min-height: 220px; } .Banner--small { min-height: 220px; } .Banner--medium { min-height: 350px; } .Banner--large { min-height: 450px; } .Banner--parallax .Banner__background { background-attachment: scroll; } }
+@container page-renderer (max-width: 480px) { .Banner__actions { flex-direction: column; width: 100%; } .Banner__actions > * { width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .Banner--parallax .Banner__background { background-attachment: scroll; } }

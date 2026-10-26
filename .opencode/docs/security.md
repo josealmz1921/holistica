@@ -4,6 +4,8 @@
 
 Los cambios fallan de forma segura: sin permiso `admin: true`, el dashboard y las APIs de archivos rechazan el acceso. Las reglas locales **no protegen Firestore hasta que se despliegan**. No se han cambiado usuarios, reglas remotas ni presets automáticamente.
 
+Las APIs del [constructor](../specs/page-builder.md) también verifican token y revocación antes de Firestore, validan en servidor y separan borradores de publicaciones. Sus escrituras directas desde SDK cliente están denegadas incluso para administradores. La vista previa no obtiene borradores de un lector público ni carga scripts de medición.
+
 ## 1. Servidor (Node.js 22 o posterior)
 
 Configura en `.env.local` y en el despliegue las [variables públicas y privadas](development.md#variables-de-entorno). La guía distingue configuración web de Firebase de las credenciales del SDK Admin, y contiene únicamente ejemplos ficticios.

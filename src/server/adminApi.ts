@@ -17,7 +17,7 @@ export async function requireAdmin(request: Request) {
     return token;
 }
 
-export async function readJson(request: Request): Promise<Record<string, unknown>> {
+export async function readJson(request: Request, maxBytes = 16 * 1024): Promise<Record<string, unknown>> {
     if (request.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !== "application/json") throw new ApiError(415, "Se requiere JSON.");
     const reader = request.body?.getReader();
     if (!reader) throw new ApiError(400, "Solicitud vacía.");
@@ -27,7 +27,7 @@ export async function readJson(request: Request): Promise<Record<string, unknown
         const { done, value } = await reader.read();
         if (done) break;
         size += value.byteLength;
-        if (size > 16 * 1024) { await reader.cancel(); throw new ApiError(413, "Solicitud demasiado grande."); }
+        if (size > maxBytes) { await reader.cancel(); throw new ApiError(413, "Solicitud demasiado grande."); }
         chunks.push(value);
     }
     try {

@@ -52,6 +52,9 @@ const Sidebar = () => {
                     <NewspaperIcon className={styles.icon} /><span>Blog</span>
                 </Link>
 
+                <Link href="/dashboard/pages" aria-current={isActive("/dashboard/pages") ? "page" : undefined} className={styles.link}>
+                    <NewspaperIcon className={styles.icon} /><span>Páginas</span>
+                </Link>
                 {/* <Link href="/dashboard/content" className={styles.link}>
                     <PencilSquareIcon className={styles.icon} />
                     <span>Contenido</span>
@@ -89,6 +92,9 @@ const Sidebar = () => {
                     <NewspaperIcon className={styles.mobileIcon} /><span>Blog</span>
                 </Link>
 
+                <Link href="/dashboard/pages" aria-current={isActive("/dashboard/pages") ? "page" : undefined} className={styles.mobileLink}>
+                    <NewspaperIcon className={styles.mobileIcon} /><span>Páginas</span>
+                </Link>
                 <button onClick={() => logout()} className={styles.mobileLogout}>
                     <ArrowLeftOnRectangleIcon className={styles.mobileIcon} />
                     <span>Salir</span>
