@@ -1,0 +1,4 @@
+.root { container: page-renderer / inline-size; width: 100%; min-width: 0; background: var(--pb-background); color: var(--pb-text); font-family: var(--pb-font-body); overflow-wrap: break-word; }
+.root, .root *, .root *::before, .root *::after { box-sizing: border-box; }
+.root a { text-decoration: none; }
+.inner { max-width: var(--pb-max-width); margin: 0 auto; }

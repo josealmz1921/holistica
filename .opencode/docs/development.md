@@ -77,6 +77,10 @@ La variable de medición es opcional. `.env*` está ignorado por Git. Guarda cua
 
 `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET` pertenecía al flujo unsigned anterior y ya no se utiliza. No vuelvas a introducirlo; consulta [Cloudinary](cloudinary.md).
 
+## Reversión del inicio publicado
+
+`PAGE_BUILDER_HOME_DISABLED=true` (solo servidor) desactiva la lectura de bloques publicados y restaura el Hero/SEO originales, sin borrar contenido. Reinicia el servidor local o vuelve a desplegar tras cambiarla. Por defecto, sin esta variable, `/` utiliza una publicación válida si existe; guardar un borrador no afecta al sitio. Véase [integración del constructor](../specs/page-builder.md#integración-con-el-inicio).
+
 ## Comandos
 
 | Comando | Propósito |
@@ -89,6 +93,7 @@ La variable de medición es opcional. `.env*` está ignorado por Git. Guarda cua
 | `npm run test:security` | Pruebas de autorización y APIs con servicios simulados |
 | `npm run test:analytics` | Pruebas de consentimiento, exclusión de rutas, URLs y umbrales de lectura, sin Google real |
 | `npm run test:seo` | Pruebas de metadatos de inicio/servicios, canónicas y campos personalizados, sin Firebase real |
+| `npm run test:page-builder` | Contrato/renderizador de bloques y APIs de borrador/publicación con servicios simulados |
 | `npm run test:rules` | Pruebas de Firestore; requiere emulador activo |
 | `npm audit --omit=dev` | Auditoría de dependencias de producción |
 

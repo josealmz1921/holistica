@@ -49,7 +49,7 @@ type Parameters = Record<string, string | number>;
 
 export function trackAnalytics(event: AnalyticsEvent, parameters: Parameters) {
     if (getAnalyticsConsent() !== "granted") return;
-    if (/^\/(?:dashboard|login|api)(?:\/|$)/.test(window.location.pathname)) return;
+    if (/^\/(?:dashboard|login|api|builder-preview)(?:\/|$)/.test(window.location.pathname)) return;
     window.dataLayer = window.dataLayer || [];
     if (!window.gtag) {
         // eslint-disable-next-line prefer-rest-params -- Google's command queue expects an Arguments object, not an event array.

@@ -51,7 +51,7 @@ test("consent is queued before events, advertising is denied and optional contex
 test("private routes do not emit events even with granted consent", t => {
     browser(t, "granted");
     const { trackAnalytics } = createLoader()("src/utilities/analytics.ts");
-    for (const pathname of ["/dashboard", "/dashboard/blog", "/login", "/api/cloudinary/sign"]) {
+    for (const pathname of ["/dashboard", "/dashboard/blog", "/dashboard/pages", "/builder-preview", "/login", "/api/cloudinary/sign"]) {
         window.location.pathname = pathname;
         trackAnalytics("page_view", {});
     }

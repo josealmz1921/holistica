@@ -1,0 +1,17 @@
+/* Scoped defaults: no :root/body styles and no Tailwind dependency. */
+[data-page-builder] {
+  --pb-background: #0a0f1e;
+  --pb-surface: #161b2b;
+  --pb-panel: #101b2d;
+  --pb-text: #f1f5fb;
+  --pb-muted: #b8c5d6;
+  --pb-primary: #1164ff;
+  --pb-on-primary: #fff;
+  --pb-accent: #9bc5ff;
+  --pb-border: #293951;
+  --pb-radius: 16px;
+  --pb-button-radius: 12px;
+  --pb-max-width: 1200px;
+  --pb-font-body: inherit;
+  --pb-font-heading: inherit;
+}

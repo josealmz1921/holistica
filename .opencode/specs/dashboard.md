@@ -10,10 +10,12 @@ Esta especificación describe el comportamiento implementado, no un plan para a�
 - La cuenta debe contener el claim booleano `admin: true`.
 - El login tiene mostrar/ocultar contraseña, bloqueo durante el envío y errores legibles.
 - El layout del dashboard verifica el token antes de mostrar sus hijos; deniega cuentas sin permiso. Es un control de interfaz, no una sesión de servidor que reemplace las reglas.
-- La navegación incluye servicios, categorías, terapeuta y blog. Cerrar sesión usa Firebase.
+- La navegación incluye servicios, categorías, terapeuta, blog y páginas. Cerrar sesión usa Firebase.
 - Los tres administradores autorizados tienen el mismo nivel de permisos; no hay roles editor/lector ni interfaz para invitar usuarios.
 
 ## Servicios
+
+El listado del inicio se encuentra en `/dashboard/pages` y el editor en `/dashboard/pages/home`. Guardar conserva un borrador privado; publicar actualiza los bloques iniciales y el SEO de `/`, conservando las secciones existentes debajo. Véase [Constructor de páginas](page-builder.md) para permisos, vistas previas, reversión y límites.
 
 ### Listado
 

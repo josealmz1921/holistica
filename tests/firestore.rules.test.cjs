@@ -26,6 +26,8 @@ beforeEach(async () => {
             setDoc(doc(db, "blog", "draft"), { ...post, published: false }),
             setDoc(doc(db, "categories", "category"), category),
             setDoc(doc(db, "content", "therapist"), profile),
+            setDoc(doc(db, "pageDrafts", "home"), { document: { title: "Privado" }, revision: 1 }),
+            setDoc(doc(db, "pagePublished", "home"), { document: { title: "Público" }, revision: 1 }),
         ]);
     });
 });
@@ -99,4 +101,21 @@ test("internal collections are inaccessible to all browser users", async () => {
     const db = env.unauthenticatedContext().firestore();
     await assertSucceeds(getDoc(doc(db, "content", "therapist")));
     await assertSucceeds(getDocs(collection(db, "categories")));
+});
+
+test("page builder drafts are admin-only and even admins cannot bypass server publication validation", async () => {
+    for (const db of [env.unauthenticatedContext().firestore(), env.authenticatedContext("ordinary").firestore(), env.authenticatedContext("string", { admin: "true" }).firestore()]) {
+        await assertFails(getDoc(doc(db, "pageDrafts", "home")));
+        await assertFails(getDocs(collection(db, "pageDrafts")));
+        await assertSucceeds(getDoc(doc(db, "pagePublished", "home")));
+    }
+    const admin = env.authenticatedContext("admin", { admin: true }).firestore();
+    await assertSucceeds(getDoc(doc(admin, "pageDrafts", "home")));
+    for (const db of [admin, env.unauthenticatedContext().firestore()]) {
+        for (const collection of ["pageDrafts", "pagePublished"]) {
+            await assertFails(setDoc(doc(db, collection, "new"), { document: {}, revision: 1 }));
+            await assertFails(updateDoc(doc(db, collection, "home"), { document: {} }));
+            await assertFails(deleteDoc(doc(db, collection, "home")));
+        }
+    }
 });

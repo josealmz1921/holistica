@@ -1,0 +1,28 @@
+.Hero { position: relative; display: flex; width: 100%; min-height: 600px; margin: 0 auto; border: 1px solid var(--pb-border, #293951); border-radius: var(--pb-radius, 16px); background: var(--pb-surface, #161b2b); color: var(--pb-text, #fff); overflow: hidden; }
+.background, .overlay { position: absolute; inset: 0; }
+.backgroundImage { object-fit: cover; object-position: center; }
+.overlay { z-index: 1; background: var(--pb-hero-overlay, linear-gradient(90deg, #0a1424, rgb(10 20 36 / .3))); }
+.content { position: relative; z-index: 2; width: 100%; margin: 0 auto; padding: 4.5rem clamp(1.5rem, 5cqw, 4rem); }
+.Hero--left .content { text-align: left; }
+.Hero--center .content { text-align: center; }
+.Hero--right .content { text-align: right; }
+.title { max-width: 800px; margin: 0 0 1rem; font-family: var(--pb-font-heading, inherit); text-wrap: balance; letter-spacing: -.045em; line-height: 1.08; font-size: clamp(2.5rem, 4.6cqw, 4.1rem); font-weight: 700; }
+.description, .subtitle { max-width: 660px; margin: 0; line-height: 1.75; }
+.description { font-size: 1.125rem; }
+.subtitle { margin-top: 2rem; color: var(--pb-muted, #b8c9df); }
+.eyebrow { margin: 0 0 1.5rem; color: var(--pb-accent, #9bc5ff); font-size: .8rem; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
+.Hero--left .title, .Hero--left .description, .Hero--left .subtitle { margin-right: auto; }
+.Hero--center .title, .Hero--center .description, .Hero--center .subtitle { margin-left: auto; margin-right: auto; }
+.Hero--right .title, .Hero--right .description, .Hero--right .subtitle { margin-left: auto; }
+.buttonContainer { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2.5rem; }
+.Hero--center .buttonContainer { justify-content: center; }
+.Hero--right .buttonContainer { justify-content: flex-end; }
+.button { display: inline-flex; align-items: center; gap: .5rem; }
+.Hero--vertical-top .content { align-self: flex-start; }
+.Hero--vertical-center .content { align-self: center; }
+.Hero--vertical-bottom .content { align-self: flex-end; }
+.Hero--parallax .background { transform: scale(1.08); }
+@container page-renderer (max-width: 1024px) { .Hero { min-height: 520px; } }
+@container page-renderer (max-width: 768px) { .Hero { min-height: 500px; } .content { padding: 3rem 1.5rem; } .title { font-size: clamp(2.25rem, 6cqw, 3.5rem); } .description { font-size: 1rem; } }
+@container page-renderer (max-width: 480px) { .content { padding: 2.5rem 1rem; } .buttonContainer { flex-direction: column; } .button { width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .Hero--parallax .background { transform: none; } }

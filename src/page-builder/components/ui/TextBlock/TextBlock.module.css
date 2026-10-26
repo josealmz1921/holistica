@@ -1,0 +1,7 @@
+.textBlock { display: flex; flex-direction: column; gap: 20px; width: 100%; margin: 0 auto 2.5rem; max-width: 800px; color: var(--pb-text, #fff); }
+.left { text-align: left; align-items: flex-start; }
+.center { text-align: center; align-items: center; }
+.right { text-align: right; align-items: flex-end; }
+.eyebrow { margin: 0; font-size: .875rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--pb-accent, #89b9ff); }
+.title { margin: 0; font-family: var(--pb-font-heading, inherit); font-size: clamp(1.75rem, 3cqw, 2.75rem); letter-spacing: -.035em; text-wrap: balance; line-height: 1.2; font-weight: 600; }
+.subtitle, .description { max-width: 720px; margin: 0; color: var(--pb-muted, #b8c5d6); font-size: 1rem; line-height: 1.75; }
