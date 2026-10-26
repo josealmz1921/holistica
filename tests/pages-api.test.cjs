@@ -94,6 +94,15 @@ test("client cannot inject a published document, unsupported page IDs or stale r
     assert.equal((await api.writePage(request({ revision: 1.5 }, "admin", "POST"), "publish")).status, 400);
 });
 
+test('site section anchors cannot be overwritten by builder blocks', async () => {
+    const api = setup();
+    const invalid = page(); invalid.sections[0].id = 'servicios';
+    assert.equal((await api.writePage(request({ document: invalid, revision: 0 }), 'save')).status, 400);
+    api.store.set('pageDrafts/home', { document: invalid, revision: 1 });
+    assert.equal((await api.writePage(request({ revision: 1 }, 'admin', 'POST'), 'publish')).status, 400);
+    assert.equal(api.store.has('pagePublished/home'), false);
+});
+
 test("image origins and request/document byte limits are enforced in the server", async () => {
     const api = setup();
     const image = page(); image.sections[0].content.image = { src: "https://unapproved.example.com/image.jpg", alt: "Imagen" };

@@ -8,8 +8,10 @@ Este archivo distingue **implementación en el repositorio** de **configuración
 
 - [x] Constructor del inicio en `/dashboard/pages`, importación aislada del módulo Ingenix `a522753`, tema Flor de luna, bloques editables, ordenación y subidas firmadas reutilizadas.
 - [x] API administrativa de borrador/publicación con revisión, validación de servidor y almacenamiento separado; reglas locales sin escritura directa.
-- [x] Vista previa local sin reemplazar el inicio, sin Analytics ni indexación. La instantánea publicada todavía no tiene lector conectado al sitio.
-- [ ] Aprobar presentación y conexiones del inicio antes de activar el constructor en la portada pública.
+- [x] Vista previa local sin Analytics ni indexación, con las secciones públicas actuales debajo del borrador.
+- [x] Conexión autorizada del inicio a la instantánea publicada, SEO consistente, conservación de secciones existentes y fallback/reversión a Hero/SEO originales; implementación local, sin despliegue confirmado.
+- [x] Precarga local del contenido editorial original (textos, imágenes, SEO y enlaces), con confirmación para reemplazar la edición local y sin sobrescribir borradores automáticamente; copias de secciones retenidas ocultas por defecto.
+- [ ] Revisar presentación publicada, evitar duplicación editorial con las secciones retenidas y confirmar integración en un entorno no productivo antes del despliegue.
 - [ ] Con autorización: desplegar reglas, verificar permisos IAM y probar edición/publicación/subidas en un entorno no productivo. No se modificó producción.
 
 - [x] Sitio público, servicios, categorías, perfil de terapeuta y reservas por WhatsApp.
@@ -57,6 +59,18 @@ Este archivo distingue **implementación en el repositorio** de **configuración
 Estas mejoras están documentadas, no autorizadas automáticamente para implementación. No se ha solicitado gestión dinámica de usuarios: la decisión vigente es habilitar solo las tres cuentas indicadas.
 
 ## Registro de verificaciones
+
+### Confirmaciones del constructor — 26 de octubre de 2026
+
+Sustituidos los tres `window.confirm` (precarga, eliminación y publicación) por SweetAlert2 existente, con tema Flor de luna, Cancelar enfocado y bloqueo de acciones concurrentes. Se conserva `beforeunload` nativo. Pasaron build, TypeScript, ESLint focalizado y 28 pruebas del constructor/API/lectura pública/confirmaciones. En navegador aislado con persistencia simulada se comprobaron los tres diálogos, cancelación sin cambios/escrituras, precarga confirmada solo local y bloqueo de guardado durante el diálogo. No se modificaron proveedores remotos ni se añadieron dependencias.
+
+### Precarga del contenido original — 26 de octubre de 2026
+
+Plantilla local con seis bloques editoriales, imágenes existentes, SEO y enlaces WhatsApp. Solo el Hero queda visible para no duplicar las secciones retenidas. Pasaron 26 pruebas del constructor/API/lectura pública, TypeScript, ESLint focalizado y build. En un montaje aislado del editor con persistencia simulada se verificó: borrador existente respetado, cancelar sin cambios, aceptar carga sin escrituras, cinco bloques ocultos y guardado únicamente al pulsar Guardar borrador. No se escribieron borradores reales, no se publicó ni se hicieron subidas remotas.
+
+### Conexión del constructor al inicio — 26 de octubre de 2026
+
+Implementada la lectura de `pagePublished/home` en `/` y sus metadatos, sin lecturas de borradores; se mantienen las secciones originales debajo de los bloques y en la vista previa completa. Reversión con `PAGE_BUILDER_HOME_DISABLED=true`, validación de anclas e imágenes y fallback ante errores/timeouts. Pasaron build, TypeScript, ESLint focalizado y 52 pruebas (25 constructor/API/lectura pública/render de inicio, 8 SEO, 13 seguridad y 6 Analytics), con proveedores simulados. No se desplegó ni se publicaron documentos remotos como prueba. Pendiente revisión visual e integración autenticada sobre un entorno no productivo.
 
 ### Constructor de páginas — 26 de octubre de 2026
 

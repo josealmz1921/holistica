@@ -60,7 +60,7 @@ Los grupos `(site)` y `(admin)` organizan layouts; sus nombres no aparecen en la
 | `/dashboard/blog` | Entradas administrativas, incluidos borradores |
 | `/dashboard/blog/new`, `/dashboard/blog/{id}` | Creación y edición por ID de Firestore |
 | `/dashboard/pages` | Listado de páginas; esta versión administra únicamente el inicio |
-| `/dashboard/pages/home` | Constructor visual del inicio; no sustituye la portada pública |
+| `/dashboard/pages/home` | Constructor de los bloques iniciales y SEO del inicio; solo lo publicado se muestra en `/` |
 | `/builder-preview` | Vista previa local para administradores, sin Analytics ni indexación |
 | `/api/admin/pages/home` | Lectura/guardado/publicación de bloques, con verificación de administrador |
 | `/api/cloudinary/sign` | POST autenticado para autorizar una subida |
@@ -71,6 +71,8 @@ Los grupos `(site)` y `(admin)` organizan layouts; sus nombres no aparecen en la
 ### Leer el sitio
 
 Las páginas y componentes públicos consultan Firestore con el SDK cliente, también cuando se ejecutan en el servidor de Next.js. No tienen por ello privilegios de administrador. Las consultas públicas usan `active == true` o `published == true`; las reglas deben autorizar esa lectura. Categorías y `content/therapist` son públicos por diseño.
+
+Excepción acotada: el inicio lee exclusivamente `pagePublished/home` con un módulo `server-only` y Firebase Admin. Valida esa instantánea antes de mostrarla; nunca consulta borradores. Conserva las secciones públicas actuales debajo del contenido editable y vuelve al Hero/SEO originales si no hay publicación válida. Operación y reversión mediante `PAGE_BUILDER_HOME_DISABLED` en [Constructor de páginas](../specs/page-builder.md#integración-con-el-inicio).
 
 ### Editar contenido
 

@@ -6,7 +6,16 @@
 
 Se importó **únicamente** el directorio completo `src/page-builder/` y su suite `tests/page-builder.test.mjs` desde `josealmz1921/ingenix`, rama `feat/enterprise-homepage-blocks`, commit `a522753`. No se aplicó cherry-pick ni se importaron cuentas, contenido de clientes, imágenes, Header/Footer o configuración del origen. El README del módulo explica su contrato portable; esta especificación describe su integración en Flor de luna.
 
-Primera versión: una página con ID fijo `home`, listada en `/dashboard/pages` y editable en `/dashboard/pages/home`. No crea nuevas rutas `/{slug}`, no modifica servicios/blog ni sustituye `app/(site)/page.tsx`. **Publicar almacena una instantánea, pero no la conecta al sitio.** La activación pública requiere aprobación explícita del propietario y una integración posterior de SEO/lectura publicada.
+Una página con ID fijo `home`, listada en `/dashboard/pages` y editable en `/dashboard/pages/home`. No crea nuevas rutas `/{slug}` ni cambia las colecciones de servicios/blog. **Publicar guarda la instantánea que lee `/` para sus bloques iniciales y su SEO.** Guardar borrador no cambia el sitio. La conexión pública fue autorizada; los cambios de código no equivalen a un despliegue confirmado.
+
+## Integración con el inicio
+
+- `getPublishedHome` es un lector `server-only` que consulta exclusivamente `pagePublished/home`, nunca borradores. No admite rutas/IDs del visitante ni devuelve información administrativa. El uso del SDK Admin para esta lectura pública está limitado a esa instantánea explícitamente publicable.
+- Vuelve a validar revisión, esquema, ID `home`, publicación (un único H1), imágenes permitidas, anclas reservadas y límite de 256 KiB antes del render. Si falta la publicación, es incompatible, falla su lectura o supera cuatro segundos, devuelve `null` y conserva el Hero original. El timeout deja de esperar, pero no cancela la solicitud interna del SDK.
+- La ruta sigue siendo dinámica; `cache` de React comparte la lectura entre metadatos y contenido de una misma petición, sin una caché persistente entre visitantes. Una publicación nueva se ve al solicitar de nuevo `/`, no actualiza pestañas abiertas automáticamente.
+- Los bloques publicados sustituyen **solo el Hero inicial**. `HomeSections` conserva debajo servicios activos, Nosotros, información para visitantes, Experiencia, terapeuta, blog publicado y contacto personalizado, con sus fuentes de datos y anclas originales. No son todavía bloques movibles del constructor; pueden repetir temas de bloques editoriales y deben revisarse al diseñar el inicio.
+- Header/Footer, consentimiento y eventos Analytics se mantienen. `generateMetadata` aplica título/descripción SEO publicados a metadatos, Open Graph y Twitter; conserva canónica `/` e imagen social actuales. Sin valores personalizados se mantienen los valores SEO anteriores.
+- Reversión de emergencia: establecer `PAGE_BUILDER_HOME_DISABLED=true` en el servidor y reiniciar/re desplegar según el entorno. Omite por completo la lectura publicada y restaura Hero/SEO originales, sin borrar borrador ni instantánea. Quitar la variable o ponerla en `false` vuelve a habilitar la lectura.
 
 ## Editor
 
@@ -20,9 +29,18 @@ Primera versión: una página con ID fijo `home`, listada en `/dashboard/pages` 
 - El orden del array define el orden visual. Hasta 100 bloques; límites de listas/botones establecidos por el esquema.
 - Interpreta objetos/listas opcionales y números, sin guardar números de columnas como cadenas.
 - Aplica `florDeLunaTheme` tanto a los controles como a `PageRenderer`. Los estilos del módulo no necesitan Tailwind y no modifican estilos globales.
-- Campos SEO propios del documento, todavía sin cambiar los metadatos del inicio real.
+- Campos SEO propios del documento, aplicados al inicio únicamente desde la versión publicada.
 - Aviso al cerrar/recargar con cambios locales. No hay guardado automático ni garantía de recuperación; las transiciones internas de Next no están bloqueadas.
 - Control de revisión optimista: una sesión desactualizada recibe 409 y debe recargar. No hay combinación automática de cambios entre administradores.
+- Cargar contenido, eliminar bloques y publicar requieren confirmación con SweetAlert2 (dependencia existente), en español y con colores/tipografías de Flor de luna. Cancelar tiene el foco inicial; Escape o cerrar el diálogo no confirma. Mientras se decide, se bloquean edición y acciones concurrentes. Los avisos de éxito/error permanecen en el editor. Solo se conserva el aviso nativo `beforeunload`, controlado por el navegador al salir con cambios pendientes.
+
+### Precarga del contenido existente
+
+`initialPage()` prepara seis bloques a partir del contenido editorial estático del inicio original: portada con `/img/heroImage.jpg`, imagen de Nosotros `/img/bed.jpg`, detalles de atención, información para visitantes, pasos de la experiencia y contacto personalizado. Incluye los mismos metadatos SEO y enlaces WhatsApp (incluido el mensaje de cotización); no descarga imágenes ni copia documentos de servicios, terapeuta o blog.
+
+Sin borrador guardado, esta plantilla se carga solo en memoria. Si existe un borrador, se respeta íntegramente. El botón **Cargar contenido actual** permite sustituir toda la edición local previa confirmación, manteniendo la revisión de servidor para el siguiente guardado; no guarda ni publica por sí mismo. Se refiere al contenido estático del repositorio, no a una captura del HTML publicado ni a un historial de versiones.
+
+Solo la portada importada está visible inicialmente. Los otros cinco bloques quedan ocultos porque las secciones originales siguen apareciendo en `HomeSections`; activarlos añade copias, no reemplaza automáticamente esas secciones. Se pueden revisar y editar desde Estructura/lienzo antes de guardar. La conversión conserva texto plano y recursos existentes, no garantiza reproducir exactamente la composición visual del Hero original.
 
 ## Imágenes
 
@@ -55,7 +73,7 @@ Las colecciones están separadas: guardar un borrador no cambia la instantánea 
 
 - Lienzo seleccionable dentro del editor, sin enlaces interactivos, con anchos lógicos de 390, 768 y 1280 px escalados al espacio disponible. El renderizador usa consultas de contenedor para adaptar bloques al ancho del lienzo, no al navegador del administrador.
 - Botón para abrir `/builder-preview` en una ventana del ancho seleccionado. El navegador puede ajustar el tamaño o bloquear ventanas emergentes; comprobar el viewport real en herramientas de desarrollo.
-- La vista completa reutiliza Header/Footer **del destino**, las mismas fuentes y `PageRenderer` con tema Flor de luna y `mode="draft"`.
+- La vista completa reutiliza Header/Footer **del destino**, las mismas fuentes y `PageRenderer` con tema Flor de luna y `mode="draft"`, seguido de `HomeSections` como en el inicio público. Estas secciones usan datos públicos actuales, no una instantánea del borrador.
 - Solo muestra el documento local de `sessionStorage` de una sesión administradora. No hay endpoint público que devuelva borradores, ni enlaces compartibles de previsualización. El control cliente no sustituye seguridad: aquí solo protege presentación de datos ya locales; las lecturas persistidas están protegidas por servidor/reglas.
 - La ventana nueva recibe la copia local al abrir; para ver cambios posteriores hay que abrir otra vista previa. No contiene datos en query strings.
 - No carga GTM ni emite eventos, está excluida en la utilidad de Analytics, tiene `noindex` y está excluida de robots/sitemap. El sitio público conserva su consentimiento y medición actuales.
@@ -72,6 +90,8 @@ Esa revisión visual corresponde a la interfaz anterior. El rediseño de catálo
 
 La edición directa y el arrastre de tarjetas completas se comprobaron después en navegador con un montaje aislado del editor, datos ficticios y persistencia simulada (sin autenticación ni escrituras remotas): título editado/guardado, foco conservado al vaciarlo, pegado de etiquetas como texto literal y arrastre con eventos de puntero progresivos hasta una posición intermedia. También se probó un ancho de navegador de 500 px con lienzo lógico de 390 px, sin desbordamiento horizontal, y arrastre desde el catálogo superpuesto al lienzo. El montaje aislado no sustituye la revisión autenticada del dashboard ni comprueba gestos táctiles reales.
 
+La conexión pública tiene pruebas de lectura exclusiva de la instantánea, fallback por ausencia/error/timeout/datos inválidos, interruptor de reversión, bloqueo de anclas reservadas y render de inicio con un solo H1 tanto con publicación como sin ella. Las pruebas de composición sustituyen las secciones de datos externos por dobles; no confirman el estado remoto. Build, TypeScript, ESLint focalizado y 52 pruebas locales pasan; la revisión visual de esta composición pública y la integración autenticada quedan pendientes.
+
 **Pendiente, no ejecutado:** desplegar las reglas locales cuando se autorice; comprobar permisos IAM de escritura de la cuenta de servicio en las nuevas colecciones; prueba interactiva con un administrador en un entorno no productivo y subidas firmadas de prueba autorizadas. No se crearon documentos ni se cambiaron Firebase/Cloudinary de producción.
 
-Antes de conectar el inicio: el propietario debe aprobar la presentación, decidir cómo mantener las secciones actuales y conexiones al catálogo/blog, y revisar metadatos/canónica, WhatsApp y Analytics sobre la versión publicada. No conectar únicamente el renderizador eliminando esas funcionalidades del inicio actual.
+Antes de desplegar: revisar presentación, metadatos/canónica, WhatsApp y Analytics sobre la versión publicada. Las secciones actuales y las conexiones al catálogo/blog se conservan; convertirlas en bloques dinámicos movibles queda fuera de esta integración.

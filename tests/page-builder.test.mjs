@@ -132,7 +132,7 @@ test('inline slots cover texts, buttons and card/project items without changing 
   }
 });
 
-test('Flor de luna starts from a valid themed home draft without replacing public routes', () => {
+test('Flor de luna starts from a valid themed home draft and public home keeps live sections', () => {
   const { initialPage } = load('src/components/PageBuilder/initialPage.ts');
   const { pageImageErrors } = load('src/utilities/pageBuilder.ts');
   const page = initialPage();
@@ -142,9 +142,77 @@ test('Flor de luna starts from a valid themed home draft without replacing publi
   assert.deepEqual(pageImageErrors(page), []);
   const html = renderToStaticMarkup(React.createElement(PageRenderer, { document: page, theme: florDeLunaTheme }));
   assert.match(html, /Masajes tántricos en Pachuca/);
-  assert.match(html, /Estado de México/);
+  assert.match(JSON.stringify(page), /Estado de México/);
   assert.equal((html.match(/<h1\b/g) ?? []).length, 1);
-  assert.ok(!fs.readFileSync('app/(site)/page.tsx', 'utf8').includes('PageRenderer'));
+  const home = fs.readFileSync('app/(site)/page.tsx', 'utf8');
+  assert.match(home, /getPublishedHome/);
+  assert.match(home, /<HomeSections/);
+  assert.match(home, /: <Hero/);
+});
+
+test('site template preloads existing editorial content without duplicating live collections or retained sections', () => {
+  const { initialPage } = load('src/components/PageBuilder/initialPage.ts');
+  const { pageHomeErrors } = load('src/utilities/pageBuilder.ts');
+  const { HOME_SEO_TITLE, HOME_SEO_DESCRIPTION } = load('src/utilities/siteSeo.ts');
+  const page = initialPage();
+  assert.deepEqual(page.seo, { title: HOME_SEO_TITLE, description: HOME_SEO_DESCRIPTION });
+  assert.deepEqual(pageHomeErrors(page), []);
+  assert.equal(validatePageDocument(page, { mode: 'publish' }).success, true);
+  assert.equal(page.sections.length, 6);
+  assert.deepEqual(page.sections.filter(section => section.visible).map(section => section.id), ['portada']);
+  const hero = page.sections[0];
+  assert.equal(hero.content.image.src, '/img/heroImage.jpg');
+  assert.equal(hero.content.actions[1].href, '/#servicios');
+  assert.ok(fs.existsSync(`public${hero.content.image.src}`));
+  const originalHero = fs.readFileSync('src/components/Hero/hero.tsx', 'utf8');
+  for (const paragraph of hero.content.description.split('\n\n')) assert.ok(originalHero.includes(paragraph));
+  const details = page.sections.find(section => section.id === 'inicio-cuidados');
+  const originalAbout = fs.readFileSync('src/components/WhyUs/whyUs.tsx', 'utf8');
+  for (const item of details.content.items) {
+    assert.ok(originalAbout.includes(item.title));
+    assert.ok(originalAbout.includes(item.description));
+  }
+  const originalSections = fs.readFileSync('src/components/HomeSections.tsx', 'utf8');
+  const visitors = page.sections.find(section => section.id === 'inicio-visitantes');
+  for (const paragraph of visitors.content.description.split('\n\n')) assert.ok(originalSections.includes(paragraph));
+  const custom = page.sections.find(section => section.id === 'inicio-personalizado');
+  assert.match(decodeURIComponent(custom.content.actions[0].href), /Hola, tengo una idea para un servicio personalizado/);
+  const serialized = JSON.stringify(page);
+  assert.doesNotMatch(serialized, /serviceId|therapistId|articleId|schemaVersion":2/);
+  const next = initialPage();
+  next.sections[0].content.title = 'Local edit';
+  assert.notEqual(initialPage().sections[0].content.title, 'Local edit');
+});
+
+test('public homepage renders one H1 and retains site sections and analytics in both modes', async () => {
+  const { initialPage } = load('src/components/PageBuilder/initialPage.ts');
+  const document = initialPage();
+  const source = fs.readFileSync('app/(site)/page.tsx', 'utf8');
+  const code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
+  for (const published of [null, document]) {
+    const pageModule = { exports: {} };
+    let analyticsTitle;
+    const mocks = {
+      '@/src/components/Hero': { __esModule: true, default: () => React.createElement('h1', null, 'Original homepage') },
+      '@/src/components/HomeSections': { __esModule: true, default: () => React.createElement('section', { id: 'servicios' }, 'Live sections') },
+      '@/src/components/Analytics/pageAnalytics': { __esModule: true, default: props => { analyticsTitle = props.title; return null; } },
+      '@/src/page-builder': { PageRenderer, florDeLunaTheme },
+      '@/src/server/publishedHome': { getPublishedHome: async () => published },
+      '@/src/utilities/siteSeo': { HOME_SEO_TITLE: 'Default SEO', homeMetadata: seo => ({ title: seo?.title || 'Default SEO' }) },
+    };
+    const localRequire = name => mocks[name] || require(name);
+    new vm.Script(`(function(module,exports,require){${code}})`).runInThisContext()(pageModule, pageModule.exports, localRequire);
+    const html = renderToStaticMarkup(await pageModule.exports.default());
+    assert.equal((html.match(/<h1\b/g) || []).length, 1);
+    assert.match(html, /id="contenido"/);
+    assert.match(html, /id="servicios"/);
+    assert.doesNotMatch(html, /contenteditable|role="textbox"/);
+    assert.equal(analyticsTitle, published?.seo.title || 'Default SEO');
+    assert.equal((await pageModule.exports.generateMetadata()).title, analyticsTitle);
+  }
+  const sections = fs.readFileSync('src/components/HomeSections.tsx', 'utf8');
+  for (const component of ['Services', 'WhyUs', 'Therapist', 'Blog', 'CustomeService']) assert.ok(sections.includes(`<${component} />`));
+  assert.match(sections, /id="experiencia"/);
 });
 
 test('valid page round-trips as JSON and parsing omits undefined properties', () => {

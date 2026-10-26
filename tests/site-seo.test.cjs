@@ -43,6 +43,20 @@ test("service canonical uses the public route and the same URL builder as the si
     assert.equal(result.openGraph.siteName, "Flor de luna");
 });
 
+test('published home SEO updates metadata consistently without changing canonical or image', t => {
+    const { homeMetadata, HOME_SEO_TITLE, HOME_SEO_DESCRIPTION } = setup(t);
+    const result = homeMetadata({ title: 'Título publicado', description: 'Descripción publicada' });
+    assert.equal(result.title, 'Título publicado');
+    assert.equal(result.openGraph.title, result.title);
+    assert.equal(result.twitter.description, result.description);
+    assert.equal(result.description, 'Descripción publicada');
+    assert.equal(result.alternates.canonical, 'https://example.com/');
+    assert.equal(result.openGraph.url, result.alternates.canonical);
+    assert.equal(result.openGraph.images[0].url, 'https://example.com/img/heroImage.jpg');
+    assert.equal(homeMetadata({ title: ' ', description: '' }).title, HOME_SEO_TITLE);
+    assert.equal(homeMetadata({ title: '', description: ' ' }).description, HOME_SEO_DESCRIPTION);
+});
+
 test("custom SEO and social metadata remain authoritative without changing the input", t => {
     const { serviceMetadata } = setup(t);
     const service = Object.freeze({

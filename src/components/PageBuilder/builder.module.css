@@ -222,6 +222,16 @@
 
 .settingsDialog { border: 1px solid #d5dccd; border-radius: 12px; background: #fffdf9; color: #445247; padding: 1.5rem; width: min(540px, calc(100% - 2rem)); max-height: calc(100dvh - 3rem); overflow-y: auto; margin: auto; box-shadow: 0 20px 80px #26382730; font-family: var(--font-body); }
 .settingsDialog::backdrop { background: #23302670; backdrop-filter: blur(3px); }
+.confirmPopup { background: var(--color-secondary, #f5f2ed); color: var(--color-tertiary, #445247); border: 1px solid #d5dccd; border-radius: 12px; font-family: var(--font-body, "Manrope", sans-serif); }
+.confirmPopup .confirmTitle { font-family: var(--font-heading, "EB Garamond", serif); color: inherit; font-weight: 600; }
+.confirmPopup .confirmText { color: var(--color-neutral, #706d67); font-size: .9rem; line-height: 1.8; }
+.confirmPopup .confirmActions { gap: .75rem; padding: 0 1rem; }
+.confirmAccept, .confirmCancel { border: 1px solid #445247; border-radius: 7px; padding: .65rem 1rem; font: 600 .85rem var(--font-body, "Manrope", sans-serif); cursor: pointer; }
+.confirmAccept { background: var(--color-tertiary, #445247); color: #fffdf9; }
+.confirmCancel { background: #fffdf9; color: var(--color-tertiary, #445247); border-color: #c9d0c7; }
+.confirmAccept:hover { filter: brightness(1.1); }
+.confirmCancel:hover { background: #edf0e9; }
+.confirmAccept:focus-visible, .confirmCancel:focus-visible { outline: 2px solid #7b8d85; outline-offset: 3px; }
 .dialogHeader { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .dialogHeader h2 { font: 600 1.15rem var(--font-body); margin: .3rem 0; }
 .settingsDialog .dialogDone { margin-top: 1rem; background: #445247; color: #fffdf9; }

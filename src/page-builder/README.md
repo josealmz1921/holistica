@@ -126,4 +126,4 @@ npm run lint
 npm run build
 ```
 
-Las pruebas verifican variantes, JSON, controles del editor, URLs, IDs, H1, renderizado y ausencia de dependencias específicas del sitio. Esta copia ya está integrada con el dashboard de Flor de luna; su alcance, reglas locales, APIs y pendientes externos se documentan en [la especificación de integración](../../.opencode/specs/page-builder.md). La portada pública todavía no utiliza la instantánea publicada.
+Las pruebas verifican variantes, JSON, controles del editor, URLs, IDs, H1, renderizado y ausencia de dependencias específicas del sitio. Esta copia está integrada con el dashboard y el inicio de Flor de luna; su alcance, reglas locales, APIs, lectura publicada y reversión se documentan en [la especificación de integración](../../.opencode/specs/page-builder.md).

@@ -15,7 +15,7 @@ Esta especificación describe el comportamiento implementado, no un plan para a�
 
 ## Servicios
 
-El constructor del inicio se encuentra en `/dashboard/pages`. Permite editar bloques y guardar borradores/publicaciones separados, pero no sustituye la portada actual. Véase [Constructor de páginas](page-builder.md) para permisos, vistas previas y límites.
+El listado del inicio se encuentra en `/dashboard/pages` y el editor en `/dashboard/pages/home`. Guardar conserva un borrador privado; publicar actualiza los bloques iniciales y el SEO de `/`, conservando las secciones existentes debajo. Véase [Constructor de páginas](page-builder.md) para permisos, vistas previas, reversión y límites.
 
 ### Listado
 

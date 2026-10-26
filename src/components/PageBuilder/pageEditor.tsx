@@ -11,12 +11,13 @@ import { florDeLunaTheme } from "@/src/page-builder";
 import { blockRegistry, getBlockFields, validatePageDocument, type BlockType, type PageDocument, type PageSection, type ValidationIssue } from "@/src/page-builder/editor";
 import { adminHeaders } from "@/src/firebase/adminRequest";
 import Fields, { UploadActivity, InlineEditingType } from "./Fields";
-import { PREVIEW_KEY, pageImageErrors } from "@/src/utilities/pageBuilder";
+import { PREVIEW_KEY, pageHomeErrors } from "@/src/utilities/pageBuilder";
 import { initialPage } from "./initialPage";
 import { duplicateBlock, insertBlock, moveBlockToGap } from "./editorOperations";
 import { CatalogBlock, InsertGap, SortableCanvasBlock, StructureBlock, CanvasFrame, BlockIcon } from "./BuilderParts";
 import styles from "./builder.module.css";
 import { updateInlineText } from './inlineEditing';
+import { confirmBuilderAction, type BuilderConfirmation } from './confirmAction';
 
 async function request(method = "GET", body?: unknown) {
     const response = await fetch("/api/admin/pages/home", { method, headers: await adminHeaders(), ...(body ? { body: JSON.stringify(body) } : {}), cache: "no-store" });
@@ -37,7 +38,7 @@ function PageSettings({ page, disabled, onChange, onClose }: { page: PageDocumen
     useEffect(() => { const element = dialog.current; element?.showModal(); return () => element?.close(); }, []);
     return <dialog ref={dialog} className={styles.settingsDialog} onCancel={onClose} aria-labelledby="page-settings-title">
         <div className={styles.dialogHeader}><div><span className={styles.eyebrow}>Configuración de página</span><h2 id="page-settings-title">Información y SEO</h2></div><button type="button" onClick={onClose} aria-label="Cerrar ajustes"><XMarkIcon /></button></div>
-        <p className={styles.help}>Define cómo identificar esta página. Los metadatos actuales del sitio no se sustituyen todavía.</p>
+        <p className={styles.help}>El título y la descripción SEO se aplican al inicio cuando publiques. La URL canónica se conserva.</p>
         <fieldset disabled={disabled}><Form initialValues={values} onSubmit={() => {}} onValueChange={onChange}>
             <Input identifier="title" label="Nombre de la página" />
             <Input identifier="seoTitle" label="Título SEO" />
@@ -97,6 +98,8 @@ export default function PageEditor({ view = "list" }: { view?: "list" | "editor"
     const [uploads, setUploads] = useState(0);
     const [loadFailed, setLoadFailed] = useState(false);
     const pending = useRef(false);
+    const confirmationPending = useRef(false);
+    const [confirmationOpen, setConfirmationOpen] = useState(false);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
     const [issues, setIssues] = useState<ValidationIssue[]>([]);
@@ -123,6 +126,10 @@ export default function PageEditor({ view = "list" }: { view?: "list" | "editor"
                 const parsed = validatePageDocument(result.document, { mode: "draft" });
                 if (!parsed.success) throw new Error("El borrador guardado no es compatible con esta versión.");
                 setDocument(parsed.data); setSaved(JSON.stringify(parsed.data)); setSelectedId(parsed.data.sections[0]?.id ?? null);
+            } else {
+                const template = initialPage();
+                setDocument(template); setSelectedId(template.sections[0]?.id ?? null);
+                setMessage("Contenido actual precargado solo en esta edición local. Las copias de secciones existentes están ocultas para evitar duplicados. Revisa y guarda el borrador cuando quieras.");
             }
             setRevision(result.revision); setPublished(result.publishedRevision);
         }).catch(reason => { if (!cancelled) { setError(reason.message); setLoadFailed(true); } }).finally(() => { if (!cancelled) setLoading(false); });
@@ -130,9 +137,9 @@ export default function PageEditor({ view = "list" }: { view?: "list" | "editor"
     }, []);
 
     const validation = validatePageDocument(document, { mode: "draft" });
-    const imageErrors = validation.success ? pageImageErrors(validation.data) : [];
+    const imageErrors = validation.success ? pageHomeErrors(validation.data) : [];
     const dirty = JSON.stringify(document) !== saved;
-    const disabled = busy || uploads > 0 || loadFailed;
+    const disabled = busy || uploads > 0 || loadFailed || confirmationOpen;
     const selectedIndex = document.sections.findIndex(block => block.id === selectedId);
     const selected = document.sections[selectedIndex];
     const device = devices.find(item => item.id === deviceId) || devices[0];
@@ -165,6 +172,20 @@ export default function PageEditor({ view = "list" }: { view?: "list" | "editor"
 
     function change(next: PageDocument) { if (disabled) return; setDocument(next); setMessage(""); setError(""); setIssues([]); }
     function select(id: string) { setSelectedId(id); setInsertAt(null); }
+    async function confirmAction(action: BuilderConfirmation) {
+        if (disabled || pending.current || confirmationPending.current) return false;
+        confirmationPending.current = true; setConfirmationOpen(true);
+        try { return await confirmBuilderAction(action); }
+        catch { setError("No se pudo abrir la confirmación. Inténtalo de nuevo."); return false; }
+        finally { confirmationPending.current = false; setConfirmationOpen(false); }
+    }
+    async function loadSiteContent() {
+        if (!(await confirmAction('load'))) return;
+        const template = initialPage();
+        change(template); setSelectedId(template.sections[0]?.id ?? null);
+        setTab("structure"); setPanel(null); setSeoOpen(false); setInsertAt(null);
+        setMessage("Contenido del inicio cargado localmente. Revisa los bloques ocultos en Estructura. No se ha guardado ni publicado ningún cambio.");
+    }
     function updateBlock(index: number, next: PageSection) {
         if (index === selectedIndex) setSelectedId(next.id);
         change({ ...document, sections: document.sections.map((block, position) => position === index ? next : block) });
@@ -179,8 +200,8 @@ export default function PageEditor({ view = "list" }: { view?: "list" | "editor"
         const id = `bloque-${crypto.randomUUID()}`;
         change(duplicateBlock(document, index, id)); select(id);
     }
-    function remove(index: number) {
-        if (!window.confirm("¿Eliminar este bloque del borrador? Las imágenes no se borrarán de Cloudinary.")) return;
+    async function remove(index: number) {
+        if (!(await confirmAction('remove'))) return;
         const sections = document.sections.filter((_, position) => position !== index);
         change({ ...document, sections }); setSelectedId(sections[Math.max(0, index - 1)]?.id ?? null);
     }
@@ -190,9 +211,9 @@ export default function PageEditor({ view = "list" }: { view?: "list" | "editor"
         change({ ...document, sections: moveBlockToGap(document.sections, index, to > index ? to + 1 : to) });
     }
     async function persist(action: "save" | "publish") {
-        if (pending.current || uploads || loadFailed) return;
+        if (pending.current || confirmationPending.current || uploads || loadFailed) return;
         if (action === "publish" && (dirty || !revision)) { setError("Guarda el borrador antes de publicar."); return; }
-        if (action === "publish" && !window.confirm("¿Publicar la versión guardada? No sustituirá aún la portada pública.")) return;
+        if (action === "publish" && !(await confirmAction('publish'))) return;
         const check = validatePageDocument(document, { mode: action === "save" ? "draft" : "publish" });
         if (!check.success) { setIssues(check.issues); setError("Revisa los campos señalados antes de continuar."); return; }
         if (imageErrors.length) { setError(imageErrors.join(" ")); return; }
@@ -201,7 +222,7 @@ export default function PageEditor({ view = "list" }: { view?: "list" | "editor"
             const result = await request(action === "save" ? "PUT" : "POST", action === "save" ? { document: check.data, revision } : { revision });
             if (action === "save") { setDocument(check.data); setSaved(JSON.stringify(check.data)); setRevision(result.revision); }
             else setPublished(result.revision);
-            setMessage(action === "save" ? "Borrador guardado." : "Versión publicada guardada. La portada actual permanece intacta.");
+            setMessage(action === "save" ? "Borrador guardado. El sitio no ha cambiado." : "Versión publicada. El inicio mostrará los bloques y el SEO publicados, salvo que la integración esté desactivada en el servidor.");
         } catch (reason) { setError(reason instanceof Error ? reason.message : "No se pudo guardar."); }
         finally { pending.current = false; setBusy(false); }
     }
@@ -245,7 +266,7 @@ export default function PageEditor({ view = "list" }: { view?: "list" | "editor"
             <section className={styles.listCard} aria-label="Listado de páginas">
                 <div className={styles.listFilters}><label className={styles.search}><MagnifyingGlassIcon /><input aria-label="Buscar páginas" placeholder="Buscar una página…" value={query} onChange={event => setQuery(event.target.value)} /></label><select aria-label="Filtrar por estado" value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="all">Todos los estados</option>{["Borrador", "Publicada", "Cambios sin publicar"].map(item => <option key={item}>{item}</option>)}</select></div>
                 <div className={styles.tableScroll}><table className={styles.pagesTable}><thead><tr><th>Página</th><th>Ruta</th><th>Estado</th><th>Versión guardada</th><th>Acciones</th></tr></thead><tbody>{matches ? <tr><td><div className={styles.pageName}><span className={styles.pageThumbnail}><Squares2X2Icon /></span><div><Link href="/dashboard/pages/home">{document.title}</Link><small>Portada · {document.sections.length} bloques</small></div></div></td><td><code>/</code></td><td><span className={styles.badge}>{status}</span></td><td>{revision ? `Revisión ${revision}` : "Aún sin guardar"}</td><td><div className={styles.tableActions}><Link href="/dashboard/pages/home">Editar página</Link><button type="button" disabled={disabled} onClick={() => openPreview(1280)} aria-label="Vista previa de inicio"><ArrowTopRightOnSquareIcon /></button></div></td></tr> : <tr><td colSpan={5} className={styles.noResults}>No hay páginas que coincidan con tu búsqueda.</td></tr>}</tbody></table></div>
-                <p className={styles.tableFooter}>Esta versión administra la portada. Guardar una publicación todavía no reemplaza el inicio público.</p>
+                <p className={styles.tableFooter}>Guardar no cambia el sitio. Publicar actualiza los bloques iniciales y el SEO; servicios, terapeuta, blog y secciones actuales se conservan debajo.</p>
             </section>
         </div>;
     }
@@ -254,6 +275,7 @@ export default function PageEditor({ view = "list" }: { view?: "list" | "editor"
         <header className={styles.editorHeader}>
             <div className={styles.pageContext}><Link href="/dashboard/pages" aria-label="Volver a páginas"><ArrowLeftIcon /></Link><div><h1>{document.title || "Página sin nombre"}</h1><span className={styles.saveState}>{dirty ? "Cambios sin guardar" : `Guardado · revisión ${revision}`}</span></div><span className={styles.badge}>{status}</span></div>
             <div className={styles.headerActions}>
+                <button type="button" disabled={disabled} onClick={loadSiteContent}>Cargar contenido actual</button>
                 <button type="button" onClick={() => setSeoOpen(true)} title="Información y SEO"><AdjustmentsHorizontalIcon /><span>Ajustes y SEO</span></button>
                 <button type="button" disabled={disabled} onClick={() => openPreview(device.width)}><EyeIcon /><span>Vista previa ↗</span></button>
                 <button type="button" disabled={disabled} onClick={() => persist("save")}>{busy ? "Procesando…" : "Guardar borrador"}</button>
@@ -289,7 +311,7 @@ export default function PageEditor({ view = "list" }: { view?: "list" | "editor"
                         <InsertGap index={0} highlighted={dropAt === 0} dragging={!!dragLabel} disabled={disabled} onInsert={() => { setInsertAt(0); setTab("blocks"); setPanel("catalog"); }} />
                         {document.sections.map((block, index) => {
                             const blockValidation = validatePageDocument({ ...document, sections: [block] }, { mode: "draft" });
-                            const valid = blockValidation.success && !pageImageErrors(blockValidation.data).length;
+                            const valid = blockValidation.success && !pageHomeErrors(blockValidation.data).length;
                             return <div key={block.id}>
                                 <SortableCanvasBlock block={block} index={index} page={document} selected={block.id === selectedId} disabled={disabled} scale={scale} valid={valid} onSelect={() => select(block.id)} onTextChange={(path, value) => updateBlock(index, updateInlineText(block, path, value))} toolbar={<>
                                     <button type="button" disabled={disabled || !index} onClick={() => move(index, -1)} aria-label={`Subir bloque ${index + 1}`}><ArrowUpIcon /></button>
